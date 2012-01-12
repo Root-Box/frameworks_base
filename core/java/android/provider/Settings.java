@@ -2688,6 +2688,12 @@ public final class Settings {
          * @hide
          */
         public static final String WEATHER_SHOW_LOCATION = "weather_show_location";
+
+        /**
+         * Whether volume up/down can be long pressed to skip tracks
+         * @hide
+         */
+        public static final String VOLUME_MUSIC_CONTROLS = "volume_music_controls";
     }
 
     /**
