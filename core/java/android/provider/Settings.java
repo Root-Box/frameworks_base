@@ -3078,6 +3078,13 @@ public final class Settings {
         public static final String QUICK_TOGGLES = "quick_toggles";
 
         /**
+         * whether to enable end app on back longpress functionality
+         *
+         * @hide
+         */
+        public static final String KILL_APP_LONGPRESS_BACK = "kill_app_longpress_back";
+
+        /**
          * number of tiles per row in quick settings
          *
          * @hide

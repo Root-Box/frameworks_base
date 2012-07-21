@@ -2043,4 +2043,6 @@
   <java-symbol type="xml" name="profile_default" />
 
   <java-symbol type="bool" name="config_forceDisableHardwareKeyboard" />
+  <java-symbol type="string" name="app_killed_message" />
+  <java-symbol type="integer" name="config_backKillTimeout" />
 </resources>
