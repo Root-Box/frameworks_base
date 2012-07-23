@@ -43,4 +43,12 @@
     <color name="quicksettings_text_color_dark">#ffCCCCCC</color>
     <color name="quicksettings_text_background_light">#ccffffff</color>
     <color name="quicksettings_text_background_dark">#cc000000</color>
+
+    <!-- Quick Nav Panel -->
+    <color name="qcMenuBackground">#C0000000</color>
+    <color name="qc_normal">#E0000000</color>
+    <color name="qc_selected">#E0FF8800</color>
+    <color name="qc_sub">#E0222222</color>
+    <color name="qc_tab_nr">#F033B5E5</color>
+
 </resources>
