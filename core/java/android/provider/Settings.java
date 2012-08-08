@@ -1565,6 +1565,12 @@ public final class Settings {
         public static final String VOLUME_BLUETOOTH_SCO = "volume_bluetooth_sco";
 
         /**
+         * Whether to prevent loud volume levels when headset is first plugged in.
+         * @hide
+         */
+        public static final String SAFE_HEADSET_VOLUME_RESTORE = "safe_headset_volume_restore";
+
+        /**
          * Master volume (float in the range 0.0f to 1.0f).
          * @hide
          */
@@ -2350,6 +2356,12 @@ public final class Settings {
         public static final String ENABLE_VOLUME_OPTIONS = "enable_volume_options";
 
         /**
+         * Whether to use the custom quick unlock screen control
+         * @hide
+         */
+        public static final String LOCKSCREEN_QUICK_UNLOCK_CONTROL = "lockscreen_quick_unlock_control";
+
+        /**
          * Setting to Link Ringtone and Notification.
          *
          * @hide
@@ -2482,6 +2494,12 @@ public final class Settings {
          * Shows the battery icon in the notification pull down
          */
         public static final String NOTIFICATION_BATTERY_DISPLAY = "notification_battery_display";
+
+        /**
+         * Setting to allow % on lockscreen always showing.
+         * @hide
+         */
+        public static final String LOCKSCREEN_BATTERY = "lockscreen_battery";
 
         /**
          * Whether to show the battery bar
@@ -2646,10 +2664,30 @@ public final class Settings {
         public static final String NOTIFICATION_LIGHT_COLOR = "notification_light_color";
 
         /**
-	 *
-	 * @hide
-	 */
+	     *
+	     * @hide
+	     */
         public static final String NAVIGATION_BAR_BUTTON_ALPHA = "navigation_bar_button_alpha";
+
+        /**
+         * @hide
+         */
+        public static final String LOCKSCREEN_WEATHER = "lockscreen_weather";
+
+        /**
+         * @hide
+         */
+        public static final String LOCKSCREEN_WEATHER_TYPE = "lockscreen_weather_type";
+
+        /**
+         * @hide
+         */
+        public static final String USE_WEATHER = "use_weather";
+
+        /**
+         * @hide
+         */
+        public static final String WEATHER_SHOW_LOCATION = "weather_show_location";
     }
 
     /**
