@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012, The CyanogenMod Project
+ * Copyright (C) 2012 The CyanogenMod Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,12 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
- * Custom Qualcomm No SimReady RIL for SEMC
+ * Custom Qualcomm No SimReady RIL for Sony
  *
  * {@hide}
  */
 
-public class SemcRIL extends RIL implements CommandsInterface {
+public class SonyQualcommRIL extends RIL implements CommandsInterface {
     protected String mAid = "";
     protected HandlerThread mIccThread;
     protected IccHandler mIccHandler;
@@ -47,10 +47,61 @@ public class SemcRIL extends RIL implements CommandsInterface {
 
     private final int RIL_INT_RADIO_OFF = 0;
     private final int RIL_INT_RADIO_UNAVALIABLE = 1;
-    private final int RIL_INT_RADIO_ON = 2;
+    private final int RIL_INT_RADIO_ON = 10;
 
-    public SemcRIL(Context context, int networkMode, int cdmaSubscription) {
+    public SonyQualcommRIL(Context context, int networkMode, int cdmaSubscription) {
         super(context, networkMode, cdmaSubscription);
+    }
+
+    @Override
+    public void
+    iccIO (int command, int fileid, String path, int p1, int p2, int p3,
+            String data, String pin2, Message result) {
+        iccIOForApp(command, fileid, path, p1, p2, p3, data, pin2, mAid, result);
+    }
+
+    @Override public void
+    supplyIccPin(String pin, Message result) {
+        supplyIccPinForApp(pin, mAid, result);
+    }
+
+    @Override public void
+    changeIccPin(String oldPin, String newPin, Message result) {
+        changeIccPinForApp(oldPin, newPin, mAid, result);
+    }
+
+    @Override public void
+    supplyIccPin2(String pin, Message result) {
+        supplyIccPin2ForApp(pin, mAid, result);
+    }
+
+    @Override public void
+    changeIccPin2(String oldPin2, String newPin2, Message result) {
+        changeIccPin2ForApp(oldPin2, newPin2, mAid, result);
+    }
+
+    @Override public void
+    supplyIccPuk(String puk, String newPin, Message result) {
+        supplyIccPukForApp(puk, newPin, mAid, result);
+    }
+
+    @Override public void
+    supplyIccPuk2(String puk2, String newPin2, Message result) {
+        supplyIccPuk2ForApp(puk2, newPin2, mAid, result);
+    }
+
+    @Override
+    public void
+    queryFacilityLock(String facility, String password, int serviceClass,
+                            Message response) {
+        queryFacilityLockForApp(facility, password, serviceClass, mAid, response);
+    }
+
+    @Override
+    public void
+    setFacilityLock (String facility, boolean lockState, String password,
+                        int serviceClass, Message response) {
+        setFacilityLockForApp(facility, lockState, password, serviceClass, mAid, response);
     }
 
     @Override
@@ -104,116 +155,9 @@ public class SemcRIL extends RIL implements CommandsInterface {
     }
 
     @Override
-    protected DataCallState getDataCallState(Parcel p, int version) {
-        DataCallState dataCall = new DataCallState();
-
-        dataCall.version = version;
-        if (version < 5) {
-            dataCall.cid = p.readInt();
-            dataCall.active = p.readInt();
-            dataCall.type = p.readString();
-            String addresses = p.readString();
-            if (!TextUtils.isEmpty(addresses)) {
-                dataCall.addresses = addresses.split(" ");
-            }
-            // DataCallState needs an ifname. Since we don't have one use the name from the ThrottleService resource (default=rmnet0).
-            dataCall.ifname = "rmnet0";
-        } else {
-            dataCall.status = p.readInt();
-	          dataCall.suggestedRetryTime = p.readInt();
-            dataCall.cid = p.readInt();
-            dataCall.active = p.readInt();
-            dataCall.type = p.readString();
-            dataCall.ifname = p.readString();
-            if ((dataCall.status == DataConnection.FailCause.NONE.getErrorCode()) &&
-                    TextUtils.isEmpty(dataCall.ifname)) {
-              throw new RuntimeException("getDataCallState, no ifname");
-            }
-            String addresses = p.readString();
-            if (!TextUtils.isEmpty(addresses)) {
-                dataCall.addresses = addresses.split(" ");
-            }
-            String dnses = p.readString();
-            if (!TextUtils.isEmpty(dnses)) {
-                dataCall.dnses = dnses.split(" ");
-            }
-            String gateways = p.readString();
-            if (!TextUtils.isEmpty(gateways)) {
-                dataCall.gateways = gateways.split(" ");
-            }
-        }
-        return dataCall;
-    }
-
-    @Override public void
-    supplyIccPin(String pin, Message result) {
-        supplyIccPinForApp(pin, mAid, result);
-    }
-
-    @Override public void
-    changeIccPin(String oldPin, String newPin, Message result) {
-        changeIccPinForApp(oldPin, newPin, mAid, result);
-    }
-
-    @Override public void
-    supplyIccPin2(String pin, Message result) {
-        supplyIccPin2ForApp(pin, mAid, result);
-    }
-
-    @Override public void
-    changeIccPin2(String oldPin2, String newPin2, Message result) {
-        changeIccPin2ForApp(oldPin2, newPin2, mAid, result);
-    }
-
-    @Override public void
-    supplyIccPuk(String puk, String newPin, Message result) {
-        supplyIccPukForApp(puk, newPin, mAid, result);
-    }
-
-    @Override public void
-    supplyIccPuk2(String puk2, String newPin2, Message result) {
-        supplyIccPuk2ForApp(puk2, newPin2, mAid, result);
-    }
-
-    @Override
-    public void
-    queryFacilityLock(String facility, String password, int serviceClass,
-                            Message response) {
-        queryFacilityLockForApp(facility, password, serviceClass, mAid, response);
-    }
-
-    @Override
-    public void
-    setFacilityLock(String facility, boolean lockState, String password,
-                        int serviceClass, Message response) {
-        setFacilityLockForApp(facility, lockState, password, serviceClass, mAid, response);
-    }
-
-    @Override
-    public void
-    iccIO (int command, int fileid, String path, int p1, int p2, int p3,
-            String data, String pin2, Message result) {
-        iccIOForApp(command, fileid, path, p1, p2, p3, data, pin2, mAid, result);
-    }
-
-    @Override
     public void
     getIMSI(Message result) {
         getIMSIForApp(mAid, result);
-    }
-
-    @Override
-    public void
-    getIMSIForApp(String aid, Message result) {
-        RILRequest rr = RILRequest.obtain(RIL_REQUEST_GET_IMSI, result);
-
-        rr.mp.writeString(aid);
-
-        if (RILJ_LOGD) riljLog(rr.serialString() +
-                              "> getIMSI: " + requestToString(rr.mRequest)
-                              + " aid: " + aid);
-
-        send(rr);
     }
 
     @Override
@@ -248,7 +192,6 @@ public class SemcRIL extends RIL implements CommandsInterface {
 
         rr.mp.writeString(address);
         rr.mp.writeInt(clirMode);
-        rr.mp.writeInt(0);
 
         if (uusInfo == null) {
             rr.mp.writeInt(0); // UUS information is absent
@@ -294,6 +237,43 @@ public class SemcRIL extends RIL implements CommandsInterface {
 
     @Override
     protected void
+    switchToRadioState(RadioState newState) {
+        if (newState.isOn() && !getRadioState().isOn())
+            getVoiceRadioTechnology(null);
+        setRadioState(newState);
+    }
+
+
+    @Override
+    protected Object
+    responseSignalStrength(Parcel p) {
+        int numInts = 12;
+        int response[];
+
+        boolean noLte = false;
+
+        /* TODO: Add SignalStrength class to match RIL_SignalStrength */
+        response = new int[numInts];
+        for (int i = 0 ; i < numInts ; i++) {
+            if (noLte && i > 6 && i < 12) {
+                response[i] = -1;
+            } else {
+                response[i] = p.readInt();
+            }
+            if (i == 7 && response[i] == 99) {
+                response[i] = -1;
+                noLte = true;
+            }
+            if (i == 8 && !noLte) {
+                response[i] *= -1;
+            }
+        }
+
+        return response;
+    }
+
+    @Override
+    protected void
     processUnsolicited (Parcel p) {
         Object ret;
         int dataPosition = p.dataPosition(); // save off position within the Parcel
@@ -301,7 +281,6 @@ public class SemcRIL extends RIL implements CommandsInterface {
 
         switch(response) {
             case RIL_UNSOL_RESPONSE_RADIO_STATE_CHANGED: ret =  responseVoid(p); break;
-            case 1036: ret = responseVoid(p); break; // RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED
 
             default:
                 // Rewind the Parcel
@@ -316,8 +295,6 @@ public class SemcRIL extends RIL implements CommandsInterface {
             case RIL_UNSOL_RESPONSE_RADIO_STATE_CHANGED:
                 int state = p.readInt();
                 setRadioStateFromRILInt(state);
-                break;
-            case 1036:
                 break;
         }
     }
@@ -356,13 +333,13 @@ public class SemcRIL extends RIL implements CommandsInterface {
                 throw new RuntimeException("Unrecognized RIL_RadioState: " + stateCode);
         }
 
-        setRadioState (radioState);
+        switchToRadioState(radioState);
     }
 
     class IccHandler extends Handler implements Runnable {
-        private static final int EVENT_RADIO_ON = 1;
+        private static final int EVENT_GET_ICC_STATUS_DONE = 1;
         private static final int EVENT_ICC_STATUS_CHANGED = 2;
-        private static final int EVENT_GET_ICC_STATUS_DONE = 3;
+        private static final int EVENT_RADIO_ON = 3;
         private static final int EVENT_RADIO_OFF_OR_UNAVAILABLE = 4;
 
         private RIL mRil;

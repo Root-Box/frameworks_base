@@ -39,6 +39,11 @@ ifeq ($(USE_OPENGL_RENDERER),true)
 		external/skia/src/ports \
 		external/skia/include/utils
 
+ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+	LOCAL_C_INCLUDES += \
+		hardware/qcom/display/libtilerenderer
+endif
+
 ifeq ($(TARGET_BOARD_PLATFORM),exynos4)
 	LOCAL_CFLAGS += -DDONT_DISCARD_FRAMEBUFFER
 endif
@@ -47,6 +52,9 @@ endif
 	LOCAL_CFLAGS += -fvisibility=hidden
 	LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 	LOCAL_SHARED_LIBRARIES := libcutils libutils libGLESv2 libskia libui
+ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+	LOCAL_SHARED_LIBRARIES += libtilerenderer
+endif
 	LOCAL_MODULE := libhwui
 	LOCAL_MODULE_TAGS := optional
 	

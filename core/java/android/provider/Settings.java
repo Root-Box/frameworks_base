@@ -2457,7 +2457,17 @@ public final class Settings {
         /**
          * @hide
          */
+        public static final String STATUSBAR_TOGGLES_TEXT_COLOR = "statusbar_toggles_text_color";
+
+        /**
+         * @hide
+         */
         public static final String STATUSBAR_TOGGLES_ALPHA = "statusbar_toggles_alpha";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_TOGGLES_BACKGROUND = "statusbar_toggles_background";
 
         /**
          * @hide
@@ -2490,6 +2500,11 @@ public final class Settings {
         public static final String STATUSBAR_CLOCK_STYLE = "statusbar_clock_style";
 
         /**
+        * @hide
+        */
+        public static final String STATUSBAR_CLOCK_COLOR = "statusbar_clock_color";
+
+        /**
          * @hide
          * Shows weekday before clock time
          * 0 - No Day
@@ -2516,6 +2531,12 @@ public final class Settings {
          * Shows the battery icon in the notification pull down
          */
         public static final String NOTIFICATION_BATTERY_DISPLAY = "notification_battery_display";
+
+        /**
+         * custom lockscreen text color
+         * @hide
+         */
+        public static final String LOCKSCREEN_CUSTOM_TEXT_COLOR = "lockscreen_custom_text_color";
 
         /**
          * Setting to allow % on lockscreen always showing.
@@ -2713,6 +2734,13 @@ public final class Settings {
         public static final String NOTIFICATION_LIGHT_COLOR = "notification_light_color";
 
         /**
+         * Custom string for package;color|pacakge;color
+         * so we can change custom colors per app
+         * @hide
+         */
+        public static final String LED_CUSTOM_VALUES = "led_custom_values";
+
+        /**
 	     *
 	     * @hide
 	     */
@@ -2750,6 +2778,13 @@ public final class Settings {
          * @hide
          */
         public static final String MUTE_ANNOYING_NOTIFICATIONS_THRESHOLD = "mute_annoying_notifications_threshold";
+
+        /**
+         * Holds the text for the Carrier Label. An empty string will bring
+         * the default text back.
+         * @hide
+         */
+        public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
     }
 
     /**
