@@ -117,17 +117,17 @@ public class NavigationBarView extends LinearLayout {
      */
     int mTablet_UI = 0;
 
-    public String[] mClickActions = new String[5];
-    public String[] mLongpressActions = new String[5];
-    public String[] mPortraitIcons = new String[5];
+    public String[] mClickActions = new String[7];
+    public String[] mLongpressActions = new String[7];
+    public String[] mPortraitIcons = new String[7];
 
     public final static int StockButtonsQty = 3;
     public final static String[] StockClickActions = {
-            "**back**", "**home**", "**recents**", "**null**", "**null**"
+            "**back**", "**home**", "**recents**", "**null**", "**null**", "**null**", "**null**"
     };
 
     public final static String[] StockLongpress = {
-            "**null**", "**null**", "**null**", "**null**", "**null**"
+            "**null**", "**null**", "**null**", "**null**", "**null**", "**null**", "**null**"
     };
     FrameLayout rot0;
     FrameLayout rot90;
@@ -268,9 +268,12 @@ public class NavigationBarView extends LinearLayout {
                         mLongpressActions[j],
                         mPortraitIcons[j]);
                 v.setTag((landscape ? "key_land_" : "key_") + j);
-
                 addButton(navButtonLayout, v, landscape);
                 addLightsOutButton(lightsOut, v, landscape, false);
+                
+                if (v.getId() == R.id.back){
+                	mBackIcon = mBackLandIcon = v.getDrawable();
+                }
 
                 if (mNumberOfButtons == 3 && j != (mNumberOfButtons - 1)) {
                     // add separator view here
@@ -279,7 +282,6 @@ public class NavigationBarView extends LinearLayout {
                     addButton(navButtonLayout, separator, landscape);
                     addLightsOutButton(lightsOut, separator, landscape, true);
                 }
-
             }
             if (currentSetting != SHOW_DONT) {
                 View rightMenuKey = generateKey(landscape, KEY_MENU_RIGHT);
@@ -477,11 +479,10 @@ public class NavigationBarView extends LinearLayout {
         if (getBackButton() != null) {
         	getBackButton().setAlpha(
         			(0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_NOP)) ? 0.5f : 1.0f);
-        	// Disable this for the moment
-        	/*((ImageView)getBackButton()).setImageDrawable(
-                (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT))
+            ((ImageView)getBackButton()).setImageDrawable(
+                    (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT))
                     ? (mVertical ? mBackAltLandIcon : mBackAltIcon)
-                    : (mVertical ? mBackLandIcon : mBackIcon)); */
+                    : (mVertical ? mBackLandIcon : mBackIcon));
         }
         if (getHomeButton()!=null) {
         	getHomeButton().setAlpha(
@@ -794,7 +795,7 @@ public class NavigationBarView extends LinearLayout {
                     Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_BUTTONS_QTY), false,
                     this);
 
-            for (int j = 0; j < 5; j++) { // watch all 5 settings for changes.
+            for (int j = 0; j < 7; j++) { // watch all 5 settings for changes.
                 resolver.registerContentObserver(
                         Settings.System.getUriFor(Settings.System.NAVIGATION_CUSTOM_ACTIVITIES[j]),
                         false,
@@ -836,7 +837,7 @@ public class NavigationBarView extends LinearLayout {
                     Settings.System.NAVIGATION_BAR_BUTTONS_QTY, StockButtonsQty);
         }
 
-        for (int j = 0; j < 5; j++) {
+        for (int j = 0; j < 7; j++) {
             mClickActions[j] = Settings.System.getString(resolver,
                     Settings.System.NAVIGATION_CUSTOM_ACTIVITIES[j]);
             if (mClickActions[j] == null) {
