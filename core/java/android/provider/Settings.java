@@ -2559,6 +2559,12 @@ public final class Settings {
         */
         public static final String TORCH_STATE = "torch_state";
 
+       /**
+        * Status Bar notification icon opacity
+        * @hide
+        */
+        public static final String STATUS_BAR_NOTIF_ICON_OPACITY = "status_bar_notif_icon_opacity";
+
         /**
          * whether to hide the kill-all-button on recent switcher
          *
