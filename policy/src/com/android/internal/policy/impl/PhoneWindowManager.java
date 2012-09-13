@@ -512,6 +512,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
     Display mDisplay;
 
+    // Behavior of HOME button during incomming call ring.
+    // (See Settings.Secure.RING_HOME_BUTTON_BEHAVIOR.)
+    int mRingHomeBehavior;
+
     int mLandscapeRotation = 0;  // default landscape rotation
     int mSeascapeRotation = 0;   // "other" landscape rotation, 180 degrees from mLandscapeRotation
     int mPortraitRotation = 0;   // default portrait rotation
@@ -607,6 +611,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.Secure.SCREENSAVER_ENABLED), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAVIGATION_BAR_SHOW), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.NAVIGATION_BAR_SHOW_NOW), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAVIGATION_BAR_HEIGHT), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -1229,8 +1235,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
              * if it was disabled by the user.
             */
             if (mNavBarFirstBootFlag) {
-                mHasNavigationBar = (showByDefault);
                 mNavBarFirstBootFlag = false;
+            } else {
+                mHasNavigationBar = mHasNavigationBar &&
+                        Settings.System.getBoolean(mContext.getContentResolver(),
+                                Settings.System.NAVIGATION_BAR_SHOW_NOW, mHasNavigationBar);
             }
         } else {
             // Allow a system property to override this. Used by the emulator.
@@ -1297,6 +1306,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mIncallPowerBehavior = Settings.Secure.getInt(resolver,
                     Settings.Secure.INCALL_POWER_BUTTON_BEHAVIOR,
                     Settings.Secure.INCALL_POWER_BUTTON_BEHAVIOR_DEFAULT);
+            mRingHomeBehavior = Settings.Secure.getInt(resolver,
+                    Settings.Secure.RING_HOME_BUTTON_BEHAVIOR,
+                    Settings.Secure.RING_HOME_BUTTON_BEHAVIOR_DEFAULT);
 
             // Configure rotation lock.
             int userRotation = Settings.System.getInt(resolver,
@@ -1366,10 +1378,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         if (updateRotation) {
             updateRotation(true);
         }
-        final boolean showByDefault = mContext.getResources().getBoolean(
+        boolean showByDefault = mContext.getResources().getBoolean(
                 com.android.internal.R.bool.config_showNavigationBar);
+        showByDefault = showByDefault || Settings.System.getBoolean(resolver,
+                        Settings.System.NAVIGATION_BAR_SHOW, showByDefault);
         boolean showNavBarNow = Settings.System.getBoolean(resolver,
-                Settings.System.NAVIGATION_BAR_SHOW, showByDefault);
+                Settings.System.NAVIGATION_BAR_SHOW_NOW, showByDefault);
         int NavHeight = Settings.System.getInt(resolver,
                 Settings.System.NAVIGATION_BAR_HEIGHT, 0);
         int NavHeightLand = Settings.System.getInt(resolver,
@@ -2024,11 +2038,21 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                             if (telephonyService != null) {
                                 incomingRinging = telephonyService.isRinging();
                             }
+                            if ((mRingHomeBehavior
+                                 & Settings.Secure.RING_HOME_BUTTON_BEHAVIOR_ANSWER) != 0
+                                 && incomingRinging) {
+                               Log.i(TAG, "Answering with HOME button.");
+                               telephonyService.answerRingingCall();
+                               Intent launchPhone = new Intent(Intent.ACTION_DIAL, null);
+                               mContext.startActivity(launchPhone);
+                            }
                         } catch (RemoteException ex) {
                             Log.w(TAG, "RemoteException from getPhoneInterface()", ex);
                         }
 
-                        if (incomingRinging) {
+                        if ((mRingHomeBehavior
+                                 & Settings.Secure.RING_HOME_BUTTON_BEHAVIOR_ANSWER) == 0
+                                 && incomingRinging) {
                             Log.i(TAG, "Ignoring HOME; there's a ringing incoming call.");
                         } else {
                             launchHomeFromHotKey();
@@ -4828,6 +4852,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 pw.print(" mLockScreenTimerActive="); pw.println(mLockScreenTimerActive);
         pw.print(prefix); pw.print("mEndcallBehavior="); pw.print(mEndcallBehavior);
                 pw.print(" mIncallPowerBehavior="); pw.print(mIncallPowerBehavior);
+                pw.print(" mRingHomeBehavior="); pw.print(mRingHomeBehavior);
                 pw.print(" mLongPressOnHomeBehavior="); pw.println(mLongPressOnHomeBehavior);
         pw.print(prefix); pw.print("mLandscapeRotation="); pw.print(mLandscapeRotation);
                 pw.print(" mSeascapeRotation="); pw.println(mSeascapeRotation);
