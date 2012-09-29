@@ -196,6 +196,9 @@ public class PowerManagerService extends IPowerManager.Stub
     static final int INITIAL_BUTTON_BRIGHTNESS = PowerManager.BRIGHTNESS_OFF;
     static final int INITIAL_KEYBOARD_BRIGHTNESS = PowerManager.BRIGHTNESS_OFF;
 
+    // Max time (microseconds) to allow a CPU boost for
+    static final int MAX_CPU_BOOST_TIME = 5000000;
+
     private final int MY_UID;
     private final int MY_PID;
 
@@ -358,6 +361,7 @@ public class PowerManagerService extends IPowerManager.Stub
     private static native int nativeSetScreenState(boolean on);
     private static native void nativeShutdown();
     private static native void nativeReboot(String reason) throws IOException;
+    private static native void nativeCpuBoost(int duration);
 
     /*
     static PrintStream mLog;
@@ -1182,6 +1186,15 @@ public class PowerManagerService extends IPowerManager.Stub
                 // change anything
                 setTimeoutLocked(SystemClock.uptimeMillis(), mTimeoutTask.nextState);
             }
+        }
+    }
+
+    public void cpuBoost(int duration)
+    {
+        if (duration > 0 && duration <= MAX_CPU_BOOST_TIME) {
+            nativeCpuBoost(duration);
+        } else {
+            Log.e(TAG, "Invalid boost duration: " + duration);
         }
     }
 
@@ -3752,6 +3765,42 @@ public class PowerManagerService extends IPowerManager.Stub
 
     private void handleLightSensorValue(int value, boolean immediate) {
         long milliseconds = SystemClock.elapsedRealtime();
+        mLightFilterSample = value;
+        if (mAutoBrightessEnabled && mLightFilterEnabled) {
+            if (mLightFilterRunning && mLightSensorValue != -1) {
+                // Large changes -> quick response
+                int diff = value - (int)mLightSensorValue;
+                if (mLightFilterReset != -1 && diff > mLightFilterReset && // Only increasing
+                        mLightSensorValue < 1500) { // Only "indoors"
+                    if (mDebugLightSensor) {
+                        Slog.d(TAGF, "reset cause: " + value +
+                                " " + mLightSensorValue + " " + diff);
+                    }
+                    // Push filter faster towards sensor value
+                    lightFilterReset((int)(mLightSensorValue + diff / 2f));
+                }
+                if (mDebugLightSensor) {
+                    Slog.d(TAGF, "sample: " + value);
+                }
+            } else {
+                if (mLightSensorValue == -1 ||
+                        milliseconds < mLastScreenOnTime + mLightSensorWarmupTime) {
+                    // process the value immediately if screen has just turned on
+                    lightFilterReset(-1);
+                    lightSensorChangedLocked(value, true);
+                }
+                if (!mLightFilterRunning) {
+                    if (mDebugLightSensor) {
+                        Slog.d(TAGF, "start: " + value);
+                    }
+                    mLightFilterRunning = true;
+                    mHandler.postDelayed(mLightFilterTask, LIGHT_SENSOR_DELAY);
+                }
+            }
+            return;
+        }
+
+        // Light filter disabled
         if (mLightSensorValue == -1
                 || milliseconds < mLastScreenOnTime + mLightSensorWarmupTime
                 || mWaitingForFirstLightSensor) {
@@ -3796,66 +3845,6 @@ public class PowerManagerService extends IPowerManager.Stub
                         Slog.d(TAG, "onSensorChanged: Clearing mWaitingForFirstLightSensor.");
                     }
                     mWaitingForFirstLightSensor = false;
-                }
-
-                int value = (int)event.values[0];
-                long milliseconds = SystemClock.elapsedRealtime();
-                if (mDebugLightSensor) {
-                    Slog.d(TAG, "onSensorChanged: light value: " + value);
-                }
-                mHandler.removeCallbacks(mAutoBrightnessTask);
-                mLightFilterSample = value;
-                if (mAutoBrightessEnabled && mLightFilterEnabled) {
-                    if (mLightFilterRunning && mLightSensorValue != -1) {
-                        // Large changes -> quick response
-                        int diff = value - (int)mLightSensorValue;
-                        if (mLightFilterReset != -1 && diff > mLightFilterReset && // Only increasing
-                                mLightSensorValue < 1500) { // Only "indoors"
-                            if (mDebugLightSensor) {
-                                Slog.d(TAGF, "reset cause: " + value +
-                                        " " + mLightSensorValue + " " + diff);
-                            }
-                            // Push filter faster towards sensor value
-                            lightFilterReset((int)(mLightSensorValue + diff / 2f));
-                        }
-                        if (mDebugLightSensor) {
-                            Slog.d(TAGF, "sample: " + value);
-                        }
-                    } else {
-                        if (mLightSensorValue == -1 ||
-                                milliseconds < mLastScreenOnTime + mLightSensorWarmupTime) {
-                            // process the value immediately if screen has just turned on
-                            lightFilterReset(-1);
-                            lightSensorChangedLocked(value, true);
-                        }
-                        if (!mLightFilterRunning) {
-                            if (mDebugLightSensor) {
-                                Slog.d(TAGF, "start: " + value);
-                            }
-                            mLightFilterRunning = true;
-                            mHandler.postDelayed(mLightFilterTask, LIGHT_SENSOR_DELAY);
-                        }
-                    }
-                    return;
-                }
-
-                if (mLightSensorValue != value) {
-                    if (mLightSensorValue == -1 ||
-                            milliseconds < mLastScreenOnTime + mLightSensorWarmupTime) {
-                        // process the value immediately if screen has just turned on
-                        lightSensorChangedLocked(value, true);
-                    } else {
-                        // delay processing to debounce the sensor
-                        mHandler.removeCallbacks(mAutoBrightnessTask);
-                        mLightSensorPendingDecrease = (value < mLightSensorValue);
-                        mLightSensorPendingIncrease = (value > mLightSensorValue);
-                        if (mLightSensorPendingDecrease || mLightSensorPendingIncrease) {
-                            mLightSensorPendingValue = value;
-                            mHandler.postDelayed(mAutoBrightnessTask, LIGHT_SENSOR_DELAY);
-                        }
-                    }
-                } else {
-                        mLightSensorPendingValue = value;
                 }
             }
         }
