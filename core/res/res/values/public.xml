@@ -3742,6 +3742,8 @@
   <java-symbol type="bool" name="config_smsSamsungCdmaAlternateMessageIDEncoding" />
   <java-symbol type="bool" name="config_samsung_stk" />
 
+  <java-symbol type="bool" name="config_isTegra3" />
+
 <!-- QuickMessage, for editbox background overrides -->
   <public type="drawable" name="edit_text_holo_light" />
   <public type="drawable" name="edit_text_holo_dark" />
