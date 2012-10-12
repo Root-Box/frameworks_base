@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.android.internal.statusbar.IStatusBarService;
+import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.policy.KeyButtonView;
 import com.android.systemui.R;
 
@@ -82,6 +83,7 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         		setCode (KeyEvent.KEYCODE_SEARCH);
         	} else if (ClickAction.equals(ACTION_MENU)) {
         		setCode (KeyEvent.KEYCODE_MENU);
+        		setId(R.id.menu);
         	} else if (ClickAction.equals(ACTION_POWER)) {
         		setCode (KeyEvent.KEYCODE_POWER);
             } else { // the remaining options need to be handled by OnClick;
@@ -179,11 +181,10 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         		return;
 
         	} else if (mClickAction.equals(ACTION_WIDGETS)) {
-        		// Widgets not yet imported to JB  - Zaphod 07/21/12
-        		return;
-        		/*Intent toggleWidgets = new Intent(
+        		Intent toggleWidgets = new Intent(
                         NavigationBarView.WidgetReceiver.ACTION_TOGGLE_WIDGETS);
-                mContext.sendBroadcast(toggleWidgets); */
+                mContext.sendBroadcast(toggleWidgets);
+                return;
         	} else {  // we must have a custom uri
         		 try {
                      Intent intent = Intent.parseUri(mClickAction, 0);
@@ -235,13 +236,10 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         		mHandler.post(mKillTask);
         		return true;
             } else if (mLongpress.equals(ACTION_WIDGETS)) {
-            	// Widgets not yet imported to JB  - Zaphod 07/21/12
-            	return true;
-            	/*
                 Intent toggleWidgets = new Intent(
                         NavigationBarView.WidgetReceiver.ACTION_TOGGLE_WIDGETS);
                 mContext.sendBroadcast(toggleWidgets);
-                return true; */
+                return true;
         	} else if (mLongpress.equals(ACTION_RECENTS)) {
         		try {
                     mBarService.toggleRecentApps();
