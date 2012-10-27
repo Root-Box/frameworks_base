@@ -61,7 +61,7 @@
         android:contentDescription="@string/accessibility_settings_button"
         />
 
-    <com.android.systemui.statusbar.policy.KeyButtonView 
+    <!-- <com.android.systemui.statusbar.policy.KeyButtonView 
         android:layout_width="48dp" 
         android:layout_height="48dp" 
         android:src="@drawable/ic_sysbar_lock" 
@@ -69,7 +69,7 @@
         android:layout_toRightOf="@id/settings_button" 
         android:contentDescription="@string/accessibility_settings_button" 
         systemui:keyCode="26" 
-        systemui:glowBackground="@drawable/ic_sysbar_highlight" />
+        systemui:glowBackground="@drawable/ic_sysbar_highlight" /> -->
 
     <Space
         android:layout_width="0dp"
