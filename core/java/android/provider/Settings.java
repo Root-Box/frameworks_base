@@ -5124,6 +5124,12 @@ public final class Settings {
                 "selected_spell_checker_subtype";
 
         /**
+         * Whether to show the alarm icon in the status bar
+         * @hide
+         */
+        public static final String STATUSBAR_SHOW_ALARM = "statusbar_show_alarm";
+
+        /**
          * The {@link ComponentName} string whether spell checker is enabled or not.
          *
          * @hide
