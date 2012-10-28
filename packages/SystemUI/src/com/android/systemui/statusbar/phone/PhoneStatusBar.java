@@ -78,6 +78,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -94,6 +95,7 @@ import com.android.systemui.statusbar.NotificationData;
 import com.android.systemui.statusbar.NotificationData.Entry;
 import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarIconView;
+import com.android.systemui.statusbar.phone.ShortcutsWidget;
 import com.android.systemui.statusbar.policy.BatteryController;
 import com.android.systemui.statusbar.policy.SbBatteryController;
 import com.android.systemui.statusbar.policy.BluetoothController;
@@ -263,6 +265,17 @@ public class PhoneStatusBar extends BaseStatusBar {
     // the tracker view
     int mTrackingPosition; // the position of the top of the tracking view.
 
+    // Notification Shortcuts
+    ShortcutsWidget mNotificationShortcutsLayout;
+    HorizontalScrollView mNotificationShortcutsScrollView;
+    private boolean mNotificationShortcutsVisible;
+    private boolean mNotificationShortcutsToggle;
+    private boolean mNotificationShortcutsHideCarrier;
+    FrameLayout.LayoutParams lpScrollView;
+    FrameLayout.LayoutParams lpCarrierLabel;
+    int mShortcutsDrawerMargin;
+    int mShortcutsSpacingHeight;
+
     // ticker
     private Ticker mTicker;
     private View mTickerView;
@@ -372,6 +385,24 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         // Lastly, call to the icon policy to install/update all the icons.
         mIconPolicy = new PhoneStatusBarPolicy(mContext);
+    }
+
+    private int calculateCarrierLabelBottomMargin() {
+        return mNotificationShortcutsToggle ? mShortcutsSpacingHeight : 0;
+    }
+
+    private void updateNotificationShortcutsMargin() {
+        lpScrollView.bottomMargin = mNotificationShortcutsToggle ? mShortcutsDrawerMargin : 0;
+        mScrollView.setLayoutParams(lpScrollView);
+
+        if (!mShowCarrierInPanel) return;
+        lpCarrierLabel.bottomMargin = mNotificationShortcutsToggle ? mShortcutsSpacingHeight : mCloseViewHeight;
+        mCarrierAndWifiView.setLayoutParams(lpCarrierLabel);
+    }
+
+    private void toggleCarrierAndWifiLabelVisibility() {
+        mShowCarrierInPanel = !mNotificationShortcutsHideCarrier;
+        mCarrierAndWifiView.setVisibility(mShowCarrierInPanel ? View.VISIBLE : View.INVISIBLE);
     }
 
     // ================================================================================
@@ -572,14 +603,21 @@ public class PhoneStatusBar extends BaseStatusBar {
                 }});
         }
 
+        mNotificationShortcutsHideCarrier = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.NOTIFICATION_SHORTCUTS_HIDE_CARRIER, 0, UserHandle.USER_CURRENT) != 0;
+
         mCarrierAndWifiView = mStatusBarWindow.findViewById(R.id.carrier_wifi);
         mWifiView = mStatusBarWindow.findViewById(R.id.wifi_view);
 
         mCarrierLabel = (TextView)mStatusBarWindow.findViewById(R.id.carrier_label);
         mShowCarrierInPanel = (mCarrierLabel != null);
+
         if (DEBUG) Slog.v(TAG, "carrierlabel=" + mCarrierLabel + " show=" + mShowCarrierInPanel);
         if (mShowCarrierInPanel) {
-
+            lpCarrierLabel = (FrameLayout.LayoutParams) mCarrierAndWifiView.getLayoutParams();
+            mCarrierLabel.setVisibility((mCarrierAndWifiViewVisible && !mNotificationShortcutsHideCarrier) ? View.VISIBLE : View.INVISIBLE);
+            if (mNotificationShortcutsHideCarrier)
+                mShowCarrierInPanel = false;
             // for mobile devices, we always show mobile connection info here (SPN/PLMN)
             // for other devices, we show whatever network is connected
             if (mNetworkController.hasMobileDataFeature()) {
@@ -678,6 +716,32 @@ public class PhoneStatusBar extends BaseStatusBar {
             mClingShown = true;
         }
 
+        // Notification Shortcuts
+        mNotificationShortcutsLayout = (ShortcutsWidget)mStatusBarWindow.findViewById(R.id.custom_notificiation_shortcuts);
+        mNotificationShortcutsLayout.setGlobalButtonOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                customButtonVibrate();
+                animateCollapsePanels();
+            }
+        });
+        mNotificationShortcutsLayout.setGlobalButtonOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                animateCollapsePanels();
+                return true;
+            }
+        });
+        mNotificationShortcutsScrollView = (HorizontalScrollView)mStatusBarWindow.findViewById(R.id.custom_notification_scrollview);
+
+        mNotificationShortcutsToggle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.NOTIFICATION_SHORTCUTS_TOGGLE, 0, UserHandle.USER_CURRENT) != 0;
+
+        lpScrollView = (FrameLayout.LayoutParams) mScrollView.getLayoutParams();
+
+        mShortcutsDrawerMargin = res.getDimensionPixelSize(R.dimen.notification_shortcuts_drawer_margin);
+        mShortcutsSpacingHeight = res.getDimensionPixelSize(R.dimen.notification_shortcuts_spacing_height);
+        mCloseViewHeight = res.getDimensionPixelSize(R.dimen.close_handle_height);
+        updateNotificationShortcutsMargin();
+
 //        final ImageView wimaxRSSI =
 //                (ImageView)sb.findViewById(R.id.wimax_signal);
 //        if (wimaxRSSI != null) {
@@ -696,6 +760,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         resetUserSetupObserver();
 
         mTransparencyManager.setStatusbar(mStatusBarView);
+        mNotificationShortcutsLayout.setupShortcuts();
         return mStatusBarView;
     }
 
@@ -1260,7 +1325,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         final boolean emergencyCallsShownElsewhere = mEmergencyCallLabel != null;
         final boolean makeVisible =
             !(emergencyCallsShownElsewhere && mNetworkController.isEmergencyOnly())
-            && mPile.getHeight() < (mNotificationPanel.getHeight() - mCarrierAndWifiViewHeight - mNotificationHeaderHeight)
+            && mPile.getHeight() < (mNotificationPanel.getHeight() - mCarrierAndWifiViewHeight - mNotificationHeaderHeight - calculateCarrierLabelBottomMargin())
             && mScrollView.getVisibility() == View.VISIBLE;
         
         if (force || mCarrierAndWifiViewVisible != makeVisible) {
@@ -1287,6 +1352,35 @@ public class PhoneStatusBar extends BaseStatusBar {
                     }
                 })
                 .start();
+        }
+    }
+
+    protected void updateNotificationShortcutsVisibility(boolean vis) {
+        if (!mNotificationShortcutsToggle && mNotificationShortcutsVisible == vis) return;
+        if (DEBUG) {
+            Slog.d(TAG, "NSCUT: mNotificationShortcutsVisible=" + mNotificationShortcutsVisible + " vis=" + vis);
+        }
+
+        if (mNotificationShortcutsVisible != vis) {
+            mNotificationShortcutsVisible = vis;
+            mNotificationShortcutsScrollView.animate().cancel();
+            if (vis) {
+                mNotificationShortcutsScrollView.setVisibility(View.VISIBLE);
+            }
+            mNotificationShortcutsScrollView.animate()
+                .alpha(vis ? 1f : 0f)
+                .setDuration(150)
+                .setListener(vis ? null : new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (!mNotificationShortcutsVisible) { // race
+                            mNotificationShortcutsScrollView.setVisibility(View.INVISIBLE);
+                            mNotificationShortcutsScrollView.setAlpha(0f);
+                        }
+                    }
+                })
+                .start();
+            updateNotificationShortcutsMargin();
         }
     }
 
@@ -1704,6 +1798,10 @@ public class PhoneStatusBar extends BaseStatusBar {
                 updateCarrierAndWifiLabelVisibility(false);
             }
         }, FLIP_DURATION - 150);
+
+        if (mNotificationShortcutsToggle)
+            updateNotificationShortcutsVisibility(true);
+
     }
 
     @Override
@@ -1838,6 +1936,15 @@ public class PhoneStatusBar extends BaseStatusBar {
                 updateCarrierAndWifiLabelVisibility(false);
             }
         }, FLIP_DURATION - 150);
+
+        if (mNotificationShortcutsToggle) {
+            mNotificationPanel.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateNotificationShortcutsVisibility(false);
+                }
+            }, FLIP_DURATION - 150);
+        }
     }
 
     public void flipPanels() {
@@ -1903,6 +2010,8 @@ public class PhoneStatusBar extends BaseStatusBar {
         if ((mDisabled & StatusBarManager.DISABLE_NOTIFICATION_ICONS) == 0) {
             setNotificationIconVisibility(true, com.android.internal.R.anim.fade_in);
         }
+        // Just in case
+        updateNotificationShortcutsVisibility(false);
 
         // Close any "App info" popups that might have snuck on-screen
         dismissPopups();
@@ -2689,6 +2798,16 @@ public class PhoneStatusBar extends BaseStatusBar {
         mHandler.postDelayed(mStartTracing, 3000);
     }
 
+    void customButtonVibrate() {
+        final boolean hapticsDisabled = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.HAPTIC_FEEDBACK_ENABLED, 0) == 0;
+        if (!hapticsDisabled) {
+            android.os.Vibrator vib = (android.os.Vibrator)mContext.getSystemService(
+                    Context.VIBRATOR_SERVICE);
+            vib.vibrate(30);
+        }
+    }
+
     void vibrate() {
         if (Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.HAPTIC_FEEDBACK_ENABLED, 1, UserHandle.USER_CURRENT) != 0) {
@@ -2781,11 +2900,26 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.NAV_HIDE_ENABLE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAV_HIDE_TIMEOUT), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.NOTIFICATION_SHORTCUTS_TOGGLE), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.NOTIFICATION_SHORTCUTS_HIDE_CARRIER), false, this, UserHandle.USER_ALL);
         }
 
          @Override
         public void onChange(boolean selfChange) {
             updateSettings();
+        }
+
+        public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            mNotificationShortcutsToggle = Settings.System.getIntForUser(resolver,
+                    Settings.System.NOTIFICATION_SHORTCUTS_TOGGLE, 0, UserHandle.USER_CURRENT) != 0;
+            mNotificationShortcutsHideCarrier = Settings.System.getIntForUser(resolver,
+                    Settings.System.NOTIFICATION_SHORTCUTS_HIDE_CARRIER, 0, UserHandle.USER_CURRENT) != 0;
+            if (mCarrierLabel != null) {
+                toggleCarrierAndWifiLabelVisibility();
+            }
         }
     }
 
