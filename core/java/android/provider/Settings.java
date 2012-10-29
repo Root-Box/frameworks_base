@@ -2254,6 +2254,12 @@ public final class Settings {
         public static final String SIP_ASK_ME_EACH_TIME = "SIP_ASK_ME_EACH_TIME";
 
         /**
+         * Whether to show the alarm icon in the status bar
+         * @hide
+         */
+        public static final String STATUSBAR_SHOW_ALARM = "statusbar_show_alarm";
+
+        /**
          * Pointer speed setting.
          * This is an integer value in a range between -7 and +7, so there are 15 possible values.
          *   -7 = slowest
@@ -5122,12 +5128,6 @@ public final class Settings {
          */
         public static final String SELECTED_SPELL_CHECKER_SUBTYPE =
                 "selected_spell_checker_subtype";
-
-        /**
-         * Whether to show the alarm icon in the status bar
-         * @hide
-         */
-        public static final String STATUSBAR_SHOW_ALARM = "statusbar_show_alarm";
 
         /**
          * The {@link ComponentName} string whether spell checker is enabled or not.
