@@ -2283,6 +2283,12 @@ public final class Settings {
          */
         public static final String UI_FORCE_OVERFLOW_BUTTON = "ui_force_overflow_button";
 
+         /**
+         * Statusbar State
+	 * @hide
+	 */
+	 public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state";
+
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
@@ -2758,6 +2764,12 @@ public final class Settings {
          * @hide
          */
         public static final String SYSTEMUI_NAVRING_OVERRIDE_HOME = "systemui_navring_override_home";
+
+        /**         
+        * Whether power menu expanded desktop is enabled
+	* @hide
+	*/
+        public static final String POWER_MENU_EXPANDED_DESKTOP_ENABLED = "power_menu_expanded_desktop_enabled";
 
         /**
          * @hide
