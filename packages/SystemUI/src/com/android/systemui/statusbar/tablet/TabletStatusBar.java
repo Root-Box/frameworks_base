@@ -259,6 +259,9 @@ public class TabletStatusBar extends BaseStatusBar implements
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_TRANSPARENCY), false, this);
+        }
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_BUTTONS_QTY), false,
                     this);
@@ -273,6 +276,10 @@ public class TabletStatusBar extends BaseStatusBar implements
         @Override
         public void onChange(boolean selfChange) {
             updateSettings();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
             setStatusBarParams(mStatusBarView);
             loadDimens();
         }
