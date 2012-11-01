@@ -2951,21 +2951,6 @@ public final class Settings {
         public static final String LOCKSCREEN_WEATHER_TYPE = "lockscreen_weather_type";
 
         /**
-         *
-         *
-         * @hide
-         */
-        public static final String WEATHER_PANEL_LONGCLICK = "weather_panel_longclick";
-
-        /**
-         *
-         *
-         * @hide
-         */
-        public static final String WEATHER_PANEL_SHORTCLICK = "weather_panel_shortclick";
-
-
-        /**
          * Whether to show upcoming events on lockscreen
          * @hide
          */
