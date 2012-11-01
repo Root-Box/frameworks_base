@@ -219,8 +219,6 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     // AOKP - weatherpanel
     boolean mWeatherPanelEnabled;
-    boolean mWeatherGoneOnBoot;
-    int mWeatherHideStatus;
     WeatherPanel mWeatherPanel;
 
     TogglesView mQuickToggles;
@@ -597,14 +595,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         }
         if (mLongClickWeather == null || mLongClickWeather == "") {
             mLongClickWeather = "**nothing**";
-        }
-
-        boolean WeatherGoneOnBoot = (mWeatherHideStatus == 2);
-
-        if (WeatherGoneOnBoot) {
-               mWeatherPanel.setVisibility(View.GONE);
-        } else {
-               mWeatherPanel.setVisibility(mWeatherPanelEnabled ? View.VISIBLE : View.GONE);
         }
 
         mIsAutoBrightNess = checkAutoBrightNess();
@@ -1485,11 +1475,6 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         if (mQuickTogglesHideAfterCollapse) {
             mQuickToggles.setVisibility(View.GONE);
-            if ((mWeatherHideStatus == 2) && mWeatherPanelEnabled) {
-                  mWeatherPanel.setVisibility(View.VISIBLE);
-            } else if ((mWeatherHideStatus == 1) && mWeatherPanelEnabled) {
-                  mWeatherPanel.setVisibility(View.GONE);
-            }
         }
 
         if (!mExpanded) {
@@ -2573,133 +2558,45 @@ public class PhoneStatusBar extends BaseStatusBar {
         if (mQuickToggles.getVisibility() == View.VISIBLE) {
             int height = mQuickToggles.getHeight();
 
-            final Animation a =
+            Animation a =
                     AnimationUtils.makeOutAnimation(mContext, true);
             a.setDuration(400);
-            final Animation b =
-                    AnimationUtils.makeInAnimation(mContext, true);
-            b.setDuration(400);
-            if ((mWeatherHideStatus == 2) && mWeatherPanelEnabled) {
-                a.setAnimationListener(new AnimationListener() {
+            a.setAnimationListener(new AnimationListener() {
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        mQuickToggles.setVisibility(View.GONE);
-                        b.setAnimationListener(new AnimationListener() {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mQuickToggles.setVisibility(View.GONE);
+                }
 
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                            }
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
 
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                            mWeatherPanel.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-                            });
-                        mWeatherPanel.startAnimation(b);
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-                });
-                mQuickToggles.startAnimation(a);
-            } else {
-                a.setAnimationListener(new AnimationListener() {
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        mQuickToggles.setVisibility(View.GONE);
-                        if ((mWeatherHideStatus == 1) && mWeatherPanelEnabled) {
-                            mWeatherPanel.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-                });
-           mQuickToggles.startAnimation(a);
-           if ((mWeatherHideStatus == 1) && mWeatherPanelEnabled) {
-               mWeatherPanel.startAnimation(a);
-           }
-           }
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+            mQuickToggles.startAnimation(a);
         } else {
-            final Animation a =
+            Animation a =
                     AnimationUtils.makeInAnimation(mContext, true);
             a.setDuration(400);
-            final Animation b =
-                    AnimationUtils.makeOutAnimation(mContext, true);
-            b.setDuration(400);
-            if ((mWeatherHideStatus == 2) && mWeatherPanelEnabled) {
-                b.setAnimationListener(new AnimationListener() {
+            a.setAnimationListener(new AnimationListener() {
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        mWeatherPanel.setVisibility(View.GONE);
-                        a.setAnimationListener(new AnimationListener() {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                }
 
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                            }
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    mQuickToggles.setVisibility(View.VISIBLE);
+                }
 
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                            mQuickToggles.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-                            });
-                        mQuickToggles.startAnimation(a);
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-                });
-                mWeatherPanel.startAnimation(b);
-            } else {
-                a.setAnimationListener(new AnimationListener() {
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                        mQuickToggles.setVisibility(View.VISIBLE);
-                        if ((mWeatherHideStatus == 1) && mWeatherPanelEnabled) {
-                        mWeatherPanel.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-                });
-           mQuickToggles.startAnimation(a);
-           if ((mWeatherHideStatus == 1) && mWeatherPanelEnabled) {
-           mWeatherPanel.startAnimation(a);
-           }
-           }
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+            mQuickToggles.startAnimation(a);
         }
 
     }
@@ -2937,8 +2834,6 @@ public class PhoneStatusBar extends BaseStatusBar {
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUSBAR_WEATHER_STYLE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUSBAR_WEATHER_HIDE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.USE_WEATHER), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_DATE_SHORTCLICK), false, this);
@@ -3047,19 +2942,11 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         mIsStatusBarBrightNess = Settings.System.getBoolean(cr,
                 Settings.System.STATUS_BAR_BRIGHTNESS_SLIDER, true);
-
-        mWeatherHideStatus = (Settings.System.getInt(cr,
-                Settings.System.STATUSBAR_WEATHER_HIDE, 0));
-
-        if (mWeatherHideStatus == 0) {
-            mWeatherPanel.setVisibility(View.VISIBLE);
-        }
         
         mWeatherPanelEnabled = (Settings.System.getInt(cr,
                 Settings.System.STATUSBAR_WEATHER_STYLE, 2) == 1)
                 && (Settings.System.getBoolean(cr, Settings.System.USE_WEATHER, false));
-
+        
         mWeatherPanel.setVisibility(mWeatherPanelEnabled ? View.VISIBLE : View.GONE);
-
     }
 }
