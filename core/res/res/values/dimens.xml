@@ -176,7 +176,7 @@
     <dimen name="action_bar_subtitle_bottom_margin">5dip</dimen>
 
     <!-- Size of clock font in LockScreen on Unsecure unlock screen. -->
-    <dimen name="keyguard_lockscreen_clock_font_size">82dip</dimen>
+    <dimen name="keyguard_lockscreen_clock_font_size">80dip</dimen>
 
     <!-- Size of status line font on Unsecure unlock LockScreen. -->
     <dimen name="keyguard_lockscreen_status_line_font_size">14dip</dimen>
