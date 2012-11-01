@@ -38,13 +38,6 @@
 	android:layout_height="match_parent"
 	android:gravity="center_horizontal">
 
-    <include
-        android:id="@+id/screen_info"
-        layout="@layout/keyguard_screen_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/keyguard_lockscreen_status_line_font_right_margin" />
-
     <Space android:layout_gravity="fill" />
 
     <!-- emergency call button shown when sim is PUKd and tab_selector is hidden -->
