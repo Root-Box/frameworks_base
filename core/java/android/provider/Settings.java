@@ -2260,12 +2260,6 @@ public final class Settings {
         public static final String STATUSBAR_SHOW_ALARM = "statusbar_show_alarm";
 
         /**
-         * Sets the lockscreen layout style
-         * @hide
-         */
-        public static final String LOCKSCREEN_LAYOUT = "lockscreen_layout";
-
-        /**
          * Pointer speed setting.
          * This is an integer value in a range between -7 and +7, so there are 15 possible values.
          *   -7 = slowest

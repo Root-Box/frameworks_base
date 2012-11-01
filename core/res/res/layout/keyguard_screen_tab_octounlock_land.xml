@@ -39,6 +39,14 @@
 	android:id="@+id/root"
 	android:clipChildren="false">
 
+    <!-- Column 0 -->
+
+    <include
+            android:id="@+id/screen_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/keyguard_screen_info" />
+
     <Space android:layout_gravity="fill" />
 
     <TextView

@@ -105,11 +105,8 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
     public static final int LAYOUT_HEPTA = 5;
     public static final int LAYOUT_HEXA = 6;
     public static final int LAYOUT_OCTO = 8;
-    public static final int LAYOUT_STOCK = 0;
-    public static final int LAYOUT_CENTERED = 1;
 
     private int mLockscreenTargets;
-    private int mLockscreenStyle = LAYOUT_STOCK;
 
     private LockPatternUtils mLockPatternUtils;
     private KeyguardUpdateMonitor mUpdateMonitor;
@@ -715,9 +712,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
         mEnableMenuKeyInLockScreen = shouldEnableMenuKey();
         mCreationOrientation = configuration.orientation;
 
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
-
         if (LockPatternKeyguardView.DEBUG_CONFIGURATION) {
             Log.v(TAG, "***** CREATING LOCK SCREEN", new RuntimeException());
             Log.v(TAG, "Cur orient=" + mCreationOrientation
@@ -748,17 +742,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
                             true);
                 else
                     inflater.inflate(R.layout.keyguard_screen_tab_octounlock, this,
-                            true);
-                break;
-            }
-        
-        switch (mLockscreenStyle) {
-            case LAYOUT_STOCK:
-                    inflater.inflate(R.layout.keyguard_screen_info, this,
-                            true);
-                break;
-            case LAYOUT_CENTERED
-                    inflater.inflate(R.layout.keyguard_screen_info_centered, this,
                             true);
                 break;
             }
@@ -933,9 +916,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.LOCKSCREEN_CUSTOM_TEXT_COLOR), false,
                     this);
-            resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.LOCKSCREEN_LAYOUT), false,
-                    this);
             updateSettings();
         }
 
@@ -953,8 +933,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
                 Settings.System.LOCKSCREEN_CUSTOM_TEXT_COLOR, COLOR_WHITE);
         int mLockscreenTargets = Settings.System.getInt(resolver,
                 Settings.System.LOCKSCREEN_TARGET_AMOUNT, LAYOUT_TRI);
-        int mLockscreenStyle = Settings.System.getInt(resolver,
-                Settings.System.LOCKSCREEN_LAYOUT, LAYOUT_STOCK);
 
         // digital clock first (see @link com.android.internal.widget.DigitalClock.updateTime())
         try {
