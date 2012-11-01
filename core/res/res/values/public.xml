@@ -1316,7 +1316,6 @@
   <java-symbol type="layout" name="global_actions_item" />
   <java-symbol type="layout" name="global_actions_silent_mode" />
   <java-symbol type="layout" name="keyguard_screen_glogin_unlock" />
-  <java-symbol type="layout" name="keyguard_screen_info" />
   <java-symbol type="layout" name="keyguard_screen_info_centered" />
   <java-symbol type="layout" name="keyguard_screen_password_landscape" />
   <java-symbol type="layout" name="keyguard_screen_password_portrait" />
