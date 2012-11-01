@@ -757,7 +757,7 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
                     inflater.inflate(R.layout.keyguard_screen_info, this,
                             true);
                 break;
-            case LAYOUT_CENTERED:
+            case LAYOUT_CENTERED
                     inflater.inflate(R.layout.keyguard_screen_info_centered, this,
                             true);
                 break;
