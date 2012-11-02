@@ -2945,6 +2945,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.NOTIFICATION_DATE_SHORTCLICK), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_DATE_LONGCLICK), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.WEATHER_PANEL_SHORTCLICK), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.WEATHER_PANEL_LONGCLICK), false, this);
