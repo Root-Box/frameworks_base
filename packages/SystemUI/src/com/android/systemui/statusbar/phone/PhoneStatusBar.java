@@ -462,7 +462,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         }
 
         // figure out which pixel-format to use for the status bar.
-        mPixelFormat = PixelFormat.OPAQUE;
+        mPixelFormat = PixelFormat.TRANSLUCENT;
         mStatusIcons = (LinearLayout)mStatusBarView.findViewById(R.id.statusIcons);
         mNotificationIcons = (IconMerger)mStatusBarView.findViewById(R.id.notificationIcons);
         mNotificationIcons.setOverflowIndicator(mMoreIcon);
@@ -789,7 +789,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                     | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                     | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH,
-                PixelFormat.OPAQUE);
+                PixelFormat.TRANSLUCENT);
         // this will allow the navbar to run in an overlay on devices that support this
         if (ActivityManager.isHighEndGfx(mDisplay)) {
             lp.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
@@ -2591,6 +2591,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             } catch (IOException e) {
                 // we're screwed here fellas
             }
+            setStatusBarParams(mStatusBarView);
         } else {
 
             if (mClearButton instanceof TextView) {
@@ -2762,11 +2763,19 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.NOTIFICATION_DATE_SHORTCLICK), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_DATE_LONGCLICK), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_TRANSPARENCY), false, this);
         }
 
         @Override
         public void onChange(boolean selfChange) {
             updateSettings();
+            update();
+        }
+
+        public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            setStatusBarParams(mStatusBarView);
         }
     }
 
