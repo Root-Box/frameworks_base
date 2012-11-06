@@ -25,13 +25,8 @@ LOCAL_C_INCLUDES += \
     external/skia/include/core \
     libcore/include \
     libcore/include/libsuspend \
-    $(call include-path-for, libhardware)/hardware \
-    $(call include-path-for, libhardware_legacy)/hardware_legacy \
-
-ifeq ($(BOARD_USES_ALSA_AUDIO),true)
-    LOCAL_CFLAGS += -DALSA_HEADSET_DETECTION
-    LOCAL_CFLAGS += -include linux/input.h
-endif
+	$(call include-path-for, libhardware)/hardware \
+	$(call include-path-for, libhardware_legacy)/hardware_legacy \
 
 LOCAL_SHARED_LIBRARIES := \
     libandroid_runtime \
