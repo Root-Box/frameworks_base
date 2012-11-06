@@ -55,7 +55,6 @@ import android.provider.Settings;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 /***
@@ -483,16 +482,6 @@ class KeyguardStatusViewManager implements OnClickListener {
             }
         }
     }
-
-    private View.OnClickListener mWeatherListener = new View.OnClickListener() {
-        public void onClick(View v) {
-             Intent weatherintent = new Intent("com.aokp.romcontrol.INTENT_WEATHER_REQUEST");
-             weatherintent.putExtra("com.aokp.romcontrol.INTENT_EXTRA_TYPE", "updateweather");
-             weatherintent.putExtra("com.aokp.romcontrol.INTENT_EXTRA_ISMANUAL", true);
-             v.getContext().sendBroadcast(weatherintent);
-             Toast.makeText(getContext(), R.string.update_weather, Toast.LENGTH_SHORT).show();
-        }
-    };
 
     private void updateCalendar() {
         ContentResolver resolver = getContext().getContentResolver();
@@ -969,6 +958,15 @@ class KeyguardStatusViewManager implements OnClickListener {
         }
     }
 
+    private View.OnClickListener mWeatherListener = new View.OnClickListener() {
+        public void onClick(View v) {
+             Intent weatherintent = new Intent("com.aokp.romcontrol.INTENT_WEATHER_REQUEST");
+             weatherintent.putExtra("com.aokp.romcontrol.INTENT_EXTRA_TYPE", "updateweather");
+             weatherintent.putExtra("com.aokp.romcontrol.INTENT_EXTRA_ISMANUAL", true);
+             v.getContext().sendBroadcast(weatherintent);
+
+        }
+    };
 
     /**
      * Performs concentenation of PLMN/SPN
