@@ -2221,7 +2221,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
             // If we have released the home key, and didn't do anything else
             // while it was pressed, then it is time to go home!
-            if (!down && mHomePressed) {
+            if (!down) {
                 final boolean homeWasLongPressed = mHomeLongPressed;
                 mHomeLongPressed = false;
                 if (!homeWasLongPressed) {
