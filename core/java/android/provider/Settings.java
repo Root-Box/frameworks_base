@@ -2260,13 +2260,6 @@ public final class Settings {
         public static final String STATUSBAR_SHOW_ALARM = "statusbar_show_alarm";
 
         /**
-         * Statusbar transparency value
-         * from 0% to 100%
-         * @hide
-         */        
-         public static final String STATUS_BAR_TRANSPARENCY = "status_bar_transparency";
-
-        /**
          * Where to align the clock on the lockscreen
          * @hide
          */
