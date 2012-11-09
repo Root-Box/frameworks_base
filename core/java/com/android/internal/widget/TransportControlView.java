@@ -84,7 +84,6 @@ public class TransportControlView extends FrameLayout implements OnClickListener
     private AudioManager mAudioManager;
     private LockScreenWidgetCallback mWidgetCallbacks;
     private IRemoteControlDisplayWeak mIRCD;
-    private boolean mUseAltLock;
 
     /**
      * The metadata which should be populated into the view once we've been attached
@@ -116,9 +115,6 @@ public class TransportControlView extends FrameLayout implements OnClickListener
                     }
                     mMetadata.bitmap = (Bitmap) msg.obj;
                     mAlbumArt.setImageBitmap(mMetadata.bitmap);
-                    if (mUseAltLock) {
-                        mAlbumArt.setAlpha(0.5f);
-                    }
                 }
                 break;
 
@@ -205,9 +201,6 @@ public class TransportControlView extends FrameLayout implements OnClickListener
         mAudioManager = new AudioManager(mContext);
         mCurrentPlayState = RemoteControlClient.PLAYSTATE_NONE; // until we get a callback
         mIRCD = new IRemoteControlDisplayWeak(mHandler);
-        mUseAltLock = Settings.System.getBoolean(
-            context.getContentResolver(),
-            Settings.System.USE_ALT_LOCKSCREEN, false);
     }
 
     private void updateTransportControls(int transportControlFlags) {
