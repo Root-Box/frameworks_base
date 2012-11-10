@@ -932,7 +932,7 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
 
     private static int runAction(Context context, String uri) {
         if ("FLASHLIGHT".equals(uri)) {
-            context.sendBroadcast(new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT"));
+            context.sendBroadcast(new Intent("com.aokp.torch.INTENT_TORCH_TOGGLE"));
             return ACTION_RESULT_RUN;
         } else if ("NEXT".equals(uri)) {
             sendMediaButtonEvent(context, KeyEvent.KEYCODE_MEDIA_NEXT);
