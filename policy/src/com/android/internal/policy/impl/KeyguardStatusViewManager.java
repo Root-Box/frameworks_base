@@ -111,6 +111,7 @@ class KeyguardStatusViewManager implements OnClickListener {
     private TextView mOwnerInfoView;
     private TextView mAlarmStatusView;
     private LinearLayout mDateLineView;
+    private LinearLayout mMiscScreenInfo;
     private TransportControlView mTransportView;
     private WeatherPanel mWeatherPanelView;
     private WeatherText mWeatherTextView;
@@ -236,6 +237,7 @@ class KeyguardStatusViewManager implements OnClickListener {
         mAlarmStatusView = (TextView) findViewById(R.id.alarm_status);
         mOwnerInfoView = (TextView) findViewById(R.id.propertyOf);
         mDateLineView = (LinearLayout) findViewById(R.id.date_line);
+        mMiscScreenInfo = (LinearLayout) findViewById(R.id.misc_screen_info);
         mTransportView = (TransportControlView) findViewById(R.id.transport);
         mEmergencyCallButton = (Button) findViewById(R.id.emergencyCallButton);
         mEmergencyCallButtonEnabledInScreen = emergencyButtonEnabledInScreen;
@@ -414,6 +416,7 @@ class KeyguardStatusViewManager implements OnClickListener {
 
         if (mDigitalClockAlt != null) {
             mDigitalClockAlt.updateTime();
+            updateClockAlign();
         }
 
         mUpdateMonitor.registerInfoCallback(mInfoCallback);
@@ -528,6 +531,67 @@ class KeyguardStatusViewManager implements OnClickListener {
         }
     };
 
+    private void updateClockAlign() {
+        final Configuration config = getContext().getResources().getConfiguration();
+        // No alignment on landscape.
+        if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return;
+        }
+
+        final int clockAlign = Settings.System.getInt(getContext().getContentResolver(),
+                Settings.System.LOCKSCREEN_CLOCK_ALIGN, 2);
+        int margin = (int) Math.round(getContext().getResources().getDimension(
+                R.dimen.keyguard_lockscreen_status_line_font_right_margin));
+
+        // Adjust for each layout
+        if (config.screenWidthDp >= 600) { // sw600dp
+            margin = 0;
+        }
+
+        int leftMargin = 0, rightMargin = 0;
+        int gravity = Gravity.RIGHT;
+
+        switch (clockAlign) {
+        case 0:
+            gravity = Gravity.LEFT;
+            leftMargin = margin;
+            break;
+        case 1:
+            gravity = Gravity.CENTER;
+            break;
+        case 2:
+            rightMargin = margin;
+            break;
+        }
+
+        if (mDigitalClock != null) {
+            mDigitalClock.setGravity(gravity);
+            setSpecificMargins(mDigitalClock, leftMargin, -1, rightMargin, -1);
+        }
+        if (mDigitalClockAlt != null) {
+            mDigitalClockAlt.setGravity(gravity);
+            setSpecificMargins(mDigitalClockAlt, leftMargin, -1, rightMargin, -1);
+        }
+        if (mDateLineView != null) {
+            mDateLineView.setGravity(gravity);
+            setSpecificMargins(mDateLineView, leftMargin, -1, rightMargin, -1);
+        }
+        if (mMiscScreenInfo != null) {
+            mMiscScreenInfo.setGravity(gravity);
+            setSpecificMargins(mMiscScreenInfo, leftMargin, -1, rightMargin, -1);
+        }
+    }
+
+    private void setSpecificMargins(View view, int left, int top, int right,
+            int bottom) {
+        MarginLayoutParams params = (MarginLayoutParams) view.getLayoutParams();
+        if (left != -1) params.leftMargin = left;
+        if (top != -1) params.topMargin = top;
+        if (right != -1) params.rightMargin = right;
+        if (bottom != -1) params.bottomMargin = bottom;
+        view.setLayoutParams(params);
+    }
+
     private void updateCalendar() {
         ContentResolver resolver = getContext().getContentResolver();
         String calendarSources = Settings.System.getString(resolver,
@@ -590,62 +654,6 @@ class KeyguardStatusViewManager implements OnClickListener {
             }
             mCalendarView.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void updateClockAlign() {
-        final Configuration config = getContext().getResources().getConfiguration();
-        // No alignment on landscape.
-        if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            return;
-        }
-
-        final int clockAlign = Settings.System.getInt(getContext().getContentResolver(),
-                Settings.System.LOCKSCREEN_CLOCK_ALIGN, 2);
-        int margin = (int) Math.round(getContext().getResources().getDimension(
-                R.dimen.keyguard_lockscreen_status_line_font_right_margin));
-
-        // Adjust for each layout
-        if (config.screenWidthDp >= 600) { // sw600dp
-            margin = 0;
-        }
-
-        int leftMargin = 0, rightMargin = 0;
-        int gravity = Gravity.RIGHT;
-
-        switch (clockAlign) {
-        case 0:
-            gravity = Gravity.LEFT;
-            leftMargin = margin;
-            break;
-        case 1:
-            gravity = Gravity.CENTER;
-            break;
-        case 2:
-            rightMargin = margin;
-            break;
-        }
-
-        mDigitalClock.setGravity(gravity);
-        setSpecificMargins(mDigitalClock, leftMargin, -1, rightMargin, -1);
-
-        if (mDateLineView != null) {
-            mDateLineView.setGravity(gravity);
-            setSpecificMargins(mDateLineView, leftMargin, -1, rightMargin, -1);
-        }
-        if (mStatus1View != null) {
-            mStatus1View.setGravity(gravity);
-            setSpecificMargins(mStatus1View, leftMargin, -1, rightMargin, -1);
-        }
-    }
-
-    private void setSpecificMargins(View view, int left, int top, int right,
-            int bottom) {
-        MarginLayoutParams params = (MarginLayoutParams) view.getLayoutParams();
-        if (left != -1) params.leftMargin = left;
-        if (top != -1) params.topMargin = top;
-        if (right != -1) params.rightMargin = right;
-        if (bottom != -1) params.bottomMargin = bottom;
-        view.setLayoutParams(params);
     }
 
     private void updateStatus1() {

@@ -3853,4 +3853,5 @@
   <java-symbol type="id" name="time_alt" />
   <java-symbol type="id" name="timeDisplayHours" />
   <java-symbol type="id" name="timeDisplayMinutes" />
+  <java-symbol type="id" name="misc_screen_info" />
 </resources>

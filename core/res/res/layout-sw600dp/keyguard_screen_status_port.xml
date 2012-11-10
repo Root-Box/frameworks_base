@@ -100,9 +100,13 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/misc_screen_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <com.android.internal.policy.impl.WeatherText
         android:id="@+id/weather"
-        android:layout_gravity="right"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
@@ -145,6 +149,6 @@
         />
 
     <include
-        layout="@layout/weatherpanel"
-        android:layout_gravity="right" />
+        layout="@layout/weatherpanel" />
+   </LinearLayout>
 </LinearLayout>
