@@ -591,6 +591,7 @@ public class NavigationBarView extends LinearLayout {
 
             }
         }
+        getSearchLight().setVisibility(keygaurdProbablyEnabled ? View.VISIBLE : View.GONE);
         updateMenuArrowKeys();
         updateKeyguardAlpha();
     }
