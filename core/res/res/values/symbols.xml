@@ -1885,4 +1885,7 @@
   <java-symbol type="drawable" name="ic_lockscreen_rss" />
   <java-symbol type="drawable" name="ic_lockscreen_sms" />
   <java-symbol type="drawable" name="ic_lockscreen_twitter" />
+
+  <!-- Wifi -->
+  <java-symbol type="bool" name="config_wifiApStartInterface" />
 </resources>
