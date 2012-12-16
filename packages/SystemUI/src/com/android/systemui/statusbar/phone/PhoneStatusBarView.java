@@ -260,7 +260,7 @@ public class PhoneStatusBarView extends PanelBar {
             panel.setAlpha(alpha);
         }
         updateBackgroundAlpha(frac);
-        mBar.updateCarrierLabelVisibility(false);
+        mBar.updateCarrierAndWifiLabelVisibility(false);
     }
 
     private void updateBackgroundAlpha(float ex) {
