@@ -2788,6 +2788,12 @@ public final class Settings {
         public static final String NAVIGATION_BAR_TINT = "navigation_bar_tint";
 
         /**
+         * Whether or not to launch default music player when headset is connected
+         * @hide
+         */
+        public static final String HEADSET_CONNECT_PLAYER = "headset_connect_player";
+
+        /**
          * @hide
          */
         public static final String NAVIGATION_BAR_GLOW_TINT = "navigation_bar_glow_tint";
