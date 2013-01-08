@@ -67,38 +67,45 @@ public class NotificationPanelView extends PanelView {
         mHandleBarHeight = resources.getDimension(R.dimen.close_handle_height);
         mHandleView = findViewById(R.id.handle);
 
-        setContentDescription(resources.getString(R.string.accessibility_desc_notification_shade));
+        setContentDescription(resources.getString(
+                R.string.accessibility_desc_notification_shade));
 
+        final ContentResolver resolver = getContext().getContentResolver();
         mEnableObserver = new ContentObserver(mHandler) {
             @Override
             public void onChange(boolean selfChange) {
-                mFastToggleEnabled = Settings.System.getBoolean(getContext().getContentResolver(), Settings.System.FAST_TOGGLE, false);
+                mFastToggleEnabled = Settings.System.getBoolean(resolver,
+                        Settings.System.FAST_TOGGLE, false);
             }
         };
 
         mChangeSideObserver = new ContentObserver(mHandler) {
             @Override
             public void onChange(boolean selfChange) {
-                mFastTogglePos = Settings.System.getInt(getContext().getContentResolver(), Settings.System.CHOOSE_FASTTOGGLE_SIDE, 1);
+                mFastTogglePos = Settings.System.getInt(resolver,
+                        Settings.System.CHOOSE_FASTTOGGLE_SIDE, 1);
             }
         };
 
         // Initialization
-        mFastToggleEnabled = Settings.System.getBoolean(getContext().getContentResolver(), Settings.System.FAST_TOGGLE, false);
-        mFastTogglePos = Settings.System.getInt(getContext().getContentResolver(), Settings.System.CHOOSE_FASTTOGGLE_SIDE, 1);
+        mFastToggleEnabled = Settings.System.getBoolean(resolver,
+                Settings.System.FAST_TOGGLE, false);
+        mFastTogglePos = Settings.System.getInt(resolver,
+                Settings.System.CHOOSE_FASTTOGGLE_SIDE, 1);
 
-        getContext().getContentResolver().registerContentObserver(
+        resolver.registerContentObserver(
                 Settings.System.getUriFor(Settings.System.FAST_TOGGLE),
                 true, mEnableObserver);
 
-        getContext().getContentResolver().registerContentObserver(
+        resolver.registerContentObserver(
                 Settings.System.getUriFor(Settings.System.CHOOSE_FASTTOGGLE_SIDE),
                 true, mChangeSideObserver);
     }
 
     @Override
     public void fling(float vel, boolean always) {
-        GestureRecorder gr = ((PhoneStatusBarView) mBar).mBar.getGestureRecorder();
+        GestureRecorder gr =
+                ((PhoneStatusBarView) mBar).mBar.getGestureRecorder();
         if (gr != null) {
             gr.tag(
                 "fling " + ((vel > 0) ? "open" : "closed"),
@@ -107,7 +114,8 @@ public class NotificationPanelView extends PanelView {
         super.fling(vel, always);
     }
 
-    // We draw the handle ourselves so that it's always glued to the bottom of the window.
+    // We draw the handle ourselves so that it's
+    // always glued to the bottom of the window.
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
@@ -130,20 +138,27 @@ public class NotificationPanelView extends PanelView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (PhoneStatusBar.SETTINGS_DRAG_SHORTCUT && mStatusBar.mHasFlipSettings) {
+        if (PhoneStatusBar.SETTINGS_DRAG_SHORTCUT
+                && mStatusBar.mHasFlipSettings) {
             boolean shouldFlip = false;
 
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
                     mOkToFlip = getExpandedHeight() == 0;
                     if (mFastTogglePos == 1) {
-                        if ((event.getX(0) > getWidth() * (1.0f - STATUS_BAR_SETTINGS_FLIP_PERCENTAGE_RIGHT) && mFastToggleEnabled)
-                            || (mStatusBar.skipToSettingsPanel()) && !mFastToggleEnabled) {
+                        if ((event.getX(0) > getWidth()
+                                * (1.0f - STATUS_BAR_SETTINGS_FLIP_PERCENTAGE_RIGHT)
+                                && mFastToggleEnabled)
+                            || (mStatusBar.skipToSettingsPanel())
+                                && !mFastToggleEnabled) {
                             shouldFlip = true;
                         }
                     } else if (mFastTogglePos == 2) {
-                        if ((event.getX(0) < getWidth() * (1.0f - STATUS_BAR_SETTINGS_FLIP_PERCENTAGE_LEFT) && mFastToggleEnabled)
-                            || (mStatusBar.skipToSettingsPanel()) && !mFastToggleEnabled) {
+                        if ((event.getX(0) < getWidth()
+                                * (1.0f - STATUS_BAR_SETTINGS_FLIP_PERCENTAGE_LEFT)
+                                && mFastToggleEnabled)
+                            || (mStatusBar.skipToSettingsPanel())
+                                && !mFastToggleEnabled) {
                             shouldFlip = true;
                         }
                     }
