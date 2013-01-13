@@ -230,7 +230,7 @@
     <!--  Radius of NavRing in Tablet Mode Landscape -->
     <dimen name="navring_radius_tablet_portrait">300dp</dimen>
 
-    <!-- Height of the quick navigation bar trigger -->
+    <!-- Height of the pie controls bar trigger -->
     <dimen name="pie_trigger_height">10dp</dimen>
 
     <!-- Height of the pie controls bar-->
