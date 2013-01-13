@@ -2861,6 +2861,13 @@ public final class Settings {
         public static final String STATUSBAR_SIGNAL_TEXT = "statusbar_signal_text";
 
         /**
+         * Whether to enable or not pie controls
+         * The value is boolean (1 or 0).
+         * @hide
+         */
+        public static final String PIE_CONTROLS = "pie_controls";
+
+        /**
          * statusbar signal text color
          *
          * @hide
