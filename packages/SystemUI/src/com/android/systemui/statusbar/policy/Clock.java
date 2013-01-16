@@ -54,11 +54,6 @@ import com.android.internal.R;
  */
 public class Clock extends TextView {
 
-    public interface OnClockChangedListener
-    {
-        public abstract void onChange(CharSequence t);
-    }
-
     private boolean mAttached;
     private Calendar mCalendar;
     private String mClockFormatString;
@@ -84,10 +79,10 @@ public class Clock extends TextView {
 
     protected int mClockColor;
 
-    private OnClockChangedListener clockChangeListener = null;
-    public void setOnClockChangedListener(OnClockChangedListener l)
-    {
-        clockChangeListener = l;
+    private OnClockChangedListener mClockChangedListener;
+
+    public interface OnClockChangedListener {
+        public abstract void onChange(CharSequence t);
     }
 
     class SettingsObserver extends ContentObserver {
@@ -132,6 +127,10 @@ public class Clock extends TextView {
         updateSettings();
     }
 
+    public void setOnClockChangedListener(OnClockChangedListener l){
+        mClockChangedListener = l;
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -166,8 +165,8 @@ public class Clock extends TextView {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
         CharSequence seq = getSmallTime();
         setText(seq);
-        if (clockChangeListener != null) {
-            clockChangeListener.onChange(seq);
+        if (mClockChangedListener != null) {
+            mClockChangedListener.onChange(seq);
         }
     }
 
