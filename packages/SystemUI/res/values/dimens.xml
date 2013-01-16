@@ -261,4 +261,7 @@
     <dimen name="pie_item_size">40dp</dimen>
     <!-- PIE PIE PIE PIE PIE PIE PIE PIE PIE PIE PIE PIE PIE PIE -->
 
+    <!-- Constant for hidden navbar drag handle -->
+    <dimen name="drag_handle_height">10dp</dimen>
+
 </resources>
