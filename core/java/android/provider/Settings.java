@@ -2861,6 +2861,13 @@ public final class Settings {
         public static final String STATUSBAR_SIGNAL_TEXT = "statusbar_signal_text";
 
         /**
+         * statusbar signal text color
+         *
+         * @hide
+         */
+        public static final String STATUSBAR_SIGNAL_TEXT_COLOR = "statusbar_signal_text_color";
+
+        /**
          * Whether to enable or not pie controls
          * The value is boolean (1 or 0).
          * @hide
@@ -2868,11 +2875,14 @@ public final class Settings {
         public static final String PIE_CONTROLS = "pie_controls";
 
         /**
-         * statusbar signal text color
-         *
+         * Location of the pie in the screen
+         * 0 = Gravity.TOP
+         * 1 = Gravity.BOTTOM
+         * 2 = Gravity.RIGHT
+         * 3 = Gravity.LEFT
          * @hide
          */
-        public static final String STATUSBAR_SIGNAL_TEXT_COLOR = "statusbar_signal_text_color";
+        public static final String PIE_GRAVITY = "pie_gravity";
 
         /**
          * whether to hide the signal barss
