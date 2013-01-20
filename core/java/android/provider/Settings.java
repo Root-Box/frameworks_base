@@ -2829,6 +2829,11 @@ public final class Settings {
         public static final String HEADSET_CONNECT_PLAYER = "headset_connect_player";
 
         /**
+         * Option To Colorize ALL Nav Icons
+         */
+        public static final String NAVIGATION_BAR_ALLCOLOR = "navigation_bar_allcolor";
+
+        /**
          * @hide
          */
         public static final String NAVIGATION_BAR_GLOW_TINT = "navigation_bar_glow_tint";
