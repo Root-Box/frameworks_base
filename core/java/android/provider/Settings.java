@@ -3009,6 +3009,12 @@ public final class Settings {
         public static final String CHOOSE_FASTTOGGLE_SIDE = "choose_fasttoggle_side";
 
         /**
+         * Stores values for custom lockscreen targets
+         * @hide
+         */
+        public static final String LOCKSCREEN_TARGETS = "lockscreen_targets";
+
+        /**
         * holo dark/light theme description in quick settings
         *
         *@hide
