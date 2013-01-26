@@ -101,6 +101,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -199,6 +200,7 @@ public class QuickSettings {
     private boolean usbTethered;
     private boolean mEnabled;
 
+    private Calendar mCalendar;
     private Context mContext;
     private PanelBar mBar;
     private QuickSettingsModel mModel;
@@ -238,6 +240,7 @@ public class QuickSettings {
     private String userToggles = null;
     private long tacoSwagger = 0;
     private boolean tacoToggle = false;
+    private boolean sundayToggle = false;
     private int mTileTextSize = 12;
     private String mFastChargePath;
     private int mTileText;
@@ -328,6 +331,7 @@ public class QuickSettings {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(Intent.ACTION_USER_SWITCHED);
         filter.addAction(WifiManager.WIFI_AP_STATE_CHANGED_ACTION);
+        filter.addAction(Intent.ACTION_TIME_TICK);
         mContext.registerReceiver(mReceiver, filter);
 
         IntentFilter profileFilter = new IntentFilter();
@@ -1516,36 +1520,54 @@ public class QuickSettings {
                         inflater.inflate(R.layout.quick_settings_tile, parent, false);
                 quick.setBackgroundResource(mTileBG);
                 quick.setContent(R.layout.quick_settings_tile_swagger, inflater);
-                TextView tv = (TextView) quick.findViewById(R.id.swagger_textview);
-                tv.setTextSize(1, mTileTextSize);
-                tv.setTextColor(mTileText);
                 quick.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
-                                if (tacoToggle) {
-                                    TextView tv = (TextView) v.findViewById(R.id.swagger_textview);
-                                    tv.setText(R.string.quick_settings_swagger);
-                                    tv.setTextSize(1, mTileTextSize);
-                                    tv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_qs_swagger, 0, 0);
+                                if (sundayToggle) {
+                                    mBar.collapseAllPanels(true);
+                                    Toast.makeText(mContext,
+                                            R.string.quick_settings_swaggersuntoast,
+                                            Toast.LENGTH_LONG).show();
                                     tacoSwagger = event.getEventTime();
-                                    tacoToggle = false;
                                 } else {
-                                    tacoSwagger = event.getEventTime();
+                                    if (tacoToggle) {
+                                        TextView tv = (TextView) v.findViewById(
+                                                R.id.swagger_textview);
+                                        tv.setText(R.string.quick_settings_swagger);
+                                        tv.setCompoundDrawablesWithIntrinsicBounds(0,
+                                                R.drawable.ic_qs_swagger, 0, 0);
+                                        tacoSwagger = event.getEventTime();
+                                        tacoToggle = false;
+                                    } else {
+                                        tacoSwagger = event.getEventTime();
+                                    }
                                 }
                                 break;
                             case MotionEvent.ACTION_UP:
                                 if ((event.getEventTime() - tacoSwagger) > 2500) {
-                                    TextView tv = (TextView) v.findViewById(R.id.swagger_textview);
+                                    TextView tv = (TextView) v.findViewById(
+                                            R.id.swagger_textview);
                                     tv.setText(R.string.quick_settings_fbgt);
-                                    tv.setTextSize(1, mTileTextSize);
-                                    tv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_qs_fbgt_on, 0, 0);
+                                    tv.setCompoundDrawablesWithIntrinsicBounds(0,
+                                            R.drawable.ic_qs_fbgt_on, 0, 0);
                                     tacoToggle = true;
                                 }
                                 break;
+                            }
+                            return true;
                         }
-                        return true;
+                    });
+                mModel.addSwaggerTile(quick, new QuickSettingsModel.RefreshCallback() {
+                    @Override
+                    public void refreshView(QuickSettingsTileView view, State state) {
+                        TextView tv = (TextView) view.findViewById(R.id.swagger_textview);
+                        tv.setTextSize(1, mTileTextSize);
+                        tv.setCompoundDrawablesWithIntrinsicBounds(0, state.iconId, 0, 0);
+                        tv.setText(state.label);
+                        tv.setTextSize(1, mTileTextSize);
+                        tv.setTextColor(mTileText);
                     }
                 });
                 break;
@@ -2114,9 +2136,20 @@ public class QuickSettings {
                 reloadFavContactInfo();
             } else if (WifiManager.WIFI_AP_STATE_CHANGED_ACTION.equals(action)) {
                 mHandler.postDelayed(delayedRefresh, 1000);
+            } else if (Intent.ACTION_TIME_TICK.equals(action)) {
+                updateClock();
             }
         }
     };
+
+    final void updateClock() {
+        mCalendar = Calendar.getInstance();
+        if (mCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            sundayToggle = true;
+        } else {
+            sundayToggle = false;
+        }
+    }
 
     private final BroadcastReceiver mProfileReceiver = new BroadcastReceiver() {
         @Override
