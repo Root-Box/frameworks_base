@@ -88,7 +88,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     /** Represents the state of a given attribute. */
     static class State {
-        int iconId;
+        int iconId = 0;
         String label;
         boolean enabled = false;
     }
@@ -731,11 +731,14 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     // LocationController callback
     @Override
-    public void onLocationGpsStateChanged(boolean inUse, String description) {
+    public void onLocationGpsStateChanged(boolean inUse, boolean hasFix, String description) {
         mLocationState.enabled = inUse;
         mLocationState.iconId = inUse
                 ? R.drawable.ic_qs_gps_on
                 : (mUseDefaultTheme ? R.drawable.ic_qs_gps_off : R.drawable.ic_qs_gps_off_light);
+        if (hasFix) {
+            mLocationState.iconId = R.drawable.ic_qs_gps_locked;
+        }
         mLocationState.label = description;
         if (togglesContain(QuickSettings.GPS_TOGGLE))
             mLocationCallback.refreshView(mLocationTile, mLocationState);
