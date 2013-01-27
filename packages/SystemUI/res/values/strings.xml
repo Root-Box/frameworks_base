@@ -517,6 +517,7 @@
     <string name="quick_settings_swagger">Swagger</string>
     <string name="quick_settings_fbgt">FBGT</string>
     <string name="quick_settings_powermenu">Power Menu</string>
+    <string name="quick_settings_profile_label">Profile</string>
 
     <!-- Title of help text shown when the notification panel is pulled down for the very first time. [CHAR LIMIT=NONE] -->
     <string name="status_bar_help_title">Notifications appear here</string>

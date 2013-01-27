@@ -44,6 +44,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
+import android.app.Profile;
+import android.app.ProfileManager;
+import com.android.server.ProfileManagerService;
 
 import com.android.internal.view.RotationPolicy;
 import com.android.internal.telephony.PhoneConstants;
@@ -77,6 +80,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     private static final String TAG_TRY_SUPPRESSING_IME_SWITCHER = "TrySuppressingImeSwitcher";
 
     private String mFastChargePath;
+    private ProfileManager mProfileManager;
     
     private int dataState = -1;
 
@@ -300,6 +304,10 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     private RefreshCallback mPowerMenuCallback;
     private State mPowerMenuState = new State();
 
+    private QuickSettingsTileView mProfileTile;
+    private RefreshCallback mProfileCallback;
+    private State mProfileState = new State();
+
  /*   private QuickSettingsTileView mBTTetherTile;
     private RefreshCallback mBTTetherCallback;
     private State mBTTetherState = new State(); */
@@ -338,6 +346,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mBugreportObserver.startObserving();
         mBrightnessObserver = new BrightnessObserver(mHandler);
         mBrightnessObserver.startObserving();
+        mProfileManager = (ProfileManager) mContext.getSystemService(Context.PROFILE_SERVICE);
 
         IntentFilter alarmIntentFilter = new IntentFilter();
         alarmIntentFilter.addAction(Intent.ACTION_ALARM_CHANGED);
@@ -397,6 +406,8 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
             if (toggle.equals(QuickSettings.LTE_TOGGLE))
                 refreshLTETile();
             if (toggle.equals(QuickSettings.POWER_MENU_TOGGLE))
+                refreshPowerMenuTile();
+            if (toggle.equals(QuickSettings.PROFILE_TOGGLE))
                 refreshPowerMenuTile();
         }
 
@@ -742,6 +753,20 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mPowerMenuState.label = r.getString(R.string.quick_settings_powermenu);
         mPowerMenuState.iconId = (mUseDefaultTheme ? R.drawable.ic_qs_powermenu : R.drawable.ic_qs_powermenu_light);
         mPowerMenuCallback.refreshView(mPowerMenuTile, mPowerMenuState);
+    }
+
+    // Profile
+    void addProfileTile(QuickSettingsTileView view, RefreshCallback cb) {
+        mProfileTile = view;
+        mProfileCallback = cb;
+        refreshProfileTile();
+    }
+
+    void refreshProfileTile() {
+        Resources r = mContext.getResources();
+        mProfileState.label = mProfileManager.getActiveProfile().getName();
+        mProfileState.iconId = (mUseDefaultTheme ? R.drawable.ic_qs_profiles : R.drawable.ic_qs_profiles);
+        mProfileCallback.refreshView(mProfileTile, mProfileState);
     }
 
     // Bug report
