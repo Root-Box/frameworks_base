@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
+import android.app.AlarmManager;
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.Notification;
@@ -372,8 +373,6 @@ public class TabletStatusBar extends BaseStatusBar implements
 
         mWindowManager.addView(mCompatModePanel, lp);
 
-        mRecentButton.setOnTouchListener(mRecentsPreloadOnTouchListener);
-
         mPile = (NotificationRowLayout)mNotificationPanel.findViewById(R.id.content);
         mPile.removeAllViews();
         mPile.setLongPressListener(getNotificationLongClicker());
@@ -522,9 +521,6 @@ public class TabletStatusBar extends BaseStatusBar implements
             }
         } catch (RemoteException ex) {
         }
-
-        // set recents activity navigation bar view
-        RecentsActivity.addNavigationCallback(this);
 
         mBarContents = (ViewGroup) sb.findViewById(R.id.bar_contents);
 
@@ -935,15 +931,6 @@ public class TabletStatusBar extends BaseStatusBar implements
                     if (mNotificationPanel.isShowing()) {
                         mNotificationPanel.show(false, true);
                         mNotificationArea.setVisibility(View.VISIBLE);
-                    }
-                    break;
-                case MSG_OPEN_SETTINGS_PANEL:
-                    if (DEBUG) Slog.d(TAG, "opening notifications panel");
-                    if (!mNotificationPanel.isShowing()) {
-                        mNotificationPanel.show(true, true);
-                        mNotificationArea.setVisibility(View.INVISIBLE);
-                        mTicker.halt();
-                        mNotificationPanel.swapPanels();
                     }
                     break;
                 case MSG_OPEN_INPUT_METHODS_PANEL:
@@ -1761,25 +1748,6 @@ public class TabletStatusBar extends BaseStatusBar implements
     @Override
     protected boolean shouldDisableNavbarGestures() {
         return mNotificationPanel.getVisibility() == View.VISIBLE;
-    }
-
-    public void cancelAutoHideTimer() {
-        AlarmManager am = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
-        Intent i = new Intent(mContext, AutoHideReceiver.class);
-        PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        try {
-            am.cancel(pi);
-        } catch (Exception e) {
-        }
-    }
-
-    public static class AutoHideReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (mAutoHide && mSlider != null) {
-                mSlider.close();
-            }
-        }
     }
 
     private boolean isLandscape () {
