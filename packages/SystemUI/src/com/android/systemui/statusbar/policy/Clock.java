@@ -154,14 +154,6 @@ public class Clock extends TextView {
         }
     };
 
-    private void updateParameters() {
-        setVisibility((Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.STATUS_BAR_SHOW_CLOCK, 1) == 1) ? View.VISIBLE : View.GONE);
-        AM_PM_STYLE = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.STATUS_BAR_AM_PM_STYLE, 2);
-        mClockFormatString = null;
-    }
-
     final void updateClock() {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
         CharSequence seq = getSmallTime();
@@ -269,7 +261,7 @@ public class Clock extends TextView {
     }
 
     private void updateParameters() {
-
+        mClockFormatString = null;
     }
 
     protected void updateSettings() {
