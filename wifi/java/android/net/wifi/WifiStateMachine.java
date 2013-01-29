@@ -209,9 +209,6 @@ public class WifiStateMachine extends StateMachine {
     /* Tracks current frequency mode */
     private AtomicInteger mFrequencyBand = new AtomicInteger(WifiManager.WIFI_FREQUENCY_BAND_AUTO);
 
-    /* Tracks current country code */
-    private String mCountryCode = "GB";
-
     /* Tracks if we are filtering Multicast v4 packets. Default is to filter. */
     private AtomicBoolean mFilteringMulticastV4Packets = new AtomicBoolean(true);
 
@@ -1073,25 +1070,12 @@ public class WifiStateMachine extends StateMachine {
      * @param persist {@code true} if the setting should be remembered.
      */
     public void setCountryCode(String countryCode, boolean persist) {
-		String countryCodeUser = Settings.Global.getString(mContext.getContentResolver(),
-                Settings.Global.WIFI_COUNTRY_CODE_USER);
-        if (countryCodeUser != null && countryCodeUser != countryCode) {
-            persist = true;
-            countryCode = countryCodeUser;
-        }
         if (persist) {
             Settings.Global.putString(mContext.getContentResolver(),
                     Settings.Global.WIFI_COUNTRY_CODE,
                     countryCode);
         }
         sendMessage(obtainMessage(CMD_SET_COUNTRY_CODE, countryCode));
-    }
-
-    /**
-     * Returns the operational country code
-     */
-    public String getCountryCode() {
-        return mCountryCode;
     }
 
     /**
@@ -1350,15 +1334,7 @@ public class WifiStateMachine extends StateMachine {
         if (countryCode != null && !countryCode.isEmpty()) {
             setCountryCode(countryCode, false);
         } else {
-            // On wifi-only devices, some drivers don't find hidden SSIDs unless DRIVER COUNTRY
-            // is called. Use the default country code to ping the driver.
-            ConnectivityManager cm =
-                    (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (!cm.isNetworkSupported(ConnectivityManager.TYPE_MOBILE)) {
-                setCountryCode(mCountryCode, false);
-            }
-
-            // In other case, mcc tables from carrier do the trick of starting up the wifi driver
+            //use driver default
         }
     }
 
@@ -2815,12 +2791,9 @@ public class WifiStateMachine extends StateMachine {
                     break;
                 case CMD_SET_COUNTRY_CODE:
                     String country = (String) message.obj;
-                    String countryCode = country != null ? country.toUpperCase() : null;
-                    if (DBG) log("set country code " + countryCode);
-                    if (mWifiNative.setCountryCode(countryCode)) {
-                        mCountryCode = countryCode;
-                    } else {
-                        loge("Failed to set country code " + countryCode);
+                    if (DBG) log("set country code " + country);
+                    if (!mWifiNative.setCountryCode(country.toUpperCase())) {
+                        loge("Failed to set country code " + country);
                     }
                     break;
                 case CMD_SET_FREQUENCY_BAND:

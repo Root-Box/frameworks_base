@@ -63,7 +63,6 @@ import java.util.Set;
  */
 public class ResolverActivity extends AlertActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "ResolverActivity";
-    private static final boolean DEBUG = false;
 
     private int mLaunchedFromUid;
     private ResolveListAdapter mAdapter;
@@ -313,7 +312,7 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
                         || (!"file".equals(data.getScheme())
                                 && !"content".equals(data.getScheme()))) {
                     filter.addDataScheme(data.getScheme());
-
+    
                     // Look through the resolved filter to determine which part
                     // of it matched the original Intent.
                     Iterator<IntentFilter.AuthorityEntry> aIt = ri.filter.authoritiesIterator();
@@ -392,6 +391,7 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
         private final int mLaunchedFromUid;
         private final LayoutInflater mInflater;
 
+        private List<ResolveInfo> mCurrentResolveList;
         private List<DisplayResolveInfo> mList;
 
         public ResolveListAdapter(Context context, Intent intent,
@@ -402,7 +402,6 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
             mBaseResolveList = rList;
             mLaunchedFromUid = launchedFromUid;
             mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            mList = new ArrayList<DisplayResolveInfo>();
             rebuildList();
         }
 
@@ -410,23 +409,22 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
             final int oldItemCount = getCount();
             rebuildList();
             notifyDataSetChanged();
-            final int newItemCount = getCount();
-            if (newItemCount == 0) {
+            if (mList.size() <= 0) {
                 // We no longer have any items...  just finish the activity.
                 finish();
-            } else if (newItemCount != oldItemCount) {
+            }
+
+            final int newItemCount = getCount();
+            if (newItemCount != oldItemCount) {
                 resizeGrid();
             }
         }
 
         private void rebuildList() {
-            List<ResolveInfo> currentResolveList;
-
-            mList.clear();
             if (mBaseResolveList != null) {
-                currentResolveList = mBaseResolveList;
+                mCurrentResolveList = mBaseResolveList;
             } else {
-                currentResolveList = mPm.queryIntentActivities(
+                mCurrentResolveList = mPm.queryIntentActivities(
                         mIntent, PackageManager.MATCH_DEFAULT_ONLY
                         | (mAlwaysUseOption ? PackageManager.GET_RESOLVED_FILTER : 0));
                 // Filter out any activities that the launched uid does not
@@ -434,36 +432,36 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
                 // list of resolved activities, because that only happens when
                 // we are being subclassed, so we can safely launch whatever
                 // they gave us.
-                if (currentResolveList != null) {
-                    for (int i=currentResolveList.size()-1; i >= 0; i--) {
-                        ActivityInfo ai = currentResolveList.get(i).activityInfo;
+                if (mCurrentResolveList != null) {
+                    for (int i=mCurrentResolveList.size()-1; i >= 0; i--) {
+                        ActivityInfo ai = mCurrentResolveList.get(i).activityInfo;
                         int granted = ActivityManager.checkComponentPermission(
                                 ai.permission, mLaunchedFromUid,
                                 ai.applicationInfo.uid, ai.exported);
                         if (granted != PackageManager.PERMISSION_GRANTED) {
                             // Access not allowed!
-                            currentResolveList.remove(i);
+                            mCurrentResolveList.remove(i);
                         }
                     }
                 }
             }
             int N;
-            if ((currentResolveList != null) && ((N = currentResolveList.size()) > 0)) {
+            if ((mCurrentResolveList != null) && ((N = mCurrentResolveList.size()) > 0)) {
                 // Only display the first matches that are either of equal
                 // priority or have asked to be default options.
-                ResolveInfo r0 = currentResolveList.get(0);
+                ResolveInfo r0 = mCurrentResolveList.get(0);
                 for (int i=1; i<N; i++) {
-                    ResolveInfo ri = currentResolveList.get(i);
-                    if (DEBUG) Log.v(
+                    ResolveInfo ri = mCurrentResolveList.get(i);
+                    if (false) Log.v(
                         "ResolveListActivity",
                         r0.activityInfo.name + "=" +
                         r0.priority + "/" + r0.isDefault + " vs " +
                         ri.activityInfo.name + "=" +
                         ri.priority + "/" + ri.isDefault);
-                    if (r0.priority != ri.priority ||
+                   if (r0.priority != ri.priority ||
                         r0.isDefault != ri.isDefault) {
                         while (i < N) {
-                            currentResolveList.remove(i);
+                            mCurrentResolveList.remove(i);
                             N--;
                         }
                     }
@@ -471,8 +469,11 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
                 if (N > 1) {
                     ResolveInfo.DisplayNameComparator rComparator =
                             new ResolveInfo.DisplayNameComparator(mPm);
-                    Collections.sort(currentResolveList, rComparator);
+                    Collections.sort(mCurrentResolveList, rComparator);
                 }
+                
+                mList = new ArrayList<DisplayResolveInfo>();
+                
                 // First put the initial items at the top.
                 if (mInitialIntents != null) {
                     for (int i=0; i<mInitialIntents.length; i++) {
@@ -500,10 +501,10 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
                                 ri.loadLabel(getPackageManager()), null, ii));
                     }
                 }
-
+                
                 // Check for applications with same name and use application name or
                 // package name if necessary
-                r0 = currentResolveList.get(0);
+                r0 = mCurrentResolveList.get(0);
                 int start = 0;
                 CharSequence r0Label =  r0.loadLabel(mPm);
                 mShowExtended = false;
@@ -511,7 +512,7 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
                     if (r0Label == null) {
                         r0Label = r0.activityInfo.packageName;
                     }
-                    ResolveInfo ri = currentResolveList.get(i);
+                    ResolveInfo ri = mCurrentResolveList.get(i);
                     CharSequence riLabel = ri.loadLabel(mPm);
                     if (riLabel == null) {
                         riLabel = ri.activityInfo.packageName;
@@ -519,13 +520,13 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
                     if (riLabel.equals(r0Label)) {
                         continue;
                     }
-                    processGroup(currentResolveList, start, (i-1), r0, r0Label);
+                    processGroup(mCurrentResolveList, start, (i-1), r0, r0Label);
                     r0 = ri;
                     r0Label = riLabel;
                     start = i;
                 }
                 // Process last group
-                processGroup(currentResolveList, start, (N-1), r0, r0Label);
+                processGroup(mCurrentResolveList, start, (N-1), r0, r0Label);
             }
         }
 
@@ -577,10 +578,18 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
         }
 
         public ResolveInfo resolveInfoForPosition(int position) {
+            if (mList == null) {
+                return null;
+            }
+
             return mList.get(position).ri;
         }
 
         public Intent intentForPosition(int position) {
+            if (mList == null) {
+                return null;
+            }
+
             DisplayResolveInfo dri = mList.get(position);
             
             Intent intent = new Intent(dri.origIntent != null
@@ -594,11 +603,11 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
         }
 
         public int getCount() {
-            return mList.size();
+            return mList != null ? mList.size() : 0;
         }
 
         public Object getItem(int position) {
-            return mList.get(position);
+            return position;
         }
 
         public long getItemId(int position) {
