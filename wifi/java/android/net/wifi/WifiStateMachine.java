@@ -761,12 +761,10 @@ public class WifiStateMachine extends StateMachine {
     public void setWifiEnabled(boolean enable) {
         mLastEnableUid.set(Binder.getCallingUid());
         if (enable) {
-            WifiNative.setMode(0);
             /* Argument is the state that is entered prior to load */
             sendMessage(obtainMessage(CMD_LOAD_DRIVER, WIFI_STATE_ENABLING, 0));
             sendMessage(CMD_START_SUPPLICANT);
         } else {
-            mWifiConfigStore.setStateFromAutoConnectAllNetworks();
             sendMessage(CMD_STOP_SUPPLICANT);
             /* Argument is the state that is entered upon success */
             sendMessage(obtainMessage(CMD_UNLOAD_DRIVER, WIFI_STATE_DISABLED, 0));
@@ -779,7 +777,6 @@ public class WifiStateMachine extends StateMachine {
     public void setWifiApEnabled(WifiConfiguration wifiConfig, boolean enable) {
         mLastApEnableUid.set(Binder.getCallingUid());
         if (enable) {
-            WifiNative.setMode(1);
             /* Argument is the state that is entered prior to load */
             sendMessage(obtainMessage(CMD_LOAD_DRIVER, WIFI_AP_STATE_ENABLING, 0));
             sendMessage(obtainMessage(CMD_START_AP, wifiConfig));
