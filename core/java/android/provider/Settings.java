@@ -2900,6 +2900,12 @@ public final class Settings {
          */
         public static final String PIE_SIZE = "pie_size";
 
+        /**
+         * Pie Notification Ability
+         * @hide
+         */
+        public static final String PIE_NOTIFICATIONS = "pie_notifications";
+
        // PIE COLORS EVERYWHERE! //
 
         /**
@@ -2915,12 +2921,7 @@ public final class Settings {
         /**
          * @hide
          */
-        public static final String PIE_JUICE_LOW = "pie_juice_low";
-
-        /**
-         * @hide
-         */
-        public static final String PIE_JUICE_CRITICAL = "pie_juice_critical";
+        public static final String PIE_BUTTON_COLOR = "pie_button_color";
 
         /**
          * @hide
