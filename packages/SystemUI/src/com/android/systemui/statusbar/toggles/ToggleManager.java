@@ -145,7 +145,7 @@ public class ToggleManager {
             toggleMap.put(QUICKRECORD_TOGGLE, QuickRecordToggle.class);
             toggleMap.put(POWERMENU_TOGGLE, PowerMenuToggle.class);
             toggleMap.put(PROFILE_TOGGLE, ProfileToggle.class);
-            toggleMap.put(STATUSBAR_TOGGLE, StatusBarToggle.class);
+            toggleMap.put(STATUSBAR_TOGGLE, StatusbarToggle.class);
             toggleMap.put(QUIETHOURS_TOGGLE, QuietHoursToggle.class);
             toggleMap.put(ROOTBOX_TOGGLE, RootBoxToggle.class);
             toggleMap.put(SLEEP_TOGGLE, SleepToggle.class);

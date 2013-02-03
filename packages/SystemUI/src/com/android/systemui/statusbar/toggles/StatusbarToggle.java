@@ -1,4 +1,3 @@
-
 package com.android.systemui.statusbar.toggles;
 
 import android.content.ContentResolver;
@@ -9,7 +8,7 @@ import android.provider.Settings;
 
 import com.android.systemui.R;
 
-public class StatusBarToggle extends StatefulToggle {
+public class StatusbarToggle extends StatefulToggle {
 
     SettingsObserver mObserver = null;
 
@@ -47,9 +46,9 @@ public class StatusBarToggle extends StatefulToggle {
         final boolean enabled = Settings.System.getBoolean(mContext.getContentResolver(),
                 Settings.System.STATUSBAR_HIDDEN, false);
         setEnabledState(enabled);
-        setIcon(enabled ? R.drawable.ic_qs_statusbar_on : R.drawable.ic_qs_statusbar_off);
-        setLabel(enabled ? R.string.quick_settings_statusbar_on_label
-                : R.string.quick_settings_statusbar_off_label);
+        setIcon(enabled ? R.drawable.ic_qs_statusbar_off : R.drawable.ic_qs_statusbar_on);
+        setLabel(enabled ? R.string.quick_settings_statusbar_off_label
+                : R.string.quick_settings_statusbar_on_label);
         super.updateView();
     }
 
