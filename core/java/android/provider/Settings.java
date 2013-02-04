@@ -2935,7 +2935,7 @@ public final class Settings {
         /**
          * @hide
          */
-        public static final String PIE_COLOR_STYLE = "pie_color_style";
+        public static final String PIE_ENABLE_COLOR = "pie_enable_color";
 
         /**
          * @hide

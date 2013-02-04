@@ -217,7 +217,7 @@ public class PieMenu extends FrameLayout {
     private int mStatusMode;
     private float mPieSize = SIZE_BASE;
     private boolean mOpen;
-    private boolean mNavbarZero;
+    private boolean mEnableColor;
     private boolean mUseMenuAlways;
     private boolean mUseSearch;
 
@@ -338,13 +338,13 @@ public class PieMenu extends FrameLayout {
                 100, mInnerBatteryRadius, mOuterBatteryRadius, mCenter);
 
         // Colors
-        int defaults = Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.PIE_COLOR_STYLE, 1);
+        mEnableColor = (Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.PIE_ENABLE_COLOR, 0) == 1);
 
         mNotificationPaint.setColor(getResources().getColor(R.color.status));
         mSnapBackground.setColor(getResources().getColor(R.color.snap_background));
 
-        if (defaults == 0) {
+        if (mEnableColor) {
             mPieBackground.setColor(Settings.System.getInt(mContext.getContentResolver(),
                         Settings.System.PIE_BACKGROUND, COLOR_PIE_BACKGROUND));
             mPieSelected.setColor(Settings.System.getInt(mContext.getContentResolver(),
@@ -912,7 +912,7 @@ public class PieMenu extends FrameLayout {
                             break;
                     }
                 }
-      
+
                 // Check for click actions
                 if (item != null && item.getView() != null && mCenterDistance < shadeTreshold) {
                     if(hapticFeedback) mVibrator.vibrate(3);
@@ -1034,7 +1034,6 @@ public class PieMenu extends FrameLayout {
         } else {
             mCurrentItem = null;
         }
-
     }
 
     private void deselect() {
@@ -1089,8 +1088,6 @@ public class PieMenu extends FrameLayout {
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
 
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_COLOR_STYLE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PIE_BACKGROUND), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
