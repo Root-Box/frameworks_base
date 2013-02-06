@@ -1027,7 +1027,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 triggerVirtualKeypress(KeyEvent.KEYCODE_SEARCH);
                 break;
             case KEY_ACTION_TORCH:
-                Intent i = new Intent("com.aokp.torch.INTENT_TORCH_TOGGLE");
+                Intent i = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
                 i.putExtra("bright", false);
                 mContext.sendBroadcast(i);
             default:

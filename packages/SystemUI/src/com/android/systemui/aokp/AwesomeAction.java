@@ -147,11 +147,9 @@ public class AwesomeAction {
             takeScreenshot();
             return true;
         } else if (action.equals(ACTION_TORCH)) {
-            Intent intent = new Intent("android.intent.action.MAIN");
-            intent.setComponent(ComponentName.unflattenFromString("com.aokp.Torch/.TorchActivity"));
-            intent.addCategory("android.intent.category.LAUNCHER");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
+            Intent i = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
+            i.putExtra("bright", false);
+            mContext.sendBroadcast(i);
             return true;
         } else if (action.equals(ACTION_TODAY)) {
             long startMillis = System.currentTimeMillis();

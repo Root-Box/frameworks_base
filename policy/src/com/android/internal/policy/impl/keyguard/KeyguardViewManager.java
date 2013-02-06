@@ -202,7 +202,7 @@ public class KeyguardViewManager {
 
     private static int runAction(Context context, String uri) {
         if ("FLASHLIGHT".equals(uri)) {
-            context.sendBroadcast(new Intent("com.aokp.torch.INTENT_TORCH_TOGGLE"));
+            context.sendBroadcast(new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT"));
             return ACTION_RESULT_RUN;
         } else if ("NEXT".equals(uri)) {
             sendMediaButtonEvent(context, KeyEvent.KEYCODE_MEDIA_NEXT);
