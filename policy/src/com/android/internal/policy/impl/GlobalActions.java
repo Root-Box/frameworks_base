@@ -1184,7 +1184,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             mNavbarVisible = Settings.System.getBoolean(mContext.getContentResolver(),
                     Settings.System.NAVIGATION_BAR_SHOW_NOW, false);
             mNavbarStatusInvisible = Settings.System.getBoolean(mContext.getContentResolver(),
-                    Settings.System.NAVIGATION_BAR_STATUS_SHOW_NOW, false);        
+                    Settings.System.STATUSBAR_HIDDEN, false);        
 
             View v = inflater.inflate(R.layout.global_actions_navbar_mode, parent, false);
 
@@ -1230,7 +1230,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             case 0 :
                 mNavbarStatusInvisible = !mNavbarStatusInvisible;
                 Settings.System.putBoolean(mContext.getContentResolver(),
-                        Settings.System.NAVIGATION_BAR_STATUS_SHOW_NOW,
+                        Settings.System.STATUSBAR_HIDDEN,
                          mNavbarStatusInvisible );
                 v.setSelected(mNavbarStatusInvisible);
                 mHandler.sendEmptyMessage(MESSAGE_DISMISS);

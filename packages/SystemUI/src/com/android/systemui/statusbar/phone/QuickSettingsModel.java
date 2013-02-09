@@ -327,6 +327,10 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     private QuickSettingsTileView mSettingsTile;
     private RefreshCallback mSettingsCallback;
     private State mSettingsState = new State();
+    
+    private QuickSettingsTileView mStatusBarTile;
+    private RefreshCallback mStatusBarCallback;
+    private State mStatusBarState = new State();
 
     public QuickSettingsModel(Context context) {
         mContext = context;
@@ -409,6 +413,8 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
                 refreshPowerMenuTile();
             if (toggle.equals(QuickSettings.PROFILE_TOGGLE))
                 refreshPowerMenuTile();
+            if (toggle.equals(QuickSettings.STATUSBAR_TOGGLE))
+                refreshStatusBarTile();
         }
 
     }
@@ -1310,6 +1316,34 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     void refreshBrightnessTile() {
         onBrightnessLevelChanged();
+    }
+    
+    // Statusbar toggle
+    void addStatusBarTile(QuickSettingsTileView view, RefreshCallback cb) {
+        mStatusBarTile = view;
+        mStatusBarCallback = cb;
+        onStatusBarChanged();
+    }
+    
+    void onStatusBarChanged() {
+        boolean enabled = Settings.System.getBoolean(mContext.getContentResolver(), Settings.System.STATUSBAR_HIDDEN, false);
+        mStatusBarState.enabled = enabled;
+        mStatusBarState.iconId = enabled
+                ? R.drawable.ic_qs_statusbar_off
+                : R.drawable.ic_qs_statusbar_on;
+        mStatusBarState.label = enabled
+                ? mContext.getString(R.string.quick_settings_statusbar_off_label)
+                : mContext.getString(R.string.quick_settings_statusbar_on_label);
+
+        if (mStatusBarTile != null && mStatusBarCallback != null) {
+            mStatusBarCallback.refreshView(mStatusBarTile, mStatusBarState);
+        }
+    }
+    
+    void refreshStatusBarTile() {
+        if (mStatusBarTile != null) {
+            onStatusBarChanged();
+        }
     }
 
     /**
