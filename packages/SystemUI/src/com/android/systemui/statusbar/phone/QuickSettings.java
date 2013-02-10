@@ -1506,12 +1506,12 @@ public class QuickSettings {
                 quick.setBackgroundResource(mTileBG);
                 quick.setContent(R.layout.quick_settings_tile_quiethours, inflater);
                 quick.setOnClickListener(new View.OnClickListener() {
+                  @Override
                   public void onClick(View v) {
-                        mBar.collapseAllPanels(true);
-                        boolean enabled = Settings.System.getBoolean(mContext.getContentResolver(),
+                        boolean QuiethoursState = Settings.System.getBoolean(mContext.getContentResolver(),
                                  Settings.System.QUIET_HOURS_ENABLED, false);
                         Settings.System.putBoolean(mContext.getContentResolver(),
-                                 Settings.System.QUIET_HOURS_ENABLED, !enabled);
+                                 Settings.System.QUIET_HOURS_ENABLED, !QuiethoursState);
                     }
                 });
                 quick.setOnLongClickListener(new View.OnLongClickListener() {

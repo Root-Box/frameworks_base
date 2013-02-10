@@ -780,15 +780,15 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     void addQuietHoursTile(QuickSettingsTileView view, RefreshCallback cb) {
         mQuietHoursTile = view;
         mQuietHoursCallback = cb;
-        refreshQuietHoursTile();
+        onQuietHoursChanged();
     }
 
     void onQuietHoursChanged() {
-        boolean enabled = Settings.System.getIntForUser(mContext.getContentResolver(), Settings.System.QUIET_HOURS_ENABLED, 0, UserHandle.USER_CURRENT) == 1;
+        boolean enabled = Settings.System.getBoolean(mContext.getContentResolver(), Settings.System.QUIET_HOURS_ENABLED, false);
         mQuietHoursState.enabled = enabled;
         mQuietHoursState.iconId = enabled
-                 ? R.drawable.ic_qs_quiet_hours_on
-                : (mUseDefaultTheme ? R.drawable.ic_qs_quiet_hours_off : R.drawable.ic_qs_quiet_hours_off);
+                ? R.drawable.ic_qs_quiet_hours_on
+                : R.drawable.ic_qs_quiet_hours_off;
         mQuietHoursState.label = enabled
                 ? mContext.getString(R.string.quick_settings_quiet_hours_on_label)
                 : mContext.getString(R.string.quick_settings_quiet_hours_off_label);
