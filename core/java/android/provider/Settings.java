@@ -3073,6 +3073,12 @@ public final class Settings {
          */
         public static final String PIE_CHEVRON_RIGHT = "pie_chevron_right";
 
+        /**
+         * Center Pie? Should default to 1 (yes, center)
+         * @hide
+         */
+        public static final String PIE_CENTER = "pie_center";
+
        // PIE COLORS EVERYWHERE! //
 
         /**
