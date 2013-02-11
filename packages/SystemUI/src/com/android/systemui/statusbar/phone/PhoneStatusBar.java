@@ -251,6 +251,10 @@ public class PhoneStatusBar extends BaseStatusBar {
     // the date view
     DateView mDateView;
 
+    // drag bar
+    CloseDragHandle mCloseView;
+    private int mCloseViewHeight;
+
     // for immersive activities
     private IntruderAlertView mIntruderAlertView;
 
