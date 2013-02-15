@@ -1629,15 +1629,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             setInitialDisplaySize(mDisplay, mUnrestrictedScreenWidth, mUnrestrictedScreenHeight, density);
     }
 
-    private void resetScreenHelper() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int density = metrics.densityDpi;
-        if(mDisplay != null)
-            setInitialDisplaySize(mDisplay, mUnrestrictedScreenWidth, mUnrestrictedScreenHeight, density);
-    }
-
     private void enablePointerLocation() {
         if (mPointerLocationView == null) {
             mPointerLocationView = new PointerLocationView(mContext);
@@ -2373,9 +2364,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
         }
 
-        if (keyCode == KeyEvent.KEYCODE_BACK && !down) {
-            mHandler.removeCallbacks(mKillTask);
-        }
 
         // First we always handle the home key here, so applications
         // can never break it, although if keyguard is on, we do let
@@ -4485,20 +4473,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mLastSystemUiFlags = 0;
                     updateSystemUiVisibilityLw();
                 }
-            }
-        }
-    };
-    BroadcastReceiver mWifiDisplayReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-            if (action.equals(Intent.ACTION_WIFI_DISPLAY_VIDEO)) {
-                int state = intent.getIntExtra("state", 0);
-                if(state == 1) {
-                    mWifiDisplayConnected = true;
-                } else {
-                    mWifiDisplayConnected = false;
-                }
-                updateRotation(true);
             }
         }
     };
