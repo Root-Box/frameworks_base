@@ -94,6 +94,7 @@ public abstract class KeyguardAbsKeyInputView extends LinearLayout
 
     protected abstract int getPasswordTextViewId();
     protected abstract void resetState();
+    protected abstract boolean getQuickUnlockAllowed();
 
     @Override
     protected void onFinishInflate() {

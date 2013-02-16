@@ -528,6 +528,10 @@ public class NotificationPanel extends RelativeLayout implements StatusBarPanel,
         }
     }
 
+    public void animateCollapseQuickSettings() {
+        mBar.mStatusBarView.collapseAllPanels(true);
+    }
+
     public void flipToNotifications() {
         if (mFlipSettingsViewAnim != null) mFlipSettingsViewAnim.cancel();
         if (mScrollViewAnim != null) mScrollViewAnim.cancel();

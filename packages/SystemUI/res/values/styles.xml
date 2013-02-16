@@ -124,7 +124,7 @@
     </style>
 
     <style name="TextAppearance.SystemBar.Expanded.Date">
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#cccccc</item>
         <item name="android:textAllCaps">true</item>

@@ -53,7 +53,7 @@ public class BackgroundAlphaColorDrawable extends ColorDrawable {
         mComputedDrawColor = Color.argb(mAlpha, r, g, b);
         invalidateSelf();
     }
-    
+
     @Override
     public int getAlpha() {
         return mAlpha;

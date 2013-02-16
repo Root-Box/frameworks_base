@@ -42,7 +42,7 @@ public class NotificationPanelView extends PanelView {
     private static final float STATUS_BAR_SWIPE_MOVE_PERCENTAGE = 0.2f;
 
     Drawable mHandleBar;
-    float mHandleBarHeight;
+    int mHandleBarHeight;
     View mHandleView;
     int mFingers;
     PhoneStatusBar mStatusBar;
@@ -74,7 +74,7 @@ public class NotificationPanelView extends PanelView {
 
         Resources resources = getContext().getResources();
         mHandleBar = resources.getDrawable(R.drawable.status_bar_close);
-        mHandleBarHeight = resources.getDimension(R.dimen.close_handle_height);
+        mHandleBarHeight = resources.getDimensionPixelSize(R.dimen.close_handle_height);
         mHandleView = findViewById(R.id.handle);
 
         setContentDescription(resources.getString(
@@ -212,6 +212,7 @@ public class NotificationPanelView extends PanelView {
                         swipeFlipJustStarted = true;
                     }
                     break;
+
                 case MotionEvent.ACTION_POINTER_DOWN:
                     if (mOkToFlip) {
                         float miny = event.getY(0);

@@ -872,6 +872,9 @@
   <java-symbol type="plurals" name="abbrev_num_hours_ago" />
   <java-symbol type="plurals" name="abbrev_num_minutes_ago" />
   <java-symbol type="plurals" name="abbrev_num_seconds_ago" />
+  <java-symbol type="plurals" name="duration_hours" />
+  <java-symbol type="plurals" name="duration_minutes" />
+  <java-symbol type="plurals" name="duration_seconds" />
   <java-symbol type="plurals" name="in_num_days" />
   <java-symbol type="plurals" name="in_num_hours" />
   <java-symbol type="plurals" name="in_num_minutes" />
@@ -1112,6 +1115,7 @@
   <java-symbol type="layout" name="keyguard_multi_user_selector_widget" />
   <java-symbol type="layout" name="sms_short_code_confirmation_dialog" />
   <java-symbol type="layout" name="keyguard_add_widget" />
+  <java-symbol type="layout" name="action_bar_up_container" />
 
   <java-symbol type="anim" name="slide_in_child_bottom" />
   <java-symbol type="anim" name="slide_in_right" />
@@ -1839,6 +1843,10 @@
   <!-- From PinyinIME(!!!) -->
   <java-symbol type="string" name="inputMethod" />
 
+  <!-- Hardware Rotation Lock -->
+  <java-symbol type="bool" name="config_forceDisableHardwareKeyboard" />
+  <java-symbol type="bool" name="config_hasRotationLockSwitch" />
+
   <!-- Always show battery status on lockscreen -->
   <java-symbol type="string" name="lockscreen_always_battery" />
   <java-symbol type="string" name="lockscreen_always_low_battery" />
@@ -1893,6 +1901,11 @@
   <java-symbol type="drawable" name="ic_lockscreen_rss" />
   <java-symbol type="drawable" name="ic_lockscreen_sms" />
   <java-symbol type="drawable" name="ic_lockscreen_twitter" />
+
+  <!-- HW rotation lock -->
+  <java-symbol type="string" name="toast_rotation_unlocked" />
+  <java-symbol type="string" name="toast_rotation_locked" />
+
 
   <!-- Wifi -->
   <java-symbol type="bool" name="config_wifiApFirmwareReload" />

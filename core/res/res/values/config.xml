@@ -1023,9 +1023,9 @@
      -->
     <integer-array name="config_defaultNotificationVibePattern">
         <item>0</item>
+        <item>350</item>
         <item>250</item>
-        <item>250</item>
-        <item>250</item>
+        <item>350</item>
     </integer-array>
 
     <!-- Vibrator pattern to be used as the default for notifications
@@ -1034,9 +1034,9 @@
      -->
     <integer-array name="config_notificationFallbackVibePattern">
         <item>0</item>
-        <item>250</item>
-        <item>250</item>
-        <item>250</item>
+        <item>100</item>
+        <item>150</item>
+        <item>100</item>
     </integer-array>
 
     <!-- Flag indicating if the speed up audio on mt call code should be executed -->
@@ -1063,6 +1063,9 @@
 
     <!-- Disable the home key unlock setting -->
     <bool name="config_disableHomeUnlockSetting">true</bool>
+
+    <!-- Device has a h/w rotation lock switch -->
+    <bool name="config_hasRotationLockSwitch">false</bool>
 
     <!-- Timeout in MS for how long you have to long-press the back key to
          kill the foreground app. -->
