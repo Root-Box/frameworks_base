@@ -3129,7 +3129,11 @@ public final class Settings {
          */
         public static final String PIE_CENTER = "pie_center";
 
-       // PIE COLORS EVERYWHERE! //
+        /**
+         * Swap volume buttons when the screen is rotated by 90 or 180 degrees
+         * @hide
+         */
+        public static final String SWAP_VOLUME_KEYS = "swap_volume_keys";
 
         /**
          * whether to hide the signal barss
