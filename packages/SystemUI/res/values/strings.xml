@@ -519,7 +519,7 @@
     <string name="quick_settings_fbgt">FBGT</string>
     <string name="quick_settings_powermenu">Power Menu</string>
     <string name="quick_settings_rootbox">RootBox</string>
-    <string name="quick_settings_profile_label">Profile</string>
+    <string name="quick_settings_profile">Profile</string>
     <string name="quick_settings_recording">Recording...</string>
     <string name="quick_settings_recordingcap">Recording Captured</string>
     <string name="quick_settings_playing">Playing...</string>

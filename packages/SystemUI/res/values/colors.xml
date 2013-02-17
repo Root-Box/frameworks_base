@@ -68,4 +68,8 @@
     <color name="status">#ffffff</color>
 
     <!-- THEMEABLE PIE PIE PIE PIE PIE? -->
+
+    <color name="toggle_text">#ffffffff</color>
+    <color name="toggle_text_changing_state_color">#ff787878</color>
+    <color name="toggle_image_changing_state_overlay">@color/toggle_text_changing_state_color</color>
 </resources>
