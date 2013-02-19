@@ -1028,7 +1028,9 @@ public class QuickSettings {
                 quick.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        startSettingsActivity(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+                        Intent intent = new Intent();
+                        intent.setComponent(new ComponentName("com.android.settings", "com.android.settings.Settings$TetherSettingsActivity"));
+                        startSettingsActivity(intent);
                         return true;
                     }
                 });
@@ -1060,7 +1062,9 @@ public class QuickSettings {
                 quick.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        startSettingsActivity(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+                        Intent intent = new Intent();
+                        intent.setComponent(new ComponentName("com.android.settings", "com.android.settings.Settings$TetherSettingsActivity"));
+                        startSettingsActivity(intent);
                         return true;
                     }
                 });
