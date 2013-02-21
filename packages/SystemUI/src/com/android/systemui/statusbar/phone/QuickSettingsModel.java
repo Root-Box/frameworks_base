@@ -1060,7 +1060,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
                 case AudioManager.RINGER_MODE_NORMAL:
                 default:
                     enabled = false;
-                    iconId = R.drawable.ic_qs_sound_off;
+                    iconId = (mUseDefaultTheme ? R.drawable.ic_qs_sound_off : R.drawable.ic_qs_sound_off_light);
                     label = R.string.quick_settings_sound_on;
                     break;
                 case AudioManager.RINGER_MODE_VIBRATE:
@@ -1362,7 +1362,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mNavBarHideState.enabled = enabled;
         mNavBarHideState.iconId = enabled
                 ? R.drawable.ic_qs_navbar_hide_on
-                : R.drawable.ic_qs_navbar_hide_off;
+                : (mUseDefaultTheme ? R.drawable.ic_qs_navbar_hide_off : R.drawable.ic_qs_navbar_hide_off_light);
         mNavBarHideState.label = enabled
                 ? mContext.getString(R.string.quick_settings_navbar_hide_on_label)
                 : mContext.getString(R.string.quick_settings_navbar_hide_off_label);
