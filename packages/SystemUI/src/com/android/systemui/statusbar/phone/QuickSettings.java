@@ -1628,6 +1628,16 @@ public class QuickSettings {
                         mContext.sendBroadcast(intent);
                     }
                 });
+                quick.setOnLongClickListener(new View.OnLongClickListener() {
+                   @Override
+                   public boolean onLongClick(View v) {
+                        Intent intent = new Intent("android.intent.action.MAIN");
+                        intent.setClassName("com.android.settings", "com.android.settings.Settings$ProfilesSettingsActivity");
+                        intent.addCategory("android.intent.category.LAUNCHER");
+                       startSettingsActivity(intent);
+                       return true;
+                    }
+                });
                 mModel.addProfileTile(quick, new QuickSettingsModel.RefreshCallback() {
                     @Override
                     public void refreshView(QuickSettingsTileView view, State state) {
