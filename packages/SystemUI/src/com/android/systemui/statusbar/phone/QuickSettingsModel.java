@@ -316,6 +316,10 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     private RefreshCallback mQuietHoursCallback;
     private State mQuietHoursState = new State();
 
+    private QuickSettingsTileView mRootBoxTile;
+    private RefreshCallback mRootBoxCallback;
+    private State mRootBoxState = new State();
+
     private QuickSettingsTileView mProfileTile;
     private RefreshCallback mProfileCallback;
     private State mProfileState = new State();
@@ -423,6 +427,8 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
                 refreshLTETile();
             if (toggle.equals(QuickSettings.POWER_MENU_TOGGLE))
                 refreshPowerMenuTile();
+            if (toggle.equals(QuickSettings.ROOTBOX_TOGGLE))
+                refreshRootBoxTile();
             if (toggle.equals(QuickSettings.QUIETHOURS_TOGGLE))
                 refreshQuietHoursTile();
             if (toggle.equals(QuickSettings.PROFILE_TOGGLE))
@@ -806,6 +812,20 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         if (mQuietHoursTile != null) {
             onQuietHoursChanged();
         }
+    }
+
+    // RootBox
+    void addRootBoxTile(QuickSettingsTileView view, RefreshCallback cb) {
+        mRootBoxTile = view;
+        mRootBoxCallback = cb;
+        refreshRootBoxTile();
+    }
+
+    void refreshRootBoxTile() {
+        Resources r = mContext.getResources();
+        mRootBoxState.label = r.getString(R.string.quick_settings_rootbox);
+        mRootBoxState.iconId = (mUseDefaultTheme ? R.drawable.ic_qs_rb : R.drawable.ic_qs_rb);
+        mRootBoxCallback.refreshView(mRootBoxTile, mRootBoxState);
     }
 
 

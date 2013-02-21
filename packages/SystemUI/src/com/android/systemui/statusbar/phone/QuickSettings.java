@@ -144,6 +144,7 @@ public class QuickSettings {
     private static final int QUIETHOURS_TILE = 28;
     private static final int NAVBAR_HIDE_TILE = 29;
     private static final int QUICKRECORD_TILE = 30;
+    private static final int ROOTBOX_TILE = 31;
 
     public static final int STATE_IDLE = 0;
     public static final int STATE_PLAYING = 1;
@@ -183,6 +184,7 @@ public class QuickSettings {
     public static final String QUIETHOURS_TOGGLE = "QUIETHOURS";
     public static final String NAVBAR_HIDE_TOGGLE = "NAVBARHIDE";
     public static final String QUICKRECORD_TOGGLE = "QUICKRECORD";
+    public static final String ROOTBOX_TOGGLE = "ROOTBOX";
     private static final String LOG_TAG = "AudioRecord";
     private static String mQuickAudio = null;
 
@@ -280,6 +282,7 @@ public class QuickSettings {
             toggleMap.put(QUIETHOURS_TOGGLE, QUIETHOURS_TILE);
             toggleMap.put(NAVBAR_HIDE_TOGGLE, NAVBAR_HIDE_TILE);
             toggleMap.put(QUICKRECORD_TOGGLE, QUICKRECORD_TILE);
+            toggleMap.put(ROOTBOX_TOGGLE, ROOTBOX_TILE);
             //toggleMap.put(BT_TETHER_TOGGLE, BT_TETHER_TILE);
         }
         return toggleMap;
@@ -1718,6 +1721,31 @@ public class QuickSettings {
                         tv.setText(state.label);
                         tv.setTextSize(1, mTileTextSize);
                         tv.setTextColor(mTileText);
+                    }
+                });
+                break;
+            case ROOTBOX_TILE:
+                quick = (QuickSettingsTileView)
+                        inflater.inflate(R.layout.quick_settings_tile, parent, false);
+                quick.setBackgroundResource(mTileBG);
+                quick.setContent(R.layout.quick_settings_tile_rootbox, inflater);
+                quick.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                       Intent intent = new Intent("android.intent.action.MAIN");
+                        intent.setClassName("com.android.settings", "com.android.settings.Settings$RootboxActivity");
+                        intent.addCategory("android.intent.category.LAUNCHER");
+                       startSettingsActivity(intent);
+                    }
+                });
+                mModel.addRootBoxTile(quick, new QuickSettingsModel.RefreshCallback() {
+                    @Override
+                    public void refreshView(QuickSettingsTileView view, State state) {
+		       	TextView tv = (TextView) view.findViewById(R.id.rootbox_textview);
+			tv.setText(state.label);
+                        tv.setTextSize(1, mTileTextSize);
+                        tv.setTextColor(mTileText);
+                        tv.setCompoundDrawablesWithIntrinsicBounds(0, state.iconId, 0, 0);
                     }
                 });
                 break;
