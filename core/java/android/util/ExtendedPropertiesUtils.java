@@ -46,6 +46,7 @@ public class ExtendedPropertiesUtils {
     public static final String BEERBONG_SEPARATOR = ".";
     public static final String BEERBONG_STRING_DELIMITER = "\\|";
     public static final String BEERBONG_DPI_SUFFIX = ".dpi";
+    public static final String BEERBONG_LAYOUT_SUFFIX = ".layout";
     public static final String BEERBONG_DENSITY_SUFFIX = ".den";
     public static final String BEERBONG_SCALEDDENSITY_SUFFIX = ".sden";
 
@@ -77,6 +78,7 @@ public class ExtendedPropertiesUtils {
         public int pid;
         public ApplicationInfo info;
         public int dpi;
+        public int layout;
         public int firstRun;
         public float scaledDensity;
         public float density;
@@ -103,6 +105,12 @@ public class ExtendedPropertiesUtils {
             boolean isSystemApp = info.path.contains("system/app");
             int defaultDpi = Integer.parseInt(getProperty(BEERBONG_PREFIX + (isSystemApp ?
                     "system_default_dpi" : (info.path.length() == 0 ? "0" : "user_default_dpi"))));
+            /*int defaultLayout = Integer.parseInt(getProperty(BEERBONG_PREFIX + (isSystemApp ? 
+                "system_default_layout" : (info.path.length() == 0 ? "0" : "user_default_layout"))));*/
+            int defaultLayout = getActualProperty("com.android.systemui.layout");
+
+            // Layout fetching.
+            info.layout = Integer.parseInt(getProperty(info.name + BEERBONG_LAYOUT_SUFFIX, String.valueOf(defaultLayout)));
 
             // DPI fetching.
             info.dpi = Integer.parseInt(getProperty(info.name + BEERBONG_DPI_SUFFIX, String.valueOf(defaultDpi)));
@@ -154,6 +162,7 @@ public class ExtendedPropertiesUtils {
                         mLocalHook.name = tempProps.mLocalHook.name;
                         mLocalHook.path = tempProps.mLocalHook.path;
                         mLocalHook.dpi = tempProps.mLocalHook.dpi;
+                        mLocalHook.layout = tempProps.mLocalHook.layout;
                         mLocalHook.scaledDensity = tempProps.mLocalHook.scaledDensity;
                         mLocalHook.density = tempProps.mLocalHook.density;
                     }
@@ -219,6 +228,10 @@ public class ExtendedPropertiesUtils {
 
     public int getDpi() {
         return mLocalHook.active ? mLocalHook.dpi : mGlobalHook.dpi;
+    }
+
+    public int getLayout() {
+        return mLocalHook.active ? mLocalHook.layout : mGlobalHook.layout;
     }
 
     public float getScaledDensity() {
@@ -439,6 +452,17 @@ public class ExtendedPropertiesUtils {
                         appInfo.sourceDir.substring(0, appInfo.sourceDir.lastIndexOf("/")).contains("system/app");
                 result = Integer.parseInt(getProperty(property, getProperty(BEERBONG_PREFIX + (isSystemApp ?
                         "system_default_dpi" : "user_default_dpi"))));
+            } else {
+                getProp = true;
+            }
+        } else if (property.endsWith(BEERBONG_LAYOUT_SUFFIX)) {
+            ApplicationInfo appInfo = getAppInfoFromPackageName(property.substring(0, property.length()
+                    - BEERBONG_LAYOUT_SUFFIX.length()));
+            if(appInfo != null) {
+                boolean isSystemApp =
+                        appInfo.sourceDir.substring(0, appInfo.sourceDir.lastIndexOf("/")).contains("system/app");
+                result = Integer.parseInt(getProperty(property, getProperty(BEERBONG_PREFIX + (isSystemApp ? 
+                        "system_default_layout" : "user_default_layout"))));
             } else {
                 getProp = true;
             }
