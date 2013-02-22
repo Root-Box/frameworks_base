@@ -793,8 +793,8 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         onQuietHoursChanged();
     }
 
-    void onQuietHoursChanged() {
-        boolean enabled = Settings.System.getBoolean(mContext.getContentResolver(), Settings.System.QUIET_HOURS_ENABLED, false);
+    public void onQuietHoursChanged() {
+        boolean enabled = Settings.System.getInt(mContext.getContentResolver(), Settings.System.QUIET_HOURS_ENABLED, 0) == 1;
         mQuietHoursState.enabled = enabled;
         mQuietHoursState.iconId = enabled
                 ? R.drawable.ic_qs_quiet_hours_on
@@ -1501,7 +1501,6 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     void onUserSwitched() {
         mBrightnessObserver.startObserving();
         onRotationLockChanged();
-        onQuietHoursChanged();
         onBrightnessLevelChanged();
         onNextAlarmChanged();
         onBugreportChanged();

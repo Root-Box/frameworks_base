@@ -1660,10 +1660,10 @@ public class QuickSettings {
                 quick.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                        boolean QuiethoursState = Settings.System.getBoolean(mContext.getContentResolver(),
-                                 Settings.System.QUIET_HOURS_ENABLED, false);
-                        Settings.System.putBoolean(mContext.getContentResolver(),
-                                 Settings.System.QUIET_HOURS_ENABLED, !QuiethoursState);
+                        boolean QuiethoursState = Settings.System.getInt(mContext.getContentResolver(),
+                                 Settings.System.QUIET_HOURS_ENABLED, 0) == 1;
+                        Settings.System.putInt(mContext.getContentResolver(),
+                                 Settings.System.QUIET_HOURS_ENABLED, QuiethoursState ? 0 : 1);
                     }
                 });
                 quick.setOnLongClickListener(new View.OnLongClickListener() {
@@ -2255,6 +2255,7 @@ public class QuickSettings {
         updateWifiDisplayStatus();
         updateResources();
         reloadFavContactInfo();
+        mModel.refreshQuietHoursTile();
     }
 
     class SettingsObserver extends ContentObserver {
@@ -2284,6 +2285,9 @@ public class QuickSettings {
                     false, this);
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.TORCH_STATE),
+                    false, this);
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.QUIET_HOURS_ENABLED),
                     false, this);
             updateSettings();
         }
