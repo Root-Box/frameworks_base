@@ -167,10 +167,7 @@ public class AwesomeAction {
             case ACTION_IME:
                 mContext.sendBroadcast(new Intent("android.settings.SHOW_INPUT_METHOD_PICKER"));
                 break;
-            case INT_ACTION_SCREENSHOT:
-                takeScreenshot();
-                break;
-            case INT_ACTION_TORCH:
+            case ACTION_TORCH:
                 Intent i = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
                 i.putExtra("bright", false);
                 mContext.sendBroadcast(i);
