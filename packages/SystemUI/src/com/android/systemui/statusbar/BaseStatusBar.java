@@ -236,8 +236,6 @@ public abstract class BaseStatusBar extends SystemUI implements
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_GRAVITY), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PIE_TRIGGER), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.EXPANDED_DESKTOP_STATE), false, this);
@@ -446,6 +444,17 @@ public abstract class BaseStatusBar extends SystemUI implements
                 }
             }}, filter);
 
+        // Listen for PIE gravity
+        mContext.getContentResolver().registerContentObserver(
+            Settings.System.getUriFor(Settings.System.PIE_GRAVITY), false, new ContentObserver(new Handler()) {
+                @Override
+                public void onChange(boolean selfChange) {
+                    if (Settings.System.getInt(mContext.getContentResolver(),
+                            Settings.System.PIE_STICK, 0) == 0) {
+                        updatePieControls();
+                    }
+                }
+            });
 
         attachPie();
 

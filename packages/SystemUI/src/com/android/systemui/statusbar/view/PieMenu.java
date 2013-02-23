@@ -470,7 +470,7 @@ public class PieMenu extends FrameLayout {
                             mStatusPanel.hidePanels(true);
                             deselect();
                             animateOut();
-                            mPanel.reorient(snap.gravity);
+                            mPanel.reorient(snap.gravity, true);
                         }
                     }
                 }
