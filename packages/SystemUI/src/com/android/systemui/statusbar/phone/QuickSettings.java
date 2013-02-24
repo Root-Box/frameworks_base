@@ -2293,6 +2293,7 @@ public class QuickSettings {
         updateResources();
         reloadFavContactInfo();
         mModel.refreshQuietHoursTile();
+        mModel.refreshProfileTile();
         mModel.refreshNavBarHideTile();
         mModel.refreshTorchTile();
     }
