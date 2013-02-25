@@ -328,6 +328,10 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     private RefreshCallback mRootBoxCallback;
     private State mRootBoxState = new State();
 
+    private QuickSettingsTileView mSleepTile;
+    private RefreshCallback mSleepCallback;
+    private State mSleepState = new State();
+
     private QuickSettingsTileView mProfileTile;
     private RefreshCallback mProfileCallback;
     private State mProfileState = new State();
@@ -452,6 +456,8 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
                 refreshPowerMenuTile();
             if (toggle.equals(QuickSettings.ROOTBOX_TOGGLE))
                 refreshRootBoxTile();
+            if (toggle.equals(QuickSettings.SLEEP_TOGGLE))
+                refreshSleepTile();
             if (toggle.equals(QuickSettings.QUIETHOURS_TOGGLE))
                 refreshQuietHoursTile();
             if (toggle.equals(QuickSettings.PROFILE_TOGGLE))
@@ -847,6 +853,20 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mRootBoxState.label = r.getString(R.string.quick_settings_rootbox);
         mRootBoxState.iconId = (mUseDefaultTheme ? R.drawable.ic_qs_rb : R.drawable.ic_qs_rb);
         mRootBoxCallback.refreshView(mRootBoxTile, mRootBoxState);
+    }
+
+    // Sleep Tile
+    void addSleepTile(QuickSettingsTileView view, RefreshCallback cb) {
+        mSleepTile = view;
+        mSleepCallback = cb;
+        refreshSleepTile();
+    }
+
+    void refreshSleepTile() {
+        Resources r = mContext.getResources();
+        mSleepState.label = r.getString(R.string.quick_settings_sleep);
+        mSleepState.iconId = (mUseDefaultTheme ? R.drawable.ic_qs_sleep : R.drawable.ic_qs_sleep_light);
+        mSleepCallback.refreshView(mSleepTile, mSleepState);
     }
 
 

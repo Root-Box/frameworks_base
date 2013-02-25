@@ -72,6 +72,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -146,6 +148,7 @@ public class QuickSettings {
     private static final int NAVBAR_HIDE_TILE = 29;
     private static final int QUICKRECORD_TILE = 30;
     private static final int ROOTBOX_TILE = 31;
+    private static final int SLEEP_TILE = 32;
 
     public static final int STATE_IDLE = 0;
     public static final int STATE_PLAYING = 1;
@@ -186,6 +189,7 @@ public class QuickSettings {
     public static final String NAVBAR_HIDE_TOGGLE = "NAVBARHIDE";
     public static final String QUICKRECORD_TOGGLE = "QUICKRECORD";
     public static final String ROOTBOX_TOGGLE = "ROOTBOX";
+    public static final String SLEEP_TOGGLE = "SLEEP";
     private static final String LOG_TAG = "AudioRecord";
     private static String mQuickAudio = null;
 
@@ -286,6 +290,7 @@ public class QuickSettings {
             toggleMap.put(NAVBAR_HIDE_TOGGLE, NAVBAR_HIDE_TILE);
             toggleMap.put(QUICKRECORD_TOGGLE, QUICKRECORD_TILE);
             toggleMap.put(ROOTBOX_TOGGLE, ROOTBOX_TILE);
+            toggleMap.put(SLEEP_TOGGLE, SLEEP_TILE);
             //toggleMap.put(BT_TETHER_TOGGLE, BT_TETHER_TILE);
         }
         return toggleMap;
@@ -1773,6 +1778,31 @@ public class QuickSettings {
                     }
                 });
                 break;
+            case SLEEP_TILE:
+                quick = (QuickSettingsTileView)
+                        inflater.inflate(R.layout.quick_settings_tile, parent, false);
+                quick.setBackgroundResource(mTileBG);
+                quick.setContent(R.layout.quick_settings_tile_sleep, inflater);
+                TextView tv = (TextView) quick.findViewById(R.id.sleep_textview);
+                tv.setTextSize(1, mTileTextSize);
+                quick.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+                        pm.goToSleep(SystemClock.uptimeMillis());
+                       }
+                    });
+                    mModel.addSleepTile(quick, new QuickSettingsModel.RefreshCallback() {
+                        @Override
+                        public void refreshView(QuickSettingsTileView view, State state) {
+                            TextView tv = (TextView) view.findViewById(R.id.sleep_textview);
+                            tv.setText(state.label);
+                            tv.setTextSize(1, mTileTextSize);
+                            tv.setTextColor(mTileText);
+                            tv.setCompoundDrawablesWithIntrinsicBounds(0, state.iconId, 0, 0);
+                        }
+                 });
+                 break;
             case QUICKRECORD_TILE:
                 quick = (QuickSettingsTileView)
                         inflater.inflate(R.layout.quick_settings_tile, parent, false);
