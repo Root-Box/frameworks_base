@@ -106,6 +106,9 @@ public class ExtendedPropertiesUtils {
 
             // DPI fetching.
             info.dpi = Integer.parseInt(getProperty(info.name + BEERBONG_DPI_SUFFIX, String.valueOf(defaultDpi)));
+            if (info.dpi == 0) {
+                info.dpi = defaultDpi;
+            }
 
             // Extra density fetching.
             info.density = Float.parseFloat(getProperty(info.name + BEERBONG_DENSITY_SUFFIX));
