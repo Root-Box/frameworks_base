@@ -1388,16 +1388,6 @@ android.util.Log.d("*********************************************", "UPDATE mSys
         return oldSystemUILayout;
     }
 
-    private void closeApplication(String packageName) {
-        try {
-            ActivityManagerNative.getDefault().killApplicationProcess(
-                    packageName, AppGlobals.getPackageManager().getPackageUid(
-                    packageName, UserHandle.myUserId()));
-        } catch (RemoteException e) {
-            // Good luck next time!
-        }
-    }
-
     public void updateSettings() {
         ContentResolver resolver = mContext.getContentResolver();
         boolean updateRotation = false;
