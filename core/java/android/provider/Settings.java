@@ -3291,6 +3291,12 @@ public final class Settings {
         public static final String PIE_CENTER = "pie_center";
 
         /**
+         * Restart Launcher
+         * @hide
+         */
+        public static final String EXPANDED_DESKTOP_RESTART_LAUNCHER = "expanded_desktop_restart_launcher";
+
+        /**
          * Swap volume buttons when the screen is rotated by 90 or 180 degrees
          * @hide
          */
