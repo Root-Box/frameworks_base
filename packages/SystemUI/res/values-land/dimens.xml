@@ -42,4 +42,8 @@
     <dimen name="quick_settings_cell_height">100dp</dimen>
 
     <dimen name="pie_panel_padding">100dp</dimen>
+
+    <!-- Height of search panel including navigation bar height -->
+    <dimen name="navbar_search_panel_height">280dip</dimen>
+
 </resources>
