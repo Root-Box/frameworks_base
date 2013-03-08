@@ -52,4 +52,5 @@
     <string name="toggle_PIE">Pie</string>
     <string name="toggle_DARK">Dark RB</string>
     <string name="toggle_SCREENSHOT">Screenshot</string>
+    <string name="toggle_REBOOT">Reboot</string>
 </resources>
