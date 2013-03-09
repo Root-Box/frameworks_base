@@ -213,6 +213,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     // settings
     ToggleManager mToggleManager;
     boolean mHasSettingsPanel, mHasFlipSettings;
+    boolean mUiModeIsToggled;
     SettingsPanelView mSettingsPanel;
     View mFlipSettingsView;
     QuickSettingsContainerView mSettingsContainer;
@@ -523,6 +524,10 @@ public class PhoneStatusBar extends BaseStatusBar {
         mDateView = (DateView)mStatusBarWindow.findViewById(R.id.date);
 
         mHasSettingsPanel = res.getBoolean(R.bool.config_hasSettingsPanel);
+
+        mUiModeIsToggled = Settings.Secure.getInt(mContext.getContentResolver(),
+                              Settings.Secure.UI_MODE_IS_TOGGLED, 0) == 1;
+
         mHasFlipSettings = res.getBoolean(R.bool.config_hasFlipSettingsPanel);
 
         mDateTimeView = mNotificationPanelHeader.findViewById(R.id.datetime);
@@ -2938,6 +2943,8 @@ public class PhoneStatusBar extends BaseStatusBar {
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAV_HIDE_TIMEOUT), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.Secure.UI_MODE_IS_TOGGLED), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_SHORTCUTS_TOGGLE), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_SHORTCUTS_HIDE_CARRIER), false, this, UserHandle.USER_ALL);
@@ -2945,6 +2952,8 @@ public class PhoneStatusBar extends BaseStatusBar {
 
          @Override
         public void onChange(boolean selfChange) {
+            boolean uiModeIsToggled = Settings.Secure.getInt(mContext.getContentResolver(),
+                                    Settings.Secure.UI_MODE_IS_TOGGLED, 0) == 1;
             updateSettings();
         }
 
