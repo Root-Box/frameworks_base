@@ -709,6 +709,14 @@ public class Intent implements Parcelable, Cloneable {
     public static final String ACTION_POWERMENU_PROFILE = "android.intent.action.POWERMENU_PROFILE";
 
     /**
+     * PhoneWindowManager: Take Screenshot via takeScreenshot()
+     *  <p>Input: nothing
+     *  <p>Output: nothing
+     *  @hide
+     */
+    public static final String ACTION_SCREENSHOT = "android.intent.action.SCREENSHOT";
+
+    /**
      * The name of the extra used to define the Intent of a shortcut.
      *
      * @see #ACTION_CREATE_SHORTCUT

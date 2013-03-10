@@ -51,4 +51,5 @@
     <string name="toggle_SLEEP">Sleep</string>
     <string name="toggle_PIE">Pie</string>
     <string name="toggle_DARK">Dark RB</string>
+    <string name="toggle_SCREENSHOT">Screenshot</string>
 </resources>
