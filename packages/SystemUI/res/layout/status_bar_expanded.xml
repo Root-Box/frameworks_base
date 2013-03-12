@@ -72,6 +72,13 @@
             android:orientation="vertical"
             android:visibility="gone" 
             />
+
+        <com.android.systemui.statusbar.powerwidget.PowerWidget
+            android:id="@+id/exp_power_stat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dip"
+        />
         
         <TextView
             android:id="@+id/emergency_calls_only"
