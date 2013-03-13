@@ -40,6 +40,7 @@
     <string name="toggle_LTE">LTE</string>
     <string name="toggle_FAVCONTACT">Favorite contact</string>
     <string name="toggle_SOUNDSTATE">Sound state</string>
+    <string name="toggle_VOLUME">Volume</string>
     <string name="toggle_NAVBARHIDE">Navbar hide</string>
     <string name="toggle_POWERMENU">Power Menu</string>
     <string name="toggle_PROFILE">Profiles</string>

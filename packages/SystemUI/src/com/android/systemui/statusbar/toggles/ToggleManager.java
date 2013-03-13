@@ -81,6 +81,7 @@ public class ToggleManager {
     public static final String LTE_TOGGLE = "LTE";
     public static final String FAV_CONTACT_TOGGLE = "FAVCONTACT";
     public static final String SOUND_STATE_TOGGLE = "SOUNDSTATE";
+    public static final String VOLUME_TOGGLE = "VOLUME";
     public static final String NAVBAR_HIDE_TOGGLE = "NAVBARHIDE";
     public static final String QUICKRECORD_TOGGLE = "QUICKRECORD";
     public static final String POWERMENU_TOGGLE = "POWERMENU";
@@ -134,6 +135,7 @@ public class ToggleManager {
             toggleMap.put(LTE_TOGGLE, LteToggle.class);
             toggleMap.put(FAV_CONTACT_TOGGLE, FavoriteUserToggle.class);
             toggleMap.put(SOUND_STATE_TOGGLE, SoundStateToggle.class);
+            toggleMap.put(VOLUME_TOGGLE, VolumeToggle.class);
             toggleMap.put(NAVBAR_HIDE_TOGGLE, NavbarHideToggle.class);
             toggleMap.put(QUICKRECORD_TOGGLE, QuickRecordToggle.class);
             toggleMap.put(POWERMENU_TOGGLE, PowerMenuToggle.class);
