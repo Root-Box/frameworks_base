@@ -50,4 +50,5 @@
     <string name="toggle_ROOTBOX">RootBox</string>
     <string name="toggle_SLEEP">Sleep</string>
     <string name="toggle_PIE">Pie</string>
+    <string name="toggle_DARK">Dark RB</string>
 </resources>
