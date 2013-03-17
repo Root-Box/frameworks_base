@@ -613,11 +613,6 @@ public class SpannableStringBuilder implements CharSequence, GetChars, Spannable
 
         // 0-length Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         if (flagsStart == POINT && flagsEnd == MARK && start == end) {
-            if (send) Log.e("SpannableStringBuilder",
-                    "SPAN_EXCLUSIVE_EXCLUSIVE spans cannot have a zero length");
-            // Silently ignore invalid spans when they are created from this class.
-            // This avoids the duplication of the above test code before all the
-            // calls to setSpan that are done in this class
             return;
         }
 
