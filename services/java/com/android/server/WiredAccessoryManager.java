@@ -79,6 +79,8 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
 
     private int mSwitchValues;
 
+    private boolean dockAudioEnabled = false;
+
     private final WiredAccessoryObserver mObserver;
     private final InputManagerService mInputManager;
 
@@ -96,6 +98,12 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
 
         mObserver = new WiredAccessoryObserver();
 
+        File f = new File("/sys/class/switch/dock/state");
+        if (f!=null && f.exists()) {
+            // Listen out for changes to the Dock Audio Settings
+            context.registerReceiver(new SettingsChangedReceiver(),
+            new IntentFilter("com.cyanogenmod.settings.SamsungDock"), null, null);
+        }
         context.registerReceiver(new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context ctx, Intent intent) {
@@ -103,6 +111,23 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
                     }
                 },
                 new IntentFilter(Intent.ACTION_BOOT_COMPLETED), null, null);
+    }
+
+    private final class SettingsChangedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            Slog.e(TAG, "Recieved a Settings Changed Action " + action);
+            if (action.equals("com.cyanogenmod.settings.SamsungDock")) {
+                String data = intent.getStringExtra("data");
+                Slog.e(TAG, "Recieved a Dock Audio change " + data);
+                if (data != null && data.equals("1")) {
+                    dockAudioEnabled = true;
+                } else {
+                    dockAudioEnabled = false;
+                }
+            }
+        }
     }
 
     private void bootCompleted() {
@@ -300,8 +325,7 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
                         FileReader file = new FileReader(uei.getSwitchStatePath());
                         int len = file.read(buffer, 0, 1024);
                         file.close();
-                        curState = validateSwitchState(
-                                Integer.valueOf((new String(buffer, 0, len)).trim()));
+                        curState = Integer.valueOf((new String(buffer, 0, len)).trim());
 
                         if (curState > 0) {
                             updateStateLocked(uei.getDevPath(), uei.getDevName(), curState);
@@ -316,19 +340,14 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
             }
 
             // At any given time accessories could be inserted
-            // one on the board, one on the dock and one on HDMI:
-            // observe three UEVENTs
+            // one on the board, one on the dock, one on the
+            // samsung dock and one on HDMI:
+            // observe all UEVENTs that have valid switch supported
+            // by the Kernel
             for (int i = 0; i < mUEventInfo.size(); ++i) {
                 UEventInfo uei = mUEventInfo.get(i);
                 startObserving("DEVPATH="+uei.getDevPath());
             }
-        }
-
-        private int validateSwitchState(int state) {
-            // Some drivers, namely HTC headset ones, add additional bits to
-            // the switch state. As we only are able to deal with the states
-            // 0, 1 and 2, mask out all the other bits
-            return state & 0x3;
         }
 
         private List<UEventInfo> makeObservedUEventList() {
@@ -351,6 +370,14 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
                 retVal.add(uei);
             } else {
                 Slog.w(TAG, "This kernel does not have usb audio support");
+            }
+
+            // Monitor Samsung USB audio
+            uei = new UEventInfo("dock", BIT_USB_HEADSET_DGTL, BIT_USB_HEADSET_ANLG);
+            if (uei.checkSwitchExists()) {
+                retVal.add(uei);
+            } else {
+                Slog.w(TAG, "This kernel does not have samsung usb dock audio support");
             }
 
             // Monitor HDMI
@@ -380,10 +407,20 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
         public void onUEvent(UEventObserver.UEvent event) {
             if (LOG) Slog.v(TAG, "Headset UEVENT: " + event.toString());
 
+            int state = Integer.parseInt(event.get("SWITCH_STATE"));
             try {
                 String devPath = event.get("DEVPATH");
                 String name = event.get("SWITCH_NAME");
-                int state = validateSwitchState(Integer.parseInt(event.get("SWITCH_STATE")));
+                if (name.equals("dock")) {
+                    // Samsung USB Audio Jack is non-sensing - so must be enabled manually
+                    // The choice is made in the GalaxyS2Settings.apk
+                    // device/samsung/i9100/DeviceSettings/src/com/cyanogenmod/settings/device/DockFragmentActivity.java
+                    // This sends an Intent to this class
+                    if ((!dockAudioEnabled) && (state > 0)) {
+                        Slog.e(TAG, "Ignoring dock event as Audio routing disabled " + event);
+                        return;
+                    }
+                }
                 synchronized (mLock) {
                     updateStateLocked(devPath, name, state);
                 }
