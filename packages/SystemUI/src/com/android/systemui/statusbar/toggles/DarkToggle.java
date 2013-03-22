@@ -11,7 +11,6 @@ import android.provider.Settings;;
 import android.view.View;
 
 import com.android.systemui.R;
-import com.android.systemui.util.Helpers;
 
 public class DarkToggle extends StatefulToggle {
 
@@ -25,14 +24,12 @@ public class DarkToggle extends StatefulToggle {
     protected void doEnable() {
         Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.UI_INVERTED_MODE, 1);
-        Helpers.restartSystemUI();
     }
 
     @Override
     protected void doDisable() {
         Settings.Secure.putInt(mContext.getContentResolver(),
                 Settings.Secure.UI_INVERTED_MODE, 0);
-        Helpers.restartSystemUI();
     }
 
     @Override
