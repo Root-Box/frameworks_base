@@ -139,6 +139,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private boolean mEnableScreenshotToggle = false;
     private boolean mEnableTorchToggle = false;
     private boolean mEnableAirplaneToggle = true;
+    private boolean mEnableVolumeStateToggle = true;
     private boolean mShowRebootOnLock = true;
     private static int rebootIndex = 0;
     private Profile mChosenProfile;
@@ -232,6 +233,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
      * @return A new dialog.
      */
     private GlobalActionsDialog createDialog() {
+        mEnableVolumeStateToggle = Settings.System.getBoolean(mContext.getContentResolver(),
+                Settings.System.POWER_DIALOG_SHOW_VOLUME_STATE_TOGGLE, true);
         // Simple toggle style if there's no vibrator, otherwise use a tri-state
         if (!mHasVibrator) {
             mSilentModeAction = new SilentModeToggleAction();
@@ -505,7 +508,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
 
         // last: silent mode
-        if (SHOW_SILENT_TOGGLE) {
+        if (mEnableVolumeStateToggle) {
             mItems.add(mSilentModeAction);
         }
 
