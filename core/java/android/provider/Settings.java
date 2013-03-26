@@ -3264,6 +3264,13 @@ public final class Settings {
         public static final String PIE_CENTER = "pie_center";
 
         /**
+         * User Interface State
+         * 1 = Rebuild UI, resets to 0 automatically
+         * @hide
+         */
+        public static final String USER_INTERFACE_STATE = "user_interface_state";
+
+        /**
          * Swap volume buttons when the screen is rotated by 90 or 180 degrees
          * @hide
          */
