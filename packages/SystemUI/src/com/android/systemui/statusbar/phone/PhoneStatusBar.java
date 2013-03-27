@@ -36,15 +36,14 @@ import android.content.res.Configuration;
 import android.content.res.CustomTheme;
 import android.content.res.Resources;
 import android.database.ContentObserver;
-import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
-import android.graphics.drawable.TransitionDrawable;
+import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PixelFormat;
@@ -411,13 +410,8 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         if (ENABLE_INTRUDERS) addIntruderView();
 
-        mContext.getContentResolver().registerContentObserver(
-            Settings.System.getUriFor(Settings.System.STATUS_BAR_COLOR), false, new ContentObserver(new Handler()) {
-                @Override
-                public void onChange(boolean selfChange) {
-                    updateColor(false);
-                }});
-        updateColor(true);
+        SettingsObserver observer = new SettingsObserver(mHandler);
+        observer.observe();
 
         // Lastly, call to the icon policy to install/update all the icons.
         mIconPolicy = new PhoneStatusBarPolicy(mContext);
@@ -444,35 +438,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         mShowCarrierInPanel = !mNotificationShortcutsHideCarrier;
         updateCarrierMargin(mNotificationShortcutsHideCarrier);
         mCarrierAndWifiView.setVisibility(mShowCarrierInPanel ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    private void updateColor(boolean defaults) {
-        if (defaults) {
-            Bitmap bm = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-            Canvas cnv = new Canvas(bm);
-            cnv.drawColor(0xFF000000);
-            mStatusBarView.setBackground(new BitmapDrawable(bm));
-            return;
-        }
-
-        String setting = Settings.System.getString(mContext.getContentResolver(),
-                Settings.System.STATUS_BAR_COLOR);
-        String[] colors = (setting == null || setting.equals("")  ?
-                ExtendedPropertiesUtils.PARANOID_COLORS_DEFAULTS[
-                ExtendedPropertiesUtils.PARANOID_COLORS_NAVBAR] : setting).split(
-                ExtendedPropertiesUtils.PARANOID_STRING_DELIMITER);
-        String currentColor = colors[Integer.parseInt(colors[2])];
-        int speed = colors.length < 4 ? 1000 : Integer.parseInt(colors[3]);
-
-        Bitmap bm = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-        Canvas cnv = new Canvas(bm);
-        cnv.drawColor(new BigInteger(currentColor, 16).intValue());
-
-        TransitionDrawable transition = new TransitionDrawable(new Drawable[]{
-                mStatusBarView.getBackground(), new BitmapDrawable(bm)});
-        transition.setCrossFadeEnabled(true);
-        mStatusBarView.setBackground(transition);
-        transition.startTransition(speed);
     }
 
     // ================================================================================
@@ -506,10 +471,9 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         mStatusBarView = (PhoneStatusBarView) mStatusBarWindow.findViewById(R.id.status_bar);
         mStatusBarView.setStatusBar(this);
-        mStatusBarView.setBackgroundColor(Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.STATUS_BAR_COLOR, 0xFF000000));
         mStatusBarView.setBar(this);
-        
+
+        mBarView = (ViewGroup) mStatusBarView;
 
         PanelHolder holder = (PanelHolder) mStatusBarWindow.findViewById(R.id.panel_holder);
         mStatusBarView.setPanelHolder(holder);
@@ -1226,6 +1190,14 @@ public class PhoneStatusBar extends BaseStatusBar {
     public void addIcon(String slot, int index, int viewIndex, StatusBarIcon icon) {
         if (SPEW) Slog.d(TAG, "addIcon slot=" + slot + " index=" + index + " viewIndex=" + viewIndex
                 + " icon=" + icon);
+
+        Drawable iconDrawable = StatusBarIconView.getIcon(mContext, icon);
+        if (mLastIconColor == null || mLastIconColor.isLastColorNull) {
+            iconDrawable.clearColorFilter();
+        } else {
+            iconDrawable.setColorFilter(mLastIconColor.lastColor, PorterDuff.Mode.SRC_IN);
+        }
+
         StatusBarIconView view = new StatusBarIconView(mContext, slot, null);
         view.set(icon);
         mStatusIcons.addView(view, viewIndex, new LinearLayout.LayoutParams(mIconSize, mIconSize));
@@ -1236,6 +1208,14 @@ public class PhoneStatusBar extends BaseStatusBar {
             StatusBarIcon old, StatusBarIcon icon) {
         if (SPEW) Slog.d(TAG, "updateIcon slot=" + slot + " index=" + index + " viewIndex=" + viewIndex
                 + " old=" + old + " icon=" + icon);
+
+        Drawable iconDrawable = StatusBarIconView.getIcon(mContext, icon);
+        if (mLastIconColor == null || mLastIconColor.isLastColorNull) {
+            iconDrawable.clearColorFilter();
+        } else {
+            iconDrawable.setColorFilter(mLastIconColor.lastColor, PorterDuff.Mode.SRC_IN);
+        }
+
         StatusBarIconView view = (StatusBarIconView)mStatusIcons.getChildAt(viewIndex);
         view.set(icon);
     }
@@ -2413,7 +2393,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     public void setLightsOn(boolean on) {
-        Log.v(TAG, "setLightsOn(" + on + ")");
+        Slog.v(TAG, "setLightsOn(" + on + ")");
         if (on) {
             setSystemUiVisibility(0, View.SYSTEM_UI_FLAG_LOW_PROFILE);
         } else {

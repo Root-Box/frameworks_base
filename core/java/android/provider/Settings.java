@@ -3626,13 +3626,21 @@ public final class Settings {
          */
         public static final String SYSTEM_PROFILES_ENABLED = "system_profiles_enabled";
 
-         /**
+        /**
+         * Ability to change color per app
+         * 0 = P.A.C. is off, it will switch everything color related back to stock and ignore calls
+         * 1 = P.A.C. is on, it will listen to calls again
+         * @hide
+         */
+        public static final String PER_APP_COLOR = "per_app_color";
+
+        /**
          * Ability to change navigation bar color
          * Format: AARRGGBB|AARRGGBB|index[|speed]
          * First color is the primary, systemwide color
          * Second is the color of the current foreground-app
          * third entry determines which has changed last, 0 or 1
-         * fourth, optional entry determines the transition speed, defaults to 1000ms
+         * fourth, optional entry determines the transition speed, defaults to 500ms
          * @hide
          */
         public static final String NAV_BAR_COLOR = "nav_bar_color";
@@ -3643,7 +3651,7 @@ public final class Settings {
          * First color is the primary, systemwide color
          * Second is the color of the current foreground-app
          * third entry determines which has changed last, 0 or 1
-         * fourth, optional entry determines the transition speed, defaults to 1000ms
+         * fourth, optional entry determines the transition speed, defaults to 500ms
          * @hide
          */
         public static final String NAV_BUTTON_COLOR = "nav_button_color";
@@ -3655,7 +3663,7 @@ public final class Settings {
          * First color is the primary, systemwide color
          * Second is the color of the current foreground-app
          * third entry determines which has changed last, 0 or 1
-         * fourth, optional entry determines the transition speed, defaults to 1000ms
+         * fourth, optional entry determines the transition speed, defaults to 500ms
          * @hide
          */
         public static final String NAV_GLOW_COLOR = "nav_glow_color";
@@ -3666,7 +3674,7 @@ public final class Settings {
          * First color is the primary, systemwide color
          * Second is the color of the current foreground-app
          * third entry determines which has changed last, 0 or 1
-         * fourth, optional entry determines the transition speed, defaults to 1000ms
+         * fourth, optional entry determines the transition speed, defaults to 500ms
          * @hide
          */
         public static final String STATUS_BAR_COLOR = "status_bar_color";
@@ -3681,7 +3689,25 @@ public final class Settings {
          */
         public static final String POWER_UI_LOW_BATTERY_WARNING_POLICY = "power_ui_low_battery_warning_policy";
 
-        /**	
+        /**
+         * Status icon color. May include alpha
+         * Format: AARRGGBB|AARRGGBB|index[|speed]
+         * First color is the primary, systemwide color
+         * Second is the color of the current foreground-app
+         * third entry determines which has changed last, 0 or 1
+         * fourth, optional entry determines the transition speed, defaults to 500ms
+         * @hide
+         */
+        public static final String STATUS_ICON_COLOR = "status_icon_color";
+
+        /**
+         * User Interface State
+         * 1 = Rebuild UI, resets to 0 automatically
+         * @hide
+         */
+        public static final String USER_INTERFACE_STATE = "user_interface_state";
+
+        /**
          * Allows to show the background activity back the lockscreen
          * @hide
          */
@@ -3778,10 +3804,12 @@ public final class Settings {
          */
         public static final String[] INSECURE_SETTINGS = {
             EXPANDED_DESKTOP_STATE,
+            PER_APP_COLOR,
             NAV_BAR_COLOR,
             NAV_BUTTON_COLOR,
             NAV_GLOW_COLOR,
-            STATUS_BAR_COLOR
+            STATUS_BAR_COLOR,
+            STATUS_ICON_COLOR
         };
 
         // Settings moved to Settings.Secure
