@@ -227,9 +227,9 @@ final class DisplayPowerController {
     // a stylish electron beam animation instead.
     private boolean mElectronBeamFadesConfig;
 
-    // Eos settings - override config for ElectronBeam on or off
-    private boolean mElectronBeamOnEnabled;
+    // Slim settings - override config for ElectronBeam
     private boolean mElectronBeamOffEnabled;
+    private int mElectronBeamMode;
 
     // The pending power request.
     // Initially null until the first call to requestPowerState.
@@ -593,7 +593,8 @@ final class DisplayPowerController {
 
     private void initialize() {
         mPowerState = new DisplayPowerState(
-                new ElectronBeam(mDisplayManager), mDisplayBlanker,
+                new ElectronBeam(mDisplayManager, mElectronBeamMode),
+                mDisplayBlanker,
                 mLights.getLight(LightsService.LIGHT_ID_BACKLIGHT));
 
         mElectronBeamOnAnimator = ObjectAnimator.ofFloat(
@@ -663,9 +664,14 @@ final class DisplayPowerController {
             mustNotify = !mDisplayReadyLocked;
         }
 
-        // update crt settings here, it's only two bools
-        mElectronBeamOnEnabled = mPowerRequest.electronBeamOnEnabled;
+        // update crt settings here
         mElectronBeamOffEnabled = mPowerRequest.electronBeamOffEnabled;
+
+        // update crt mode settings and force initialize if value changed
+        if (mElectronBeamMode != mPowerRequest.electronBeamMode) {
+            mElectronBeamMode = mPowerRequest.electronBeamMode;
+            mustInitialize = true;
+        }
 
         // Initialize things the first time the power state is changed.
         if (mustInitialize) {
@@ -759,12 +765,12 @@ final class DisplayPowerController {
                         blockScreenOn();
                     } else {
                         unblockScreenOn();
-                        if (mElectronBeamOffEnabled) {
+                        if (USE_ELECTRON_BEAM_ON_ANIMATION) {
                             if (!mElectronBeamOnAnimator.isStarted()) {
                                 if (mPowerState.getElectronBeamLevel() == 1.0f) {
                                     mPowerState.dismissElectronBeam();
                                 } else if (mPowerState.prepareElectronBeam(
-                                        !mElectronBeamOnEnabled ?
+                                        mElectronBeamFadesConfig ?
                                                 ElectronBeam.MODE_FADE :
                                                         ElectronBeam.MODE_WARM_UP)) {
                                     mElectronBeamOnAnimator.start();
