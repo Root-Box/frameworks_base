@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2010 The Android Open Source Project
+ * This code has been modified. Portions copyright (C) 2012, ParanoidAndroid Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -937,11 +938,19 @@ final class ActivityStack {
         if (w < 0) {
             int mAndroidDpi = ExtendedPropertiesUtils.getActualProperty("android.dpi");
             mThumbnailWidth = w =
+<<<<<<< HEAD
                     Math.round((float)res.getDimensionPixelSize(com.android.internal.R.dimen.thumbnail_width) *  
                             DisplayMetrics.DENSITY_DEVICE / mAndroidDpi);
             mThumbnailHeight = h =
                     Math.round((float)res.getDimensionPixelSize(com.android.internal.R.dimen.thumbnail_height) *  
                             DisplayMetrics.DENSITY_DEVICE / mAndroidDpi);
+=======
+                Math.round((float)res.getDimensionPixelSize(com.android.internal.R.dimen.thumbnail_width) *  
+                DisplayMetrics.DENSITY_DEVICE / mAndroidDpi);
+            mThumbnailHeight = h =
+                Math.round((float)res.getDimensionPixelSize(com.android.internal.R.dimen.thumbnail_height) *  
+                DisplayMetrics.DENSITY_DEVICE / mAndroidDpi);
+>>>>>>> upstream/jb-mr1
         }
 
         if (w > 0) {

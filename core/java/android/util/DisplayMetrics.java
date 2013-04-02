@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+ * This code has been modified.  Portions copyright (C) 2012, ParanoidAndroid Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +18,7 @@
 package android.util;
 
 import android.os.SystemProperties;
+import android.view.Surface;
 
 
 /**
@@ -194,12 +196,29 @@ public class DisplayMetrics extends ExtendedPropertiesUtils {
     public void paranoidHook() {
         if (getActive()) {
 
+<<<<<<< HEAD
             density = getDensity() == 0 ? density : getDensity();
             scaledDensity = getScaledDensity() == 0 ? scaledDensity : getScaledDensity();
             densityDpi = getDpi() == 0 ? densityDpi : getDpi();
             noncompatDensity = densityDpi;
             noncompatDensityDpi = densityDpi;
             noncompatScaledDensity = scaledDensity;
+=======
+            boolean isOrientationOk = true;
+            if (getLandscape() && mDisplay != null) {
+                final int rotation = mDisplay.getRotation();
+                isOrientationOk = (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270);
+            }
+
+            if (isOrientationOk) {
+                density = getDensity() == 0 ? density : getDensity();
+                scaledDensity = getScaledDensity() == 0 ? scaledDensity : getScaledDensity();
+                densityDpi = getDpi() == 0 ? densityDpi : getDpi();
+                noncompatDensity = densityDpi;
+                noncompatDensityDpi = densityDpi;
+                noncompatScaledDensity = scaledDensity;
+            }
+>>>>>>> upstream/jb-mr1
         }
     }
 
@@ -294,6 +313,10 @@ public class DisplayMetrics extends ExtendedPropertiesUtils {
             ", height=" + heightPixels + ", scaledDensity=" + scaledDensity +
             ", xdpi=" + xdpi + ", ydpi=" + ydpi + "}";
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/jb-mr1
     public static int getDeviceDensity() {
         return mGlobalHook.dpi == 0 ? DENSITY_DEVICE : mGlobalHook.dpi;
     }

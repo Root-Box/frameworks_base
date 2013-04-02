@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+ * This code has been modified.  Portions copyright (C) 2012, ParanoidAndroid Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,6 +120,7 @@ public class Resources extends ExtendedPropertiesUtils {
     
     private CompatibilityInfo mCompatibilityInfo;
 
+<<<<<<< HEAD
     /**
     * Override current object with temp properties stored in enum interface
     */
@@ -134,6 +136,23 @@ public class Resources extends ExtendedPropertiesUtils {
        mMetrics.overrideHook(this, OverrideMode.ExtendedProperties);
        mMetrics.paranoidHook();
    }
+=======
+     /**
+     * Override current object with temp properties stored in enum interface
+     */
+    public void paranoidHook() {
+        mConfiguration.active = true;        
+        mConfiguration.overrideHook(this, OverrideMode.ExtendedProperties);
+        mConfiguration.paranoidHook();
+
+        mTmpConfig.active = true;        
+        mTmpConfig.overrideHook(this, OverrideMode.ExtendedProperties);
+        mTmpConfig.paranoidHook();
+
+        mMetrics.overrideHook(this, OverrideMode.ExtendedProperties);
+        mMetrics.paranoidHook();
+    }
+>>>>>>> upstream/jb-mr1
 
     /** @hide */
     public static int selectDefaultTheme(int curTheme, int targetSdkVersion) {
@@ -1485,7 +1504,7 @@ public class Resources extends ExtendedPropertiesUtils {
                 mMetrics.density = mConfiguration.densityDpi * DisplayMetrics.DENSITY_DEFAULT_SCALE;
                 mMetrics.paranoidHook();
             }
-            mMetrics.scaledDensity = mMetrics.density * mConfiguration.fontScale;
+            mMetrics.scaledDensity = mMetrics.density * mConfiguration.fontScale;            
 
             String locale = null;
             if (mConfiguration.locale != null) {
@@ -1892,7 +1911,7 @@ public class Resources extends ExtendedPropertiesUtils {
             }
             sPreloaded = true;
             mPreloading = true;
-            sPreloadedDensity = DisplayMetrics.DENSITY_DEVICE;
+            sPreloadedDensity = DisplayMetrics.getDeviceDensity();
             mConfiguration.densityDpi = sPreloadedDensity;
             updateConfiguration(null, null);
         }

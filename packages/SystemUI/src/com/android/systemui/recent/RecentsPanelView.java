@@ -102,6 +102,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
     private boolean mFitThumbnailToXY;
     private int mRecentItemLayoutId;
     private boolean mHighEndGfx;
+    private int mAndroidDpi = DisplayMetrics.DENSITY_DEVICE;
     boolean ramBarEnabled;
     boolean mRecentsKillAllEnabled;
     private int mAndroidDpi = DisplayMetrics.DENSITY_DEVICE;

@@ -219,6 +219,13 @@
   <java-symbol type="id" name="sms_short_code_remember_undo_instruction" />
   <java-symbol type="id" name="breadcrumb_section" />
 
+  <!-- Simple color dialog layout. -->
+  <java-symbol type="layout" name="dialog_color_picker" id="0x01090018" />
+  <java-symbol type="id" name="color_picker_view" />
+  <java-symbol type="id" name="old_color_panel" />
+  <java-symbol type="id" name="new_color_panel" />
+  <java-symbol type="id" name="hex" />
+
   <java-symbol type="attr" name="actionModeShareDrawable" />
   <java-symbol type="attr" name="alertDialogCenterButtons" />
   <java-symbol type="attr" name="gestureOverlayViewStyle" />
@@ -587,7 +594,6 @@
   <java-symbol type="string" name="lockscreen_transport_pause_description" />
   <java-symbol type="string" name="lockscreen_transport_play_description" />
   <java-symbol type="string" name="lockscreen_transport_stop_description" />
-  
   <java-symbol type="string" name="low_memory" />
   <java-symbol type="string" name="media_bad_removal" />
   <java-symbol type="string" name="media_checking" />
@@ -1254,7 +1260,6 @@
   <java-symbol type="dimen" name="kg_edge_swipe_region_size" />
   <java-symbol type="dimen" name="kg_squashed_layout_threshold" />
   <java-symbol type="dimen" name="kg_small_widget_height" />
-  <java-symbol type="dimen" name="lockscreen_target_inset" />
   <java-symbol type="drawable" name="ic_jog_dial_sound_off" />
   <java-symbol type="drawable" name="ic_jog_dial_sound_on" />
   <java-symbol type="drawable" name="ic_jog_dial_unlock" />
@@ -1263,10 +1268,6 @@
   <java-symbol type="drawable" name="ic_lock_airplane_mode_off" />
   <java-symbol type="drawable" name="ic_lock_reboot" />
   <java-symbol type="drawable" name="ic_lock_expanded_desktop_off" />
-  <java-symbol type="drawable" name="ic_lockscreen_lock_pressed" />
-  <java-symbol type="drawable" name="ic_lockscreen_target_activated" />
-  <java-symbol type="drawable" name="ic_lockscreen_unlock_activated" />
-  <java-symbol type="drawable" name="ic_lockscreen_unlock_normal" />
   <java-symbol type="drawable" name="ic_menu_cc" />
   <java-symbol type="drawable" name="jog_tab_bar_left_unlock" />
   <java-symbol type="drawable" name="jog_tab_bar_right_sound_off" />
@@ -1867,6 +1868,13 @@
   <java-symbol type="drawable" name="ic_navbar_blank_activated" />
   <java-symbol type="drawable" name="ic_action_empty" />
 
+  <!-- Lockscreen -->
+  <java-symbol type="drawable" name="ic_lockscreen_empty" />
+  <java-symbol type="drawable" name="ic_empty" />
+  <java-symbol type="drawable" name="ic_lockscreen_lock_pressed" />
+  <java-symbol type="drawable" name="ic_lockscreen_target_activated" />
+  <java-symbol type="id" name="keyguard_glow_pad_container" />
+
   <!-- Telephony -->
   <java-symbol type="bool" name="config_smsSamsungCdmaAlternateMessageIDEncoding" />
   <java-symbol type="bool" name="config_samsung_stk" />
@@ -1942,4 +1950,6 @@
   <java-symbol type="string" name="action_null"/>
   <java-symbol type="string" name="action_app"/>
 
+  <!-- IME Picker showing upon pressing Sym Key -->
+  <java-symbol type="bool" name="config_symKeyShowsImePicker" />
 </resources>

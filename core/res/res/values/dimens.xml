@@ -3,6 +3,7 @@
 /* //device/apps/common/assets/res/any/dimens.xml
 **
 ** Copyright 2006, The Android Open Source Project
+** This code has been modified.  Portions copyright (C) 2012, ParanoidAndroid Project.
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -245,9 +246,6 @@
     <dimen name="notification_title_text_size">18dp</dimen>
     <!-- Size of smaller notification text (see TextAppearance.StatusBar.EventContent.Line2, Info, Time) -->
     <dimen name="notification_subtext_size">12dp</dimen>
-
-    <!-- Lockscreen target insets -->
-    <item type="dimen" name="lockscreen_target_inset">30dp</item>
 
     <!-- Keyguard dimensions -->
     <!-- TEMP -->

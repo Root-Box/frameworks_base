@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+ * This code has been modified.  Portions copyright (C) 2012, ParanoidAndroid Project.
  * This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,6 +77,8 @@ import android.os.SystemProperties;
 import android.text.TextUtils;
 import android.os.Trace;
 import android.os.UserHandle;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 import android.util.DisplayMetrics;
 import android.util.EventLog;
@@ -1712,6 +1715,7 @@ public final class ActivityThread {
         //}
 
         AssetManager assets = new AssetManager();
+        assets.overrideHook(resDir, ExtendedPropertiesUtils.OverrideMode.FullNameExclude);
         assets.setThemeSupport(compInfo.isThemeable);
         assets.overrideHook(resDir, ExtendedPropertiesUtils.OverrideMode.FullNameExclude);
         if (assets.addAssetPath(resDir) == 0) {
@@ -2858,6 +2862,7 @@ public final class ActivityThread {
                     deliverResults(r, r.pendingResults);
                     r.pendingResults = null;
                 }
+
                 r.activity.performResume();
 
                 EventLog.writeEvent(LOG_ON_RESUME_CALLED,
@@ -3283,6 +3288,7 @@ public final class ActivityThread {
 
     private void updateVisibility(ActivityClientRecord r, boolean show) {
         View v = r.activity.mDecor;
+
         if (v != null) {
             if (show) {
                 if (!r.activity.mVisibleFromServer) {
@@ -3352,7 +3358,7 @@ public final class ActivityThread {
             Log.w(TAG, "handleWindowVisibility: no activity for token " + token);
             return;
         }
-        
+
         if (!show && !r.stopped) {
             performStopActivityInner(r, null, show, false);
         } else if (show && r.stopped) {
@@ -4651,6 +4657,8 @@ public final class ActivityThread {
                                 + "snatched provider from the jaws of death");
                     }
                     prc.removePending = false;
+                    // There is a race! It fails to remove the message, which
+                    // will be handled in completeRemoveProvider().
                     mH.removeMessages(H.REMOVE_PROVIDER, prc);
                 } else {
                     unstableDelta = 0;
@@ -4829,6 +4837,11 @@ public final class ActivityThread {
                         + "provider still in use");
                 return;
             }
+
+            // More complicated race!! Some client managed to acquire the
+            // provider and release it before the removal was completed.
+            // Continue the removal, and abort the next remove message.
+            prc.removePending = false;
 
             final IBinder jBinder = prc.holder.provider.asBinder();
             ProviderRefCount existingPrc = mProviderRefCountMap.get(jBinder);

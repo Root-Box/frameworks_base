@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2008 The Android Open Source Project
+ * This code has been modified. Portions copyright (C) 2012, ParanoidAndroid Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +79,7 @@ import com.android.internal.telephony.ITelephony;
 import com.android.internal.widget.PointerLocationView;
 
 import android.util.DisplayMetrics;
+import android.util.ExtendedPropertiesUtils;
 import android.util.EventLog;
 import android.util.ExtendedPropertiesUtils;
 import android.util.Log;
@@ -366,7 +369,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     int mCurrentAppOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     boolean mHasSoftInput = false;
     int mBackKillTimeout;
-    
+
     int mPointerLocationMode = 0; // guarded by mLock
     int mDeviceHardwareKeys;
     boolean mHasHomeKey;
@@ -399,6 +402,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 	    if (action.equals(Intent.ACTION_POWERMENU_PROFILE)) {
                showGlobalActionsProfileDialog();
             }
+            if (action.equals(Intent.ACTION_SCREENSHOT)) {
+                takeScreenshot();
+            } else if (action.equals(Intent.ACTION_REBOOTMENU)) {
+                showRebootDialog();
+            }
         }
 
         private void registerSelf() {
@@ -409,6 +417,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 filter.addAction(Intent.ACTION_POWERMENU);
                 filter.addAction(Intent.ACTION_POWERMENU_REBOOT);
                 filter.addAction(Intent.ACTION_POWERMENU_PROFILE);
+                filter.addAction(Intent.ACTION_SCREENSHOT);
+                filter.addAction(Intent.ACTION_REBOOTMENU);
                 mContext.registerReceiver(mPowerMenuReceiver, filter);
             }
         }
@@ -599,10 +609,15 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private int mSystemDpi = 0;
     private int mSystemUiDpi = 0;
     private int mSystemUiLayout = 0;
+<<<<<<< HEAD
     private int mNavBarDpi = 0;
+=======
+    private int mNavigationBarDpi = 0;
+>>>>>>> upstream/jb-mr1
     private int mStatusBarDpi = 0;
 
     SettingsObserver mSettingsObserver;
+    UserInterfaceObserver mUserInterfaceObserver;
     ShortcutManager mShortcutManager;
     PowerManager.WakeLock mBroadcastWakeLock;
     boolean mHavePendingMediaKeyRepeatWithWakeLock;
@@ -695,9 +710,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAVIGATION_BAR_SHOW_NOW), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUSBAR_HIDDEN), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAV_HIDE_ENABLE), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUSBAR_HIDDEN), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAVIGATION_BAR_HEIGHT), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -734,6 +749,36 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         @Override
         public void onChange(boolean selfChange) {
             update(false);
+<<<<<<< HEAD
+=======
+        }
+    }
+
+    class UserInterfaceObserver extends ContentObserver {
+        UserInterfaceObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.USER_INTERFACE_STATE), false, this);
+        }
+
+        @Override 
+        public void onChange(boolean selfChange) {
+            // Return for reset triggers
+            if (Settings.System.getInt(mContext.getContentResolver(), 
+                Settings.System.USER_INTERFACE_STATE, 0) == 0) {
+                return;
+            }
+
+            // Update layout
+            update(true);
+
+            // Reset trigger
+            Settings.System.putInt(mContext.getContentResolver(), Settings.System.USER_INTERFACE_STATE, 0);
+>>>>>>> upstream/jb-mr1
         }
     }
 
@@ -996,6 +1041,19 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 	        mGlobalActions.showProfileDialog();
     }
 
+    public void showRebootDialog() {
+        if (mGlobalActions == null) {
+            mGlobalActions = new GlobalActions(mContext, mWindowManagerFuncs);
+        }
+        final boolean keyguardShowing = keyguardIsShowingTq();
+        mGlobalActions.showRebootDialog(keyguardShowing);
+        if (keyguardShowing) {
+            // since it took two seconds of long press to bring this up,
+            // poke the wake lock so they have some time to see the dialog.
+            mKeyguardMediator.userActivity();
+        }
+    }
+
     boolean isDeviceProvisioned() {
         return Settings.Global.getInt(
                 mContext.getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 0) != 0;
@@ -1137,6 +1195,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     public void init(Context context, IWindowManager windowManager,
             WindowManagerFuncs windowManagerFuncs) {
         mContext = context;
+
         mWindowManager = windowManager;
         mWindowManagerFuncs = windowManagerFuncs;
         mHeadless = "1".equals(SystemProperties.get("ro.config.headless", "0"));
@@ -1155,6 +1214,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mSettingsObserver = new SettingsObserver(mHandler);
         mSettingsObserver.observe();
 
+<<<<<<< HEAD
         // SystemUI reboot
         mContext.getContentResolver().registerContentObserver(
                 Settings.System.getUriFor(Settings.System.USER_INTERFACE_STATE), false, new ContentObserver(new Handler()) {
@@ -1172,6 +1232,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 // Reset trigger
                 Settings.System.putInt(mContext.getContentResolver(), Settings.System.USER_INTERFACE_STATE, 0);
             }});
+=======
+        mUserInterfaceObserver = new UserInterfaceObserver(mHandler);
+        mUserInterfaceObserver.observe();
+>>>>>>> upstream/jb-mr1
 
         // Expanded desktop
         mContext.getContentResolver().registerContentObserver(
@@ -1355,6 +1419,27 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mHdmiRotationLock = SystemProperties.getBoolean("persist.demo.hdmirotationlock", true);
     }
 
+    private void update(boolean updateUi) {
+        if (updateUi) {
+            updateHybridLayout();
+        }
+
+        updateSettings();
+        updateRotation(false);
+
+        if (updateUi) {
+            // Restart UI if necessary
+            String packageName = "com.android.systemui";
+            try {
+                ActivityManagerNative.getDefault().killApplicationProcess(
+                    packageName, AppGlobals.getPackageManager().getPackageUid(
+                    packageName, UserHandle.myUserId()));
+            } catch (RemoteException e) {
+                // Good luck next time!
+            }
+        }
+    }
+
     private void closeApplication(String packageName) {
         try {
             ActivityManagerNative.getDefault().killApplicationProcess(
@@ -1393,6 +1478,20 @@ android.util.Log.d("*********************************************", "UPDATE mSys
         return oldSystemUILayout;
     }
 
+    private int updateHybridLayout() {
+        int oldSystemUiLayout = mSystemUiLayout == 0 ?
+            ExtendedPropertiesUtils.getActualProperty("com.android.systemui.layout") : mSystemUiLayout;
+        ExtendedPropertiesUtils.refreshProperties();
+        mSystemDpi = ExtendedPropertiesUtils.getActualProperty("android.dpi");
+        mSystemUiDpi = ExtendedPropertiesUtils.getActualProperty("com.android.systemui.dpi");
+        mSystemUiLayout = ExtendedPropertiesUtils.getActualProperty("com.android.systemui.layout");
+        int mNavigationBarPercent = Integer.parseInt(ExtendedPropertiesUtils.getProperty("com.android.systemui.navbar.dpi", "100"));
+        mNavigationBarDpi = mNavigationBarPercent * mSystemUiDpi / 100;
+        int mStatusBarPercent = Integer.parseInt(ExtendedPropertiesUtils.getProperty("com.android.systemui.statusbar.dpi", "100"));
+        mStatusBarDpi = mStatusBarPercent * mSystemUiDpi / 100;
+        return oldSystemUiLayout;
+    }
+
     public void updateSettings() {
         ContentResolver resolver = mContext.getContentResolver();
         boolean updateRotation = false;
@@ -1409,6 +1508,10 @@ android.util.Log.d("*********************************************", "UPDATE mSys
                     Settings.Secure.RING_HOME_BUTTON_BEHAVIOR,
                     Settings.Secure.RING_HOME_BUTTON_BEHAVIOR_DEFAULT,
                     UserHandle.USER_CURRENT);
+            mHasNavigationBar = Settings.System.getInt(mContext.getContentResolver(), 
+                    Settings.System.EXPANDED_DESKTOP_STATE, 0) != 1 && !mHasSystemNavBar;
+
+            getDimensions();
 
             mHasNavigationBar = !mHasSystemNavBar;
 
@@ -1646,6 +1749,86 @@ android.util.Log.d("*********************************************", "mSystemUiLa
                            = mNavigationBarHeightForRotation[mUpsideDownRotation]
                            = mNavigationBarHeightForRotation[mLandscapeRotation]
                            = mNavigationBarHeightForRotation[mSeascapeRotation] = 0;
+            }
+        }
+    }
+
+        public void getDimensions(){
+        float statusBarHeight = ((float)mContext.getResources().getDimensionPixelSize(
+                com.android.internal.R.dimen.status_bar_height) *
+                DisplayMetrics.DENSITY_DEVICE / mSystemDpi) /
+                DisplayMetrics.DENSITY_DEVICE * mStatusBarDpi;
+
+        float navigationBarHeight = ((float)mContext.getResources().getDimensionPixelSize(
+                com.android.internal.R.dimen.navigation_bar_height) *
+                DisplayMetrics.DENSITY_DEVICE / mSystemDpi) /
+                DisplayMetrics.DENSITY_DEVICE * mNavigationBarDpi;
+
+        float navigationBarWidth = ((float)mContext.getResources().getDimensionPixelSize(
+                com.android.internal.R.dimen.navigation_bar_width) *
+                DisplayMetrics.DENSITY_DEVICE / mSystemDpi) /
+                DisplayMetrics.DENSITY_DEVICE * mNavigationBarDpi;
+
+        float navigationBarHeightLandscape = ((float)mContext.getResources().getDimensionPixelSize(
+                com.android.internal.R.dimen.navigation_bar_height_landscape) *
+                DisplayMetrics.DENSITY_DEVICE / mSystemDpi) /
+                DisplayMetrics.DENSITY_DEVICE * mNavigationBarDpi;
+
+        mStatusBarHeight = Math.round(statusBarHeight);
+
+        // Height of the navigation bar when presented horizontally at bottom
+        mNavigationBarHeightForRotation[mPortraitRotation] = 
+                mNavigationBarHeightForRotation[mUpsideDownRotation] = Math.round(navigationBarHeight);
+
+        mNavigationBarHeightForRotation[mLandscapeRotation] =
+                mNavigationBarHeightForRotation[mSeascapeRotation] = Math.round(navigationBarHeightLandscape);
+
+        // Width of the navigation bar when presented vertically along one side
+        mNavigationBarWidthForRotation[mPortraitRotation] = mNavigationBarWidthForRotation[mUpsideDownRotation] =
+                mNavigationBarWidthForRotation[mLandscapeRotation] = mNavigationBarWidthForRotation[mSeascapeRotation] =
+                Math.round(navigationBarWidth);
+
+        if (mSystemUiLayout < 600) {
+            // 0-599dp: "phone" UI with a separate status & navigation bar
+            mHasSystemNavBar = false;
+            mNavigationBarCanMove = true;
+        } else if (mSystemUiLayout < 720) {
+            // 600+dp: "phone" UI with modifications for larger screens
+            mHasSystemNavBar = false;
+            mNavigationBarCanMove = false;
+        } else if (mSystemUiLayout == 1000) {
+             // 1000dp: "tablet" UI with a single combined status & navigation bar
+             mHasSystemNavBar = true;
+             mNavigationBarCanMove = false;
+         }
+
+        Settings.System.putInt(mContext.getContentResolver(),
+                Settings.System.CURRENT_UI_MODE, mUserUIMode);
+
+        mHasNavigationBar = !mHasSystemNavBar;
+
+        if (mHasSystemNavBar) {
+            mCanHideNavigationBar = true;
+        } else if (mHasNavigationBar) {
+            // The navigation bar is at the right in landscape; it seems always
+            // useful to hide it for showing a video.
+            mCanHideNavigationBar = true;
+        } else {
+            mCanHideNavigationBar = false;
+        }
+
+        // In case that we removed nav bar, set all sizes to 0 again
+        if(!mHasNavigationBar){
+            if(!mHasSystemNavBar || Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.EXPANDED_DESKTOP_STATE, 0) == 1){
+                mNavigationBarWidthForRotation[mPortraitRotation]
+                        = mNavigationBarWidthForRotation[mUpsideDownRotation]
+                        = mNavigationBarWidthForRotation[mLandscapeRotation]
+                        = mNavigationBarWidthForRotation[mSeascapeRotation]
+                        = mNavigationBarHeightForRotation[mPortraitRotation]
+                        = mNavigationBarHeightForRotation[mUpsideDownRotation]
+                        = mNavigationBarHeightForRotation[mLandscapeRotation]
+                        = mNavigationBarHeightForRotation[mSeascapeRotation] = 0;
             }
         }
     }
@@ -3206,8 +3389,6 @@ android.util.Log.d("*********************************************", "mSystemUiLa
         systemRect.top = mSystemTop;
         systemRect.right = mSystemRight;
         systemRect.bottom = mSystemBottom;
-        if (mStatusBar != null) return mStatusBar.getSurfaceLayer();
-        if (mNavigationBar != null) return mNavigationBar.getSurfaceLayer();
         return 0;
     }
 
@@ -3949,7 +4130,7 @@ android.util.Log.d("*********************************************", "mSystemUiLa
     };
 
     // Assume this is called from the Handler thread.
-    private void takeScreenshot() {
+   public void takeScreenshot() {
         synchronized (mScreenshotLock) {
             if (mScreenshotConnection != null) {
                 return;
@@ -4495,6 +4676,11 @@ android.util.Log.d("*********************************************", "mSystemUiLa
                 // observing the relevant settings for the newly-active user,
                 // and then updates our own bookkeeping based on the now-
                 // current user.
+<<<<<<< HEAD
+=======
+                mSettingsObserver.onChange(false);
+                mUserInterfaceObserver.onChange(false);
+>>>>>>> upstream/jb-mr1
 
                 // force a re-application of focused window sysui visibility.
                 // the window may never have been shown for this user
@@ -4967,13 +5153,10 @@ android.util.Log.d("*********************************************", "mSystemUiLa
     static String currentPackageName;
     public void setPackageName(String pkgName) {
         if (pkgName == null) {
-            pkgName = "stop.looking.at.me.swan";
+            pkgName = "unknown";
         }
         this.currentPackageName = pkgName;
     }
-
-    // debugging 'Android is upgrading...' ProgressDialog
-    final boolean DEBUG_BOOTMSG = false;
 
     // this method is called to create, if needed, and update boot ProgressDialog
     // see @link frameworks/base/services/java/com/android/server/pm/
@@ -5024,20 +5207,17 @@ android.util.Log.d("*********************************************", "mSystemUiLa
                     mBootMsgDialog.show();
                 }
                 mBootMsgDialog.setMessage(msg);
-                if (DEBUG_BOOTMSG) Log.d(TAG, "********** showBootMessage(" + msg +", " + always + ") updated ***********");
                 if (currentPackageName != null) {
                     mBootMsgDialog.setTitle(msg);
                     mBootMsgDialog.setMessage(currentPackageName);
-                    if (DEBUG_BOOTMSG) Log.d(TAG, "setTitle: " + msg + " setMessage: " + currentPackageName);
                 } else {
-                    if (DEBUG_BOOTMSG) Log.d(TAG, "failed; CURRENT_PACKAGE_NAME == null");
+                    Log.d(TAG, "failed; CURRENT_PACKAGE_NAME == null");
                 }
                 if (msg.equals(mContext.getResources().getString(R.string.android_upgrading_starting_apps))) {
-                    if (DEBUG_BOOTMSG) Log.d(TAG, "starting apps so we use normal layout");
                     mBootMsgDialog.setTitle(R.string.android_upgrading_title);
                     mBootMsgDialog.setMessage(mContext.getResources().getString(R.string.android_upgrading_starting_apps));
                 } else {
-                    if (DEBUG_BOOTMSG) Log.d(TAG, "not starting apps");
+                    Log.d(TAG, "not starting apps");
                 }
             }
         });

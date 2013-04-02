@@ -1805,6 +1805,24 @@ public final class Settings {
          */
         public static final String MODE_RINGER_STREAMS_AFFECTED = "mode_ringer_streams_affected";
 
+        /**
+         * Custom automatic brightness light sensor levels.
+         * The value is a comma separated int array with length N.
+         * Example: "100,300,3000".
+         *
+         * @hide
+         */
+        public static final String AUTO_BRIGHTNESS_LUX = "auto_brightness_lux";
+
+        /**
+         * Custom automatic brightness display backlight brightness values.
+         * The value is a comma separated int array with length N+1.
+         * Example: "10,50,100,255".
+         *
+         * @hide
+         */
+        public static final String AUTO_BRIGHTNESS_BACKLIGHT = "auto_brightness_backlight";
+
          /**
           * Determines which streams are affected by mute. The
           * stream type's bit should be set to 1 if it should be muted when a mute request
@@ -1904,16 +1922,6 @@ public final class Settings {
          * @hide
          */
         public static final String VOLUME_MASTER_MUTE = "volume_master_mute";
-
-        /**
-         * @hide
-         */
-        public static final String SYSTEM_POWER_ENABLE_CRT_OFF = "system_power_enable_crt_off";
-
-        /**
-         * @hide
-         */
-        public static final String SYSTEM_POWER_ENABLE_CRT_ON = "system_power_enable_crt_on";
 
         /**
          * Whether the notifications should use the ring volume (value of 1) or
@@ -2934,9 +2942,15 @@ public final class Settings {
         
         /**
          * Statusbar toggle for quick settings
-         * &hide
+         * @hide
          */
         public static final String STATUSBAR_QUICK_TOGGLE = "statusbar_quick_toggle";
+
+        /**
+         * Screenshot toggle delay
+         * @hide
+         */
+        public static final String SCREENSHOT_TOGGLE_DELAY = "screenshot_toggle_delay";
 
     	  /**
          * Show the NavBar dialog in Power menu
@@ -2960,9 +2974,14 @@ public final class Settings {
         public static final String POWER_DIALOG_SHOW_TORCH_TOGGLE = "power_dialog_show_torch_toggle";
 
          /**
-         * Show the Reboot on lockscreen dialog in Power menu
          * @hide
          */
+        public static final String POWER_DIALOG_SHOW_VOLUME_STATE_TOGGLE = "power_dialog_show_volume_state_toggle";
+
+        /**
+        *Show the Reboot on lockscreen dialog in Power menu
+        * @hide
+        */
         public static final String POWER_DIALOG_SHOW_REBOOT_KEYGUARD = "power_dialog_show_reboot_keyguard";
 
         /**
@@ -3304,6 +3323,54 @@ public final class Settings {
         public static final String KEYBOARD_ROTATION_TIMEOUT = "keyboard_rotation_timeout";
 
         /**
+         *
+         * @hide
+         */
+        public static final String LOCKSCREEN_TARGETS_LONGPRESS = "lockscreen_targets_longpress";
+
+        /**
+         * @hide
+         */
+        public static final String[] LOCKSCREEN_TARGETS_SHORT = new String[] {
+            "lockscreen_targets_short_0",
+            "lockscreen_targets_short_1",
+            "lockscreen_targets_short_2",
+            "lockscreen_targets_short_3",
+            "lockscreen_targets_short_4",
+            "lockscreen_targets_short_5",
+            "lockscreen_targets_short_6",
+            "lockscreen_targets_short_7",
+        };
+
+        /**
+         * @hide
+         */
+        public static final String[] LOCKSCREEN_TARGETS_LONG = new String[] {
+            "lockscreen_targets_long_0",
+            "lockscreen_targets_long_1",
+            "lockscreen_targets_long_2",
+            "lockscreen_targets_long_3",
+            "lockscreen_targets_long_4",
+            "lockscreen_targets_long_5",
+            "lockscreen_targets_long_6",
+            "lockscreen_targets_long_7",
+        };
+
+        /**
+         * @hide
+         */
+        public static final String[] LOCKSCREEN_TARGETS_ICON = new String[] {
+            "lockscreen_targets_icon_0",
+            "lockscreen_targets_icon_1",
+            "lockscreen_targets_icon_2",
+            "lockscreen_targets_icon_3",
+            "lockscreen_targets_icon_4",
+            "lockscreen_targets_icon_5",
+            "lockscreen_targets_icon_6",
+            "lockscreen_targets_icon_7",
+        };
+
+        /**
          * Whether to use the custom quick unlock screen control
          * @hide
          */
@@ -3382,13 +3449,6 @@ public final class Settings {
         public static final String LOCKSCREEN_USE_WIDGET_CONTAINER_CAROUSEL = "lockscreen_use_widget_container_carousel";
 
         /**
-         * Enable longpress on expand challenge handle to unlock device
-         * @hide
-         */
-        public static final String LOCKSCREEN_LONGPRESS_CHALLENGE = "lockscreen_longpress_challenge";
-
-
-        /**
          * enabled and order of quick toggles
          * 
          * @hide
@@ -3431,12 +3491,6 @@ public final class Settings {
         public static final String CHOOSE_FASTTOGGLE_SIDE = "choose_fasttoggle_side";
 
         /**
-         * Stores values for custom lockscreen targets
-         * @hide
-         */
-        public static final String LOCKSCREEN_TARGETS = "lockscreen_targets";
-
-        /**
         * holo dark/light theme description in quick settings
         *
         *@hide
@@ -3449,6 +3503,19 @@ public final class Settings {
          * @hide
          */
         public static final String QUICK_TEXT_COLOR = "quick_text_color";
+
+        /**
+         * Whether electronic beam animation is enabled or not
+         * @hide
+         */
+        public static final String SYSTEM_POWER_ENABLE_CRT_OFF = "system_power_enable_crt_off";
+
+        /**
+         * Electronic beam animation mode
+         * 0 = always horizontal, 1 = always vertical, 2 = dependent on orientation
+         * @hide
+         */
+        public static final String SYSTEM_POWER_CRT_MODE = "system_power_crt_mode";
 
         /**
          * @hide
@@ -3573,6 +3640,59 @@ public final class Settings {
         public static final String SYSTEM_PROFILES_ENABLED = "system_profiles_enabled";
 
         /**
+         * Ability to change color per app
+         * 0 = P.A.C. is off, it will switch everything color related back to stock and ignore calls
+         * 1 = P.A.C. is on, it will listen to calls again
+         * @hide
+         */
+        public static final String PER_APP_COLOR = "per_app_color";
+
+        /**
+         * Ability to change navigation bar color
+         * Format: AARRGGBB|AARRGGBB|index[|speed]
+         * First color is the primary, systemwide color
+         * Second is the color of the current foreground-app
+         * third entry determines which has changed last, 0 or 1
+         * fourth, optional entry determines the transition speed, defaults to 500ms
+         * @hide
+         */
+        public static final String NAV_BAR_COLOR = "nav_bar_color";
+
+         /**
+         * Ability to change navigation button color
+         * Format: AARRGGBB|AARRGGBB|index[|speed]
+         * First color is the primary, systemwide color
+         * Second is the color of the current foreground-app
+         * third entry determines which has changed last, 0 or 1
+         * fourth, optional entry determines the transition speed, defaults to 500ms
+         * @hide
+         */
+        public static final String NAV_BUTTON_COLOR = "nav_button_color";
+
+         /**
+         * Widget Buttons to Use
+         * Ability to change navigation glow color
+         * Format: AARRGGBB|AARRGGBB|index[|speed]
+         * First color is the primary, systemwide color
+         * Second is the color of the current foreground-app
+         * third entry determines which has changed last, 0 or 1
+         * fourth, optional entry determines the transition speed, defaults to 500ms
+         * @hide
+         */
+        public static final String NAV_GLOW_COLOR = "nav_glow_color";
+
+        /**
+         * Statusbar color. May include alpha
+         * Format: AARRGGBB|AARRGGBB|index[|speed]
+         * First color is the primary, systemwide color
+         * Second is the color of the current foreground-app
+         * third entry determines which has changed last, 0 or 1
+         * fourth, optional entry determines the transition speed, defaults to 500ms
+         * @hide
+         */
+        public static final String STATUS_BAR_COLOR = "status_bar_color";
+
+        /**
          * Low battery warning dialog and sound
          * 0 = off
          * 1 = dialog only
@@ -3582,7 +3702,25 @@ public final class Settings {
          */
         public static final String POWER_UI_LOW_BATTERY_WARNING_POLICY = "power_ui_low_battery_warning_policy";
 
-        /**	
+        /**
+         * Status icon color. May include alpha
+         * Format: AARRGGBB|AARRGGBB|index[|speed]
+         * First color is the primary, systemwide color
+         * Second is the color of the current foreground-app
+         * third entry determines which has changed last, 0 or 1
+         * fourth, optional entry determines the transition speed, defaults to 500ms
+         * @hide
+         */
+        public static final String STATUS_ICON_COLOR = "status_icon_color";
+
+        /**
+         * User Interface State
+         * 1 = Rebuild UI, resets to 0 automatically
+         * @hide
+         */
+        public static final String USER_INTERFACE_STATE = "user_interface_state";
+
+        /**
          * Allows to show the background activity back the lockscreen
          * @hide
          */
@@ -3669,6 +3807,22 @@ public final class Settings {
             POINTER_SPEED,
             VIBRATE_WHEN_RINGING,
             LOCKSCREEN_VIBRATE_ENABLED
+        };
+
+        /**
+         * Insecure settings can be set on any context, without any
+         * importance of permission level
+         *
+         * @hide
+         */
+        public static final String[] INSECURE_SETTINGS = {
+            EXPANDED_DESKTOP_STATE,
+            PER_APP_COLOR,
+            NAV_BAR_COLOR,
+            NAV_BUTTON_COLOR,
+            NAV_GLOW_COLOR,
+            STATUS_BAR_COLOR,
+            STATUS_ICON_COLOR
         };
 
         // Settings moved to Settings.Secure
