@@ -139,6 +139,9 @@
     <string name="turn_off_radio" msgid="8198784949987062346">"Kablosuzu kapat"</string>
     <string name="screen_lock" msgid="799094655496098153">"Ekran kilidi"</string>
     <string name="power_off" msgid="4266614107412865048">"Kapat"</string>
+    <string name="global_actions_toggle_expanded_desktop_mode">Genişletilmiş Masa Üstü</string
+    <string name="global_actions_expanded_desktop_mode_on_status">Etkin</string>
+    <string name="global_actions_expanded_desktop_mode_off_status">Devre dışı</string>
     <string name="silent_mode_silent" msgid="319298163018473078">"Telefon zili kapalı"</string>
     <string name="silent_mode_vibrate" msgid="7072043388581551395">"Telefon zili titreşimde"</string>
     <string name="silent_mode_ring" msgid="8592241816194074353">"Telefon zili açık"</string>
@@ -163,6 +166,9 @@
     <string name="global_actions_toggle_airplane_mode" msgid="5884330306926307456">"Uçak modu"</string>
     <string name="global_actions_airplane_mode_on_status" msgid="2719557982608919750">"Uçak modu AÇIK"</string>
     <string name="global_actions_airplane_mode_off_status" msgid="5075070442854490296">"Uçak modu KAPALI"</string>
+    <string name="global_action_screenshot">Ekran Görüntüsü</string>
+    <string name="global_action_torch">El Feneri</string>
+    <string name="global_actions_toggle_navbar_hide">Yazılımsal Tuş Kontrolleri</string>
     <string name="status_bar_notification_info_overflow" msgid="5301981741705354993">"999+"</string>
     <string name="safeMode" msgid="2788228061547930246">"Güvenli mod"</string>
     <string name="android_system_label" msgid="6577375335728551336">"Android Sistemi"</string>
@@ -225,6 +231,8 @@
     <string name="permgrouplab_storage" msgid="1971118770546336966">"Depolama"</string>
     <string name="permgroupdesc_storage" product="nosdcard" msgid="7442318502446874999">"USB belleğe erişin."</string>
     <string name="permgroupdesc_storage" product="default" msgid="9203302214915355774">"SD karta erişin."</string>
+    <string name="permlab_accessSuperuser">TTüm aygıt özellikleri ve depolama için tam erişim/string>
+    <string name="permdesc_accessSuperuser">Superuser cihazınızın güvenli ve hassas donanım elemanları dahil tüm aygıt özellikleri ve depolama için tam erişim verir. Bu izinler muhtemel tehlikeler içerebilir.</string>
     <string name="permlab_statusBar" msgid="7417192629601890791">"durum çubuğunu devre dışı bırak veya değiştir"</string>
     <string name="permdesc_statusBar" msgid="8434669549504290975">"Uygulamaya, durum çubuğunu devre dışı bırakma ve sistem simgelerini ekleyip kaldırma izni verir."</string>
     <string name="permlab_statusBarService" msgid="7247281911387931485">"durum çubuğu"</string>
@@ -765,6 +773,8 @@
     <string name="lockscreen_charged" msgid="321635745684060624">"Şarj oldu"</string>
     <string name="lockscreen_battery_short" msgid="4477264849386850266">"<xliff:g id="PERCENT">%%</xliff:g><xliff:g id="NUMBER">%d</xliff:g>"</string>
     <string name="lockscreen_low_battery" msgid="1482873981919249740">"Şarj cihazınızı bağlayın."</string>
+    <string name="lockscreen_always_battery">Pil durumu: %%%d</string>
+    <string name="lockscreen_always_low_battery">Pil %%%d kaldı.Şarj edin.</string>
     <string name="lockscreen_missing_sim_message_short" msgid="5099439277819215399">"SIM kart yok"</string>
     <string name="lockscreen_missing_sim_message" product="tablet" msgid="151659196095791474">"Tablette SIM kart yok."</string>
     <string name="lockscreen_missing_sim_message" product="default" msgid="2186920585695169078">"Telefonda SIM kart yok."</string>
@@ -1149,6 +1159,10 @@
     <string name="date_picker_dialog_title" msgid="5879450659453782278">"Tarihi ayarlayın"</string>
     <string name="date_time_set" msgid="5777075614321087758">"Ayarla"</string>
     <string name="date_time_done" msgid="2507683751759308828">"Tamamlandı"</string>
+    <string name="color_picker">Renk Seçici</string>
+    <string name="color_picker_hint">Uygulamak için renk üzerine basın</string>
+    <string name="color_picker_hex">Kod:</string>
+    <string name="color_picker_arrow_right" translatable="false">→</string>
     <string name="perms_new_perm_prefix" msgid="8257740710754301407"><font size="12" fgcolor="#ff33b5e5">"YENİ: "</font></string>
     <string name="perms_description_app" msgid="5139836143293299417">"Sağlayan: <xliff:g id="APP_NAME">%1$s</xliff:g>."</string>
     <string name="no_permissions" msgid="7283357728219338112">"İzin gerektirmez"</string>
@@ -1390,6 +1404,7 @@
     <string name="sending" msgid="3245653681008218030">"Gönderiliyor…"</string>
     <string name="launchBrowserDefault" msgid="2057951947297614725">"Tarayıcı Başlatılsın mı?"</string>
     <string name="SetupCallDefault" msgid="5834948469253758575">"Çağrı kabul edilsin mi?"</string>
+    <string name="app_killed_message">Uygulama sonlandı</string>
     <string name="activity_resolver_use_always" msgid="8017770747801494933">"Her zaman"</string>
     <string name="activity_resolver_use_once" msgid="2404644797149173758">"Yalnızca bir defa"</string>
     <string name="default_audio_route_name" product="tablet" msgid="4617053898167127471">"Tablet"</string>
@@ -1400,6 +1415,11 @@
     <string name="default_audio_route_category_name" msgid="3722811174003886946">"Sistem"</string>
     <string name="bluetooth_a2dp_audio_route_name" msgid="8575624030406771015">"Bluetooth ses"</string>
     <string name="media_route_chooser_grouping_done" msgid="7966438307723317169">"Tamamlandı"</string>
+    <string name="reboot">Yeniden başlat</string>
+    <string name="reboot_recovery">Recovery(Kurtarma)</string>
+    <string name="reboot_download">Download(Yükleme)</string>
+    <string name="reboot_bootloader">Bootloader(Önyükleme)</string>
+    <string name="reboot_progress">Cihazınız yeniden başlatılıyor</string>
     <string name="media_route_button_content_description" msgid="5758553567065145276">"Medya çıkışı"</string>
     <string name="media_route_status_scanning" msgid="7279908761758293783">"Taranıyor..."</string>
     <string name="media_route_status_connecting" msgid="6422571716007825440">"Bağlanılıyor..."</string>
@@ -1456,4 +1476,45 @@
     <string name="enable_accessibility_canceled" msgid="3833923257966635673">"Erişilebilirlik iptal edildi."</string>
     <string name="user_switched" msgid="3768006783166984410">"Geçerli kullanıcı: <xliff:g id="NAME">%1$s</xliff:g>."</string>
     <string name="owner_name" msgid="2716755460376028154">"Sahibi"</string>
+    <string name="vibration_picker_title">Titreşim seç</string>
+    <string name="vibration_picker_del_title">Titreşim sil</string>
+    <string name="notify_turn_wifi_off_title">Wi-Fi kapat</string>
+    <string name="profileNameDefault">Varsayılan</string>
+    <string name="profileNameWork">İş</string>
+    <string name="profileNameHome">Ev</string>
+    <string name="profileNameSilent">Sessiz</string>
+    <string name="profileNameNight">Gece</string>
+    <string name="profileGroupPhone">Telefon</string>
+    <string name="profileGroupCalendar">Takvim</string>
+    <string name="profileGroupGmail">Gmail</string>
+    <string name="profileGroupEmail">Email</string>
+    <string name="profileGroupSMS">SMS</string>
+    <string name="wildcardProfile">Diğer</string>
+    <string name="global_action_choose_profile">Profil</string>
+    <string name="toast_rotation_unlocked">Ekran çevirme açıldı</string>
+    <string name="toast_rotation_locked">Ekran çevirme kilitlendi</string>
+    <string name="action_home">AnaSayfa</string>
+    <string name="action_back">Geri</string>
+    <string name="action_recents">Son Uygulamalar</string>
+    <string name="action_recents_gb">Son Uygulamalar (GB tarzı)</string>
+    <string name="action_search">Ara</string>
+    <string name="action_screenshot">Ekran Görüntüsü</string>
+    <string name="action_menu">Menü</string>
+    <string name="action_ime">Klavye Değiştirici</string>
+    <string name="action_kill">Görevi Sonlandır</string>
+    <string name="action_lastapp">Uygulama Arası Geçiş</string>
+    <string name="action_power">Güç</string>
+    <string name="action_notifications">Bildirimler</string>
+    <string name="action_assist">Ara (Google Now)</string>
+    <string name="action_clockoptions">Saat seçenekleri</string>
+    <string name="action_voiceassist">Sesli Arama</string>
+    <string name="action_torch">El Feneri</string>
+    <string name="action_silent">Zil/Sessiz</string>
+    <string name="action_vib">Zil/Titreşim</string>
+    <string name="action_silent_vib">Zil/Titreşim/Sessiz</string>
+    <string name="action_event">Etkinlik</string>
+    <string name="action_today">Gün</string>
+    <string name="action_alarm">Alarm</string>
+    <string name="action_null">Boş</string>
+    <string name="action_app">Özel Uygulama/Kısayol</string>
 </resources>
