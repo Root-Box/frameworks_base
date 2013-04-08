@@ -281,6 +281,9 @@ public class SbBatteryController extends LinearLayout {
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.STATUS_ICON_COLOR), false,
                     this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.PIE_DISABLE_STATUSBAR_INFO), false, 
+                    this);
         }
 
         @Override
@@ -293,6 +296,11 @@ public class SbBatteryController extends LinearLayout {
         // Slog.i(TAG, "updated settings values");
         mBatteryStyle = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.STATUSBAR_BATTERY_ICON, 0);
+
+        if (Settings.System.getInt(resolver,
+                Settings.System.PIE_DISABLE_STATUSBAR_INFO, 0) == 1) {
+            mBatteryStyle = STYLE_HIDE;
+        }
 
         switch (mBatteryStyle) {
             case STYLE_ICON_ONLY:

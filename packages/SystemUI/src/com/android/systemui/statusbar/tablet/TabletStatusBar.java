@@ -1074,10 +1074,13 @@ public class TabletStatusBar extends BaseStatusBar implements
                 mTicker.halt();
             }
         }
-        if ((diff & (StatusBarManager.DISABLE_RECENT
-                        | StatusBarManager.DISABLE_BACK
-                        | StatusBarManager.DISABLE_HOME)) != 0) {
-            setNavigationVisibility(state);
+        if ((diff & (StatusBarManager.DISABLE_HOME
+                | StatusBarManager.DISABLE_RECENT
+                | StatusBarManager.DISABLE_BACK
+                | StatusBarManager.DISABLE_SEARCH)) != 0) {
+
+            // all navigation bar listeners will take care of these
+            propagateDisabledFlags(state);
 
             if ((state & StatusBarManager.DISABLE_RECENT) != 0) {
                 // close recents if it's visible
@@ -1181,6 +1184,8 @@ public class TabletStatusBar extends BaseStatusBar implements
 
         mNavBarView.setNavigationIconHints(hints);
         mNavigationIconHints = hints;
+
+        propagateNavigationIconHints(hints);
     }
 
     private void notifyUiVisibilityChanged() {
@@ -1233,6 +1238,7 @@ public class TabletStatusBar extends BaseStatusBar implements
             Slog.d(TAG, (showMenu?"showing":"hiding") + " the MENU button");
         }
         mNavBarView.setMenuVisibility(showMenu);
+        propagateMenuVisibility(showMenu);
 
         // See above re: lights-out policy for legacy apps.
         if (showMenu) setLightsOn(true);
