@@ -3791,14 +3791,6 @@ public final class Settings {
           */
          public static final String KEY_HOME_LONG_PRESS_ACTION = "key_home_long_press_action";
 
-        /**	
-         * Defines the shortcuts to be shown on lockscreen
-         * Usage is like this: target:icon|target:icon|target:icon
-         * if :icon is not set, default application icon will be used
-         * @hide
-         */
-        public static final String LOCKSCREEN_SHORTCUTS = "lockscreen_shortcuts";
-
          /**
           * Action to perform when the menu key is pressed. (Default is 1)
           * (See KEY_HOME_LONG_PRESS_ACTION for valid values)

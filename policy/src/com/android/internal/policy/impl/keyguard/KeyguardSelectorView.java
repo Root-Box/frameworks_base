@@ -76,7 +76,6 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
     private static final String TAG = "SecuritySelectorView";
 
     private KeyguardSecurityCallback mCallback;
-    private KeyguardShortcuts mShortcuts;
     private GlowPadView mGlowPadView;
     private LinearLayout mRibbon;
     private LinearLayout ribbonView;
@@ -448,10 +447,6 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
 
     public void setKeyguardCallback(KeyguardSecurityCallback callback) {
         mCallback = callback;
-        mShortcuts = (KeyguardShortcuts) findViewById(R.id.shortcuts);
-        if(mShortcuts != null) {
-            mShortcuts.setKeyguardCallback(callback);
-        }
     }
 
     public void setLockPatternUtils(LockPatternUtils utils) {

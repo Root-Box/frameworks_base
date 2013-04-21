@@ -259,7 +259,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 Settings.System.POWER_DIALOG_SHOW_AIRPLANE_TOGGLE, true);
         mExpandDesktopModeOn = new ToggleAction(
                 R.drawable.ic_lock_expanded_desktop,
-                R.drawable.ic_lock_expanded_desktop_off,
+                R.drawable.ic_lock_expanded_desktop,
                 R.string.global_actions_toggle_expanded_desktop_mode,
                 R.string.global_actions_expanded_desktop_mode_on_status,
                 R.string.global_actions_expanded_desktop_mode_off_status) {
