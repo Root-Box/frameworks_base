@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+ * This code has been modified. Portions copyright (C) 2012, ParanoidAndroid Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +18,8 @@
 package com.android.systemui.statusbar;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -35,6 +38,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -44,6 +48,8 @@ import android.util.AttributeSet;
 import android.util.ColorUtils;
 import android.util.ExtendedPropertiesUtils;
 import android.util.Slog;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -51,8 +57,6 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -842,7 +846,11 @@ public class NavigationBarView extends LinearLayout {
              ViewGroup group = (ViewGroup) v.findViewById(R.id.nav_buttons);
              group.setMotionEventSplittingEnabled(false);
          }
-         updateColor();
+
+         if (ColorUtils.getPerAppColorState(mContext)) {
+             updateColor();
+         }
+
          mCurrentView = mRotatedViews[Surface.ROTATION_0];
 
          // this takes care of making the buttons
