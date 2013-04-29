@@ -2128,6 +2128,24 @@ public final class Settings {
         public static final String PIE_BUTTONS_QTY = "pie_buttons_qty";
 
         /**
+         * Relative pie trigger thickness
+         * @hide
+         */
+        public static final String PIE_TRIGGER_THICKNESS = "pie_trigger_thickness";
+
+        /**
+         * Relative pie trigger height for left and right trigger
+         * @hide
+         */
+        public static final String PIE_TRIGGER_HEIGHT = "pie_trigger_height";
+
+        /**
+         * Pie trigger vertical gravity
+         * @hide
+         */
+        public static final String PIE_TRIGGER_GRAVITY_LEFT_RIGHT = "pie_trigger_gravity_left_right";
+
+        /**
          * @hide
          */
         public static final String[] PIE_CUSTOM_ACTIVITIES = new String[] {
