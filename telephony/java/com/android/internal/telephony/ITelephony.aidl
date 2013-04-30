@@ -58,6 +58,13 @@ interface ITelephony {
       */
       void toggle2G(boolean on);
 
+     /**
+      * Toggle between 3G and 3G (NT_MODE_GSM_UMTS, NT_MODE_WCDMA_PREF)
+      * @param boolean to turn on and off 2G
+      * @hide
+      */
+      void toggle3G(boolean on);
+
     /**
      * If there is currently a call in progress, show the call screen.
      * The DTMF dialpad may or may not be visible initially, depending on
