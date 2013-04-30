@@ -85,8 +85,11 @@ import com.android.systemui.statusbar.NavigationBarView;
 import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarIconView;
 import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.SbBatteryController;
 import com.android.systemui.statusbar.phone.QuickSettingsContainerView;
 import com.android.systemui.statusbar.policy.BluetoothController;
+import com.android.systemui.statusbar.policy.Clock;
+import com.android.systemui.statusbar.policy.ClockCenter;
 import com.android.systemui.statusbar.policy.CompatModeButton;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
@@ -504,6 +507,10 @@ public class TabletStatusBar extends BaseStatusBar implements
 
         mBarContents = (ViewGroup) sb.findViewById(R.id.bar_contents);
 
+       // system bar clock
+        mClock = (Clock) mBarContents.findViewById(R.id.clock);
+        mCClock = (ClockCenter) mStatusBarView.findViewById(R.id.center_clock);
+
         // the whole right-hand side of the bar
         mNotificationArea = sb.findViewById(R.id.notificationArea);
         mNotificationArea.setOnTouchListener(new NotificationTriggerTouchListener());
@@ -529,10 +536,10 @@ public class TabletStatusBar extends BaseStatusBar implements
         // watch the PREF_DO_NOT_DISTURB and convert to appropriate disable() calls
         mDoNotDisturb = new DoNotDisturb(mContext);
 
+        mBatteryController = new BatteryController(mContext);
+        mSbBatteryController = (SbBatteryController)sb.findViewById(R.id.battery_cluster);
         mBluetoothController = new BluetoothController(mContext);
         mBluetoothController.addIconView((ImageView)sb.findViewById(R.id.bluetooth));
-
-        mBatteryController = new BatteryController(mContext);
 
         mNetworkController = new NetworkController(mContext);
         mSignalCluster =

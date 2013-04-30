@@ -25,6 +25,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.ContentObserver;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -39,6 +40,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.Slog;
+import android.util.ColorUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -77,8 +79,6 @@ public class Clock extends TextView {
 
     protected int mClockStyle = STYLE_CLOCK_RIGHT;
 
-    protected int mClockColor;
-
     public Clock(Context context) {
         this(context, null);
     }
@@ -97,7 +97,6 @@ public class Clock extends TextView {
 
         if (!mAttached) {
             mAttached = true;
-            mClockColor = getTextColors().getDefaultColor();
             IntentFilter filter = new IntentFilter();
 
             filter.addAction(Intent.ACTION_TIME_TICK);
@@ -240,9 +239,6 @@ public class Clock extends TextView {
                     .getUriFor(Settings.System.STATUSBAR_CLOCK_STYLE), false,
                     this);
             resolver.registerContentObserver(Settings.System
-                    .getUriFor(Settings.System.STATUSBAR_CLOCK_COLOR), false,
-                    this);
-            resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.STATUSBAR_CLOCK_WEEKDAY), false,
                     this);
             updateSettings();
@@ -256,7 +252,6 @@ public class Clock extends TextView {
 
     protected void updateSettings() {
         ContentResolver resolver = mContext.getContentResolver();
-        int newColor = 0;
 
         mAmPmStyle = Settings.System.getInt(resolver,
                 Settings.System.STATUSBAR_CLOCK_AM_PM_STYLE, AM_PM_STYLE_GONE);   
@@ -264,13 +259,6 @@ public class Clock extends TextView {
                 Settings.System.STATUSBAR_CLOCK_STYLE, STYLE_CLOCK_RIGHT);
         mWeekdayStyle = Settings.System.getInt(resolver,
                 Settings.System.STATUSBAR_CLOCK_WEEKDAY, WEEKDAY_STYLE_GONE);
-
-        newColor = Settings.System.getInt(resolver,
-                Settings.System.STATUSBAR_CLOCK_COLOR, mClockColor);
-        if (newColor < 0 && newColor != mClockColor) {
-            mClockColor = newColor;
-            setTextColor(mClockColor);
-        }
         updateClockVisibility();
         updateClock();
     }

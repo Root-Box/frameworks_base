@@ -108,6 +108,8 @@ import com.android.systemui.statusbar.phone.ShortcutsWidget;
 import com.android.systemui.statusbar.policy.BatteryController;
 import com.android.systemui.statusbar.policy.SbBatteryController;
 import com.android.systemui.statusbar.policy.BluetoothController;
+import com.android.systemui.statusbar.policy.Clock;
+import com.android.systemui.statusbar.policy.ClockCenter;
 import com.android.systemui.statusbar.policy.DateView;
 import com.android.systemui.statusbar.policy.IntruderAlertView;
 import com.android.systemui.statusbar.policy.LocationController;
@@ -477,7 +479,12 @@ public class PhoneStatusBar extends BaseStatusBar {
         mStatusBarView = (PhoneStatusBarView) mStatusBarWindow.findViewById(R.id.status_bar);
         mStatusBarView.setStatusBar(this);
         mStatusBarView.setBar(this);
+
         mBarView = (ViewGroup) mStatusBarView;
+
+        // status bar clock
+        mClock = (Clock) mStatusBarView.findViewById(R.id.clock);
+        mCClock = (ClockCenter) mStatusBarView.findViewById(R.id.center_clock);
 
         PanelHolder holder = (PanelHolder) mStatusBarWindow.findViewById(R.id.panel_holder);
         mStatusBarView.setPanelHolder(holder);
@@ -633,7 +640,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         });
 
         mTicker = new MyTicker(context, mStatusBarView);
-
         TickerView tickerView = (TickerView)mStatusBarView.findViewById(R.id.tickerText);
         tickerView.mTicker = mTicker;
 
@@ -645,17 +651,13 @@ public class PhoneStatusBar extends BaseStatusBar {
         // Other icons
         mLocationController = new LocationController(mContext); // will post a notification
         mBatteryController = new BatteryController(mContext);
+        mBatteryController.addIconView((ImageView)mStatusBarView.findViewById(R.id.battery));
         mSbBatteryController = (SbBatteryController)mStatusBarView.findViewById(R.id.battery_cluster);
         mNetworkController = new NetworkController(mContext);
         mBluetoothController = new BluetoothController(mContext);
-
-        SignalClusterView signalCluster = (SignalClusterView)mStatusBarView.findViewById(R.id.signal_cluster);
-        mNetworkController.addSignalCluster(signalCluster);
-        signalCluster.setNetworkController(mNetworkController);
-
-        signalCluster = (SignalClusterView)mStatusBarView.findViewById(R.id.signal_cluster_alt);
-        mNetworkController.addSignalCluster(signalCluster);
-        signalCluster.setNetworkController(mNetworkController);
+        mSignalCluster = (SignalClusterView)mStatusBarView.findViewById(R.id.signal_cluster);
+        mNetworkController.addSignalCluster(mSignalCluster);
+        mSignalCluster.setNetworkController(mNetworkController);
 
         mEmergencyCallLabel = (TextView)mStatusBarWindow.findViewById(R.id.emergency_calls_only);
         if (mEmergencyCallLabel != null) {
@@ -762,6 +764,8 @@ public class PhoneStatusBar extends BaseStatusBar {
             // wherever you find it, Quick Settings needs a container to survive
             mSettingsContainer = (QuickSettingsContainerView)
                     mStatusBarWindow.findViewById(R.id.quick_settings_container);
+
+            android.util.Log.d("PARANOID", "mSettingsContainer="+mSettingsContainer);
 
             mToggleManager = new ToggleManager(mContext);
             mToggleManager.setControllers(mBluetoothController, mNetworkController, mBatteryController,
@@ -893,16 +897,16 @@ public class PhoneStatusBar extends BaseStatusBar {
         return lp;
     }
 
+    void onBarViewDetached() {
+     //   WindowManagerImpl.getDefault().removeView(mStatusBarWindow);
+    }
+
     @Override
     public void toggleNotificationShade() {
         int msg = (mExpandedVisible)
                 ? MSG_CLOSE_PANELS : MSG_OPEN_NOTIFICATION_PANEL;
         mHandler.removeMessages(msg);
         mHandler.sendEmptyMessage(msg);
-    }
-
-    void onBarViewDetached() {
-     //   WindowManagerImpl.getDefault().removeView(mStatusBarWindow);
     }
 
     @Override
@@ -3178,7 +3182,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         public void onChange(boolean selfChange) {
             boolean uiModeIsToggled = Settings.Secure.getInt(mContext.getContentResolver(),
                                     Settings.Secure.UI_MODE_IS_TOGGLED, 0) == 1;
-
+            onChange(selfChange, null);
             if (uiModeIsToggled != mUiModeIsToggled) {
                 recreateStatusBar();
             }
@@ -3206,6 +3210,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     private void recreateStatusBar() {
+        mRecreating = true;
         mStatusBarContainer.removeAllViews();
 
         // extract icons from the soon-to-be recreated viewgroup.
@@ -3247,6 +3252,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         updateExpandedViewPos(EXPANDED_LEAVE_ALONE);
         mNotificationShortcutsLayout.recreateShortcutLayout();
+        mRecreating = false;
    }
 
    protected void updateSettings() {
