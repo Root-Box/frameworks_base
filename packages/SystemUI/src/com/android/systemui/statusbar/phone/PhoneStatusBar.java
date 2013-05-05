@@ -3182,7 +3182,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         public void onChange(boolean selfChange) {
             boolean uiModeIsToggled = Settings.Secure.getInt(mContext.getContentResolver(),
                                     Settings.Secure.UI_MODE_IS_TOGGLED, 0) == 1;
-            onChange(selfChange, null);
             if (uiModeIsToggled != mUiModeIsToggled) {
                 recreateStatusBar();
             }
