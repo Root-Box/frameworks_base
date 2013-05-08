@@ -11,7 +11,7 @@ import com.android.systemui.R;
 public class RootBoxToggle extends BaseToggle {
 
     @Override
-    protected void init(Context c, int style) {
+    public void init(Context c, int style) {
         super.init(c, style);
         setIcon(R.drawable.ic_qs_rb_settings);
         setLabel(R.string.quick_settings_rootbox);

@@ -20,7 +20,7 @@ public class ProfileToggle extends BaseToggle {
     private ProfileReceiver mProfileReceiver;
 
     @Override
-    protected void init(Context c, int style) {
+    public void init(Context c, int style) {
         super.init(c, style);
         mProfileReceiver = new ProfileReceiver();
         mProfileReceiver.registerSelf();

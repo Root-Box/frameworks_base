@@ -76,6 +76,7 @@ import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.statusbar.StatusBarNotification;
 import com.android.systemui.R;
 import com.android.systemui.aokp.AwesomeAction;
+import com.android.systemui.aokp.AokpSwipeRibbon;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.CommandQueue;
 import com.android.systemui.statusbar.DoNotDisturb;
@@ -168,6 +169,10 @@ public class TabletStatusBar extends BaseStatusBar implements
     NotificationIconArea mNotificationIconArea;
     ViewGroup mNavigationArea;
     ViewGroup mNotificationHolder;
+
+    private AokpSwipeRibbon mAokpSwipeRibbonLeft;
+    private AokpSwipeRibbon mAokpSwipeRibbonRight;
+    private AokpSwipeRibbon mAokpSwipeRibbonBottom;
 
     boolean mNotificationDNDMode;
     NotificationData.Entry mNotificationDNDDummyEntry;
