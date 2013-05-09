@@ -291,4 +291,8 @@
     <dimen name="notification_shortcuts_close_handle_height">28dp</dimen>
     <dimen name="notification_shortcuts_spacing_height">88dp</dimen>
     <dimen name="notification_shortcuts_drawer_margin">56dp</dimen>
+
+    <!-- Constant for hidden ribbon drag handle -->
+    <dimen name="ribbon_drag_handle_height">25dp</dimen>
+
 </resources>
