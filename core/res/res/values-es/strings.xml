@@ -1458,6 +1458,31 @@
     <string name="enable_accessibility_canceled" msgid="3833923257966635673">"Accesibilidad cancelada"</string>
     <string name="user_switched" msgid="3768006783166984410">"Usuario actual: <xliff:g id="NAME">%1$s</xliff:g>"</string>
     <string name="owner_name" msgid="2716755460376028154">"Propietario"</string>
+    <string name="global_actions_toggle_expanded_desktop_mode">Escritorio extendido</string>
+    <string name="global_actions_expanded_desktop_mode_on_status">Activado</string>
+    <string name="global_actions_expanded_desktop_mode_off_status">Desactivado</string>
+    <string name="global_action_screenshot">Captura de pantalla</string>
+    <string name="global_action_torch">Linterna</string>
+    <string name="global_actions_toggle_navbar_hide">Controles barra de estado y navegación</string>
+    <string name="permlab_preventpower">Anular tecla encendido</string>
+    <string name="permdesc_preventpower">Permite que una aplicación cambie el comportamiento de la tecla de encendido</string>
+    <string name="permlab_fm_radio_receiver">Controlar receptor FM</string>
+    <string name="permdesc_fm_radio_receiver">Permite que una aplicación controle el receptor FM.</string>
+    <string name="permlab_fm_radio_transmitter">Controlar transmisor FM</string>
+    <string name="permdesc_fm_radio_transmitter">Permite que una aplicación controle el transmisor FM.</string>
+    <string name="lockscreen_always_battery">Descargando, <xliff:g id="number">%d</xliff:g><xliff:g id="percent">%%</xliff:g></string>
+    <string name="lockscreen_always_low_battery">Conecta el cargador, <xliff:g id="number">%d</xliff:g><xliff:g id="percent">%%</xliff:g></string>
+    <string name="reset_perms">Restablecer los permisos</string>
+    <string name="app_killed_message">Aplicación finalizada</string>
+    <string name="reboot">Reiniciar</string>
+    <string name="reboot_recovery">Modo Recovery</string>
+    <string name="reboot_download">Modo Download</string>
+    <string name="reboot_bootloader">Modo Bootloader</string>
+    <string name="reboot_progress">Reiniciando...</string>
+    <string name="vibration_picker_title">Selecciona vibración</string>
+    <string name="vibration_picker_del_title">Borrar vibración</string>
+    <string name="notify_turn_wifi_off_title">Apagar Wi-Fi</string>
+    <string name="notify_turn_wifi_ap_off_title">Apagar Wi-Fi AP</string>
     <string name="profileNameDefault">Predeterminado</string>
     <string name="profileNameWork">Trabajo</string>
     <string name="profileNameHome">Casa</string>
@@ -1469,24 +1494,36 @@
     <string name="profileGroupEmail">Email</string>
     <string name="profileGroupSMS">SMS</string>
     <string name="wildcardProfile">Otro</string>
-    <string name="reboot_system" product="tablet">Reiniciar tablet</string>
-    <string name="reboot_system" product="default">Reiniciar teléfono</string>
-    <string name="global_action_screenshot">Captura de pantalla</string>
-    <string name="global_actions_toggle_expanded_desktop_mode">Escritorio extendido</string>
-    <string name="global_actions_expanded_desktop_mode_on_status">Activado</string>
-    <string name="global_actions_expanded_desktop_mode_off_status">Desactivado</string>
-    <string name="reboot_reboot">Reiniciar</string>
-    <string name="reboot_recovery">Modo Recovery</string>
-    <string name="reboot_bootloader">Modo Bootloader</string>
-    <string name="reboot_bootmenu">Modo Bootmenu</string>
-    <string name="reboot_fastboot">Modo Fastboot</string>
-    <string name="reboot_download">Modo Download</string>
-    <string name="reboot_progress">Reiniciando\u2026</string>
-    <string name="reboot_confirm">El terminal se reiniciará</string>
-    <string name="permlab_preventpower">Anular tecla encendido</string>
-    <string name="permdesc_preventpower">Permite que una aplicación cambie el comportamiento de la tecla de encendido</string>
-    <string name="lockscreen_discharging">Descargando, <xliff:g id="number">%d</xliff:g><xliff:g id="percent">%%</xliff:g></string>
-    <string name="app_killed_message">Aplicación finalizada</string>
-    <string name="global_action_reboot">Reiniciar</string>
     <string name="global_action_choose_profile">Perfil</string>
+    <string name="toast_rotation_unlocked">Rotación de pantalla desbloqueada</string>
+    <string name="toast_rotation_locked">Rotación de pantalla bloqueada</string>
+    <string name="action_home">Inicio</string>
+    <string name="action_back">Atrás</string>
+    <string name="action_recents">Recientes</string>
+    <string name="action_recents_gb">Recientes (Estilo GB)</string>
+    <string name="action_search">Buscar</string>
+    <string name="action_screenshot">Captura de pantalla</string>
+    <string name="action_menu">Menú</string>
+    <string name="action_ime">Modo de escritura</string>
+    <string name="action_kill">Cerrar Aplicación</string>
+    <string name="action_lastapp">Última Aplicación</string>
+    <string name="action_power">Bloquear</string>
+    <string name="action_notifications">Notificaciones</string>
+    <string name="action_assist">Google Now</string>
+    <string name="action_clockoptions">Opciones reloj</string>
+    <string name="action_voiceassist">Comandos de voz</string>
+    <string name="action_torch">Linterna</string>
+    <string name="action_silent">Ring/Silencio</string>
+    <string name="action_vib">Ring/Vibración</string>
+    <string name="action_silent_vib">Ring/Vibración/Silencio</string>
+    <string name="action_event">Eventos</string>
+    <string name="action_today">Hoy</string>
+    <string name="action_alarm">Alarma</string>
+    <string name="action_unlock">Desbloquear</string>
+    <string name="action_camera">Cámara</string>
+    <string name="action_null">Vácio</string>
+    <string name="action_widgets">Nav Widgets</string>
+    <string name="action_app_window">Ventana aplicación</string>
+    <string name="action_ribbon">AOKP Ribbon</string>
+    <string name="action_app">Aplicación</string>
 </resources>
