@@ -2978,6 +2978,12 @@ public final class Settings {
         public static final String NAVIGATION_BAR_SHOW_NOW = "navigation_bar_show_now";
 
         /**
+         * Used as a flag to determine if StatusBar hidden is checked
+         * @hide
+         */
+        public static final String HIDE_STATUSBAR = "hide_statusbar";
+
+        /**
          * Used as a flag to determine if we have statusbar hidden
          * @hide
          */

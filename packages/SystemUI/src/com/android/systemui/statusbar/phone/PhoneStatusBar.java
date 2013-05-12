@@ -262,6 +262,10 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     private boolean mShowCarrierInPanel = false;
 
+    // StatusBar hide and seek
+    private boolean isAutoStatusChecked = false;
+    private boolean isStatusBarHideChecked = false;
+
     // position
     int[] mPositionTmp = new int[2];
     boolean mExpandedVisible;
@@ -1349,15 +1353,18 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     private void updateStatusBarVisibility() {
+    boolean isAutoStatusChecked = (Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.AUTO_HIDE_STATUSBAR, 0) == 1);
+    boolean isStatusBarHideChecked = (Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.HIDE_STATUSBAR, 0) == 1);
 
-        if (Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.AUTO_HIDE_STATUSBAR, 0) == 1) {
+        if (isAutoStatusChecked && isStatusBarHideChecked) {
             Settings.System.putInt(mContext.getContentResolver(),
                     Settings.System.STATUSBAR_HIDDEN,
                     (mNotificationData.size() == 0) ? 1 : 0);
-        } else {
+        } else if (!isAutoStatusChecked && isStatusBarHideChecked) {
             Settings.System.putInt(mContext.getContentResolver(),
-                    Settings.System.STATUSBAR_HIDDEN, 0);
+                    Settings.System.STATUSBAR_HIDDEN, 1);
         }
     }
 
