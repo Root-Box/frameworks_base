@@ -421,15 +421,22 @@ public class AokpSwipeRibbon extends LinearLayout {
                 toggleMap.put(LTE_TOGGLE, LteToggle.class);
             }
             toggleMap.put(FAV_CONTACT_TOGGLE, FavoriteUserToggle.class);
+            toggleMap.put(VOLUME_TOGGLE, VolumeToggle.class);
             toggleMap.put(NAVBAR_HIDE_TOGGLE, NavbarHideToggle.class);
             toggleMap.put(QUICKRECORD_TOGGLE, QuickRecordToggle.class);
+            toggleMap.put(POWERMENU_TOGGLE, PowerMenuToggle.class);
+            toggleMap.put(PROFILE_TOGGLE, ProfileToggle.class);
             toggleMap.put(QUIETHOURS_TOGGLE, QuietHoursToggle.class);
+            toggleMap.put(ROOTBOX_TOGGLE, RootBoxToggle.class);
             toggleMap.put(SLEEP_TOGGLE, SleepToggle.class);
             toggleMap.put(STATUSBAR_TOGGLE, StatusbarToggle.class);
+            toggleMap.put(PIE_TOGGLE, PieToggle.class);
+            toggleMap.put(DARK_TOGGLE, DarkToggle.class);
             toggleMap.put(SCREENSHOT_TOGGLE, ScreenshotToggle.class);
             toggleMap.put(REBOOT_TOGGLE, RebootToggle.class);
             toggleMap.put(CUSTOM_TOGGLE, CustomToggle.class);
             toggleMap.put(STAYAWAKE_TOGGLE, StayAwakeToggle.class);
+            toggleMap.put(WIRELESS_ADB_TOGGLE, WirelessAdbToggle.class);
             // toggleMap.put(BT_TETHER_TOGGLE, null);
         }
         return toggleMap;

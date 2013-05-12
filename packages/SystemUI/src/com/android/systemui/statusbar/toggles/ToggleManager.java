@@ -164,7 +164,6 @@ public class ToggleManager {
                 toggleMap.put(LTE_TOGGLE, LteToggle.class);
             }
             toggleMap.put(FAV_CONTACT_TOGGLE, FavoriteUserToggle.class);
-            toggleMap.put(SOUND_STATE_TOGGLE, SoundStateToggle.class);
             toggleMap.put(VOLUME_TOGGLE, VolumeToggle.class);
             toggleMap.put(NAVBAR_HIDE_TOGGLE, NavbarHideToggle.class);
             toggleMap.put(QUICKRECORD_TOGGLE, QuickRecordToggle.class);
