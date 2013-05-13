@@ -268,8 +268,8 @@ public class PhoneStatusBar extends BaseStatusBar {
     private boolean mShowCarrierInPanel = false;
 
     // StatusBar hide and seek
-    private boolean isAutoStatusChecked = false;
-    private boolean isStatusBarHideChecked = false;
+    boolean mAutoStatusChecked;
+    boolean mStatusBarHideChecked;
 
     // position
     int[] mPositionTmp = new int[2];
@@ -577,6 +577,12 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         mUiModeIsToggled = Settings.Secure.getInt(mContext.getContentResolver(),
                               Settings.Secure.UI_MODE_IS_TOGGLED, 0) == 1;
+
+        mAutoStatusChecked = Settings.System.getInt(mContext.getContentResolver(),
+                               Settings.System.AUTO_HIDE_STATUSBAR, 0) == 1;
+
+        mStatusBarHideChecked = Settings.System.getInt(mContext.getContentResolver(),
+                                 Settings.System.HIDE_STATUSBAR, 0) == 1;
 
         mHasFlipSettings = res.getBoolean(R.bool.config_hasFlipSettingsPanel);
 
@@ -1366,18 +1372,23 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     private void updateStatusBarVisibility() {
-    boolean isAutoStatusChecked = (Settings.System.getInt(mContext.getContentResolver(),
-            Settings.System.AUTO_HIDE_STATUSBAR, 0) == 1);
-    boolean isStatusBarHideChecked = (Settings.System.getInt(mContext.getContentResolver(),
-            Settings.System.HIDE_STATUSBAR, 0) == 1);
+    boolean AutoStatusChecked = Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.AUTO_HIDE_STATUSBAR, 0) == 1;
+    boolean StatusBarHideChecked = Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.HIDE_STATUSBAR, 0) == 1;
 
-        if (isAutoStatusChecked && isStatusBarHideChecked) {
+        if (AutoStatusChecked && StatusBarHideChecked) {
             Settings.System.putInt(mContext.getContentResolver(),
                     Settings.System.STATUSBAR_HIDDEN,
                     (mNotificationData.size() == 0) ? 1 : 0);
-        } else if (!isAutoStatusChecked && isStatusBarHideChecked) {
+        } else if (!AutoStatusChecked && StatusBarHideChecked) {
             Settings.System.putInt(mContext.getContentResolver(),
                     Settings.System.STATUSBAR_HIDDEN, 1);
+        } else if (!StatusBarHideChecked) {
+            Settings.System.putInt(mContext.getContentResolver(),
+                    Settings.System.STATUSBAR_HIDDEN, 0);
+        } else if (StatusBarHideChecked != mStatusBarHideChecked) {
+                    makeStatusBarView();
         }
     }
 
