@@ -225,8 +225,6 @@
     <string name="quick_settings_stayawake_off">Permanecer despierto Off</string>
     <string name="quick_settings_adb_on"><xliff:g id="ip" example="192.168.1.5">%s</xliff:g></string>
     <string name="quick_settings_adb_off">Wireless ADB Off</string>
-    <string name="status_bar_help_title">Las notificaciones aparecen aquí</string>
-    <string name="status_bar_help_text">"Desliza el dedo hacia abajo para acceder al contenido. Vuelve a deslizar el dedo hacia abajo para acceder a los controles del sistema."</string>
     <string name="close">Cerrar</string>
     <string name="app_window">Aplicaciones</string>
     <string name="shortcut_label">Acciones AOKP</string>
