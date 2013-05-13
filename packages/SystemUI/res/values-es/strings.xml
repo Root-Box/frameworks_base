@@ -203,9 +203,35 @@
     <string name="quick_settings_brightness_dialog_auto_brightness_label" msgid="5064982743784071218">"AUTO"</string>
     <string name="status_bar_help_title" msgid="1199237744086469217">"Las notificaciones aparecen aquí"</string>
     <string name="status_bar_help_text" msgid="7874607155052076323">"Desliza el dedo hacia abajo para acceder al contenido."\n"Vuelve a deslizar el dedo hacia abajo para acceder a los controles del sistema."</string>
-    <!-- Target/Action Strings -->
+    <string name="permdesc_screenshot">Capturar pantalla</string>
+    <string name="permlab_screenshot">Permite que la aplicación haga una captura de pantalla. Esta es protegida por SystemUI.</string>
+    <string name="accessibility_data_connection_HP">HSPA+</string>
+    <string name="quick_settings_swagger">Swagger</string>
+    <string name="quick_settings_swaggersun">Swagger Sunday</string>
+    <string name="quick_settings_fbgt">FBGT</string>
+    <string name="quick_settings_powermenu">Menú apagar</string>
+    <string name="quick_settings_rootbox">RootBox</string>
+    <string name="quick_settings_profile">Perfil</string>
+    <string name="quick_settings_recording">Grabando...</string>
+    <string name="quick_settings_recordingcap">Grabación capturada</string>
+    <string name="quick_settings_playing">Reproduciendo...</string>
+    <string name="quick_settings_quickrecord">Grabación rápida</string>
+    <string name="quick_settings_nofile">Pulsación larga para grabar</string>
+    <string name="quick_settings_sleep">Apagar pantalla</string>
+    <string name="quick_settings_volume">Volumen</string>
+    <string name="quick_settings_reboot">Reiniciar</string>
+    <string name="quick_settings_reboot_message">Su dispositivo se está reiniciando</string>
+    <string name="quick_settings_stayawake_on">Permanecer despierto On</string>
+    <string name="quick_settings_stayawake_off">Permanecer despierto Off</string>
+    <string name="quick_settings_adb_on"><xliff:g id="ip" example="192.168.1.5">%s</xliff:g></string>
+    <string name="quick_settings_adb_off">Wireless ADB Off</string>
+    <string name="status_bar_help_title">Las notificaciones aparecen aquí</string>
+    <string name="status_bar_help_text">"Desliza el dedo hacia abajo para acceder al contenido. Vuelve a deslizar el dedo hacia abajo para acceder a los controles del sistema."</string>
+    <string name="close">Cerrar</string>
+    <string name="app_window">Aplicaciones</string>
+    <string name="shortcut_label">Acciones AOKP</string>
     <string name="action_home">Inicio</string>
-    <string name="action_back">Atras</string>
+    <string name="action_back">Atrás</string>
     <string name="action_recents">Recientes</string>
     <string name="action_screenshot">Captura de pantalla</string>
     <string name="action_menu">Menú</string>
@@ -225,6 +251,67 @@
     <string name="toggle_ring_vib_silent">Tono/Vib/Silen. - Toggle</string>
     <string name="app_killed_message">Aplicación cerrada</string>
     <string name="recents_kill_all_button_text">Cerrar todo</string>
+    <string name="screenshot_toast">Captura de pantalla %1$d segundos</string>
+    <string name="quick_settings_vibrate_on_label">Vibración On</string>
+    <string name="quick_settings_vibrate_off_label">Vibración Off</string>
+    <string name="quick_settings_silent_on_label">Silencio On</string>
+    <string name="quick_settings_silent_off_label">Silencio Off</string>
+    <string name="quick_settings_fcharge_on_label">Carga rápida On</string>
+    <string name="quick_settings_fcharge_off_label">Carga rápida Off</string>
+    <string name="quick_settings_torch_on_label">Linterna On</string>
+    <string name="quick_settings_torch_off_label">Linterna Off</string>
+    <string name="quick_settings_nfc_on_label">NFC On</string>
+    <string name="quick_settings_nfc_off_label">NFC Off</string>
+    <string name="quick_settings_wifi_tether_on_label">Wifi Tether On</string>
+    <string name="quick_settings_wifi_tether_off_label">Wifi Tether Off</string>
+    <string name="quick_settings_bt_tether_on_label">BT Tether On</string>
+    <string name="quick_settings_bt_tether_off_label">BT Tether Off</string>
+    <string name="quick_settings_usb_tether_on_label">USB Tether On</string>
+    <string name="quick_settings_usb_tether_off_label">USB Tether Off</string>
+    <string name="quick_settings_sync_on_label">Sync On</string>
+    <string name="quick_settings_sync_off_label">Sync Off</string>
+    <string name="quick_settings_twog_on_label">2g On</string>
+    <string name="quick_settings_twog_off_label">2g Off</string>
+    <string name="quick_settings_lte_on_label">LTE On</string>
+    <string name="quick_settings_lte_off_label">LTE Off</string>
+    <string name="quick_settings_gps_on_label">GPS On</string>
+    <string name="quick_settings_gps_off_label">GPS Off</string>
+    <string name="quick_settings_data_on_label">Data On</string>
+    <string name="quick_settings_data_off_label">Data Off</string>
+    <string name="quick_settings_navbar_hide_on_label">Ocultar Navbar On</string>
+    <string name="quick_settings_navbar_hide_off_label">Ocultar Navbar Off</string>
+    <string name="quick_settings_sound_on">Sonido on</string>
+    <string name="quick_settings_statusbar_on_label">Barra de estado On</string>
+    <string name="quick_settings_statusbar_off_label">Barra de estado Off</string>
+    <string name="quick_settings_quiet_hours_on_label">Horas de silencio On</string>
+    <string name="quick_settings_quiet_hours_off_label">Horas de silencio Off</string>
+    <string name="quick_settings_pie_on_label">Pie On</string>
+    <string name="quick_settings_pie_off_label">Pie Off</string>
+    <string name="quick_settings_rb_dark_on_label">Dark RB On</string>
+    <string name="quick_settings_rb_dark_off_label">Dark RB Off</string>
+    <string name="quick_settings_swaggersuntoast">#SwaggerSunday</string>
+    <string name="quick_settings_screenshot">Captura de pantalla</string>
+    <string name="memory">RAM</string>
+    <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> libre</string>
+    <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> usada</string>
+    <string name="service_process_name"><xliff:g id="process">%1$s</xliff:g></string>
+    <string name="service_client_name"><xliff:g id="client_name">%1$s</xliff:g></string>
+    <string name="service_started_by_app">Iniciado por aplicación.</string>
+    <string name="running_processes_item_description_s_s"><xliff:g id="numprocess">%1$d</xliff:g>
+        Proceso y <xliff:g id="numservices">%2$d</xliff:g> servicio</string>
+    <string name="running_processes_item_description_s_p"><xliff:g id="numprocess">%1$d</xliff:g>
+        Procesos y <xliff:g id="numservices">%2$d</xliff:g> servicios</string>
+    <string name="running_processes_item_description_p_s"><xliff:g id="numprocess">%1$d</xliff:g>
+        Proceso y <xliff:g id="numservices">%2$d</xliff:g> servicio</string>
+    <string name="running_processes_item_description_p_p"><xliff:g id="numprocess">%1$d</xliff:g>
+        Procesos y <xliff:g id="numservices">%2$d</xliff:g> servicios</string>
+    <string name="running_process_item_user_label">Usuario: <xliff:g id="user_name">%1$s</xliff:g></string>
+    <string name="pie_date_format">ccc, dd MMM yyyy</string>
+    <string name="pie_hour_format_12">hh:mm</string>
+    <string name="pie_hour_format_24">HH:mm</string>
+    <string name="pie_am_pm">a</string>
+    <string name="powerwidget_screen_timeout_toast">Tiempo de pantalla establecido a: %1$d %2$s</string>
+    <string name="brightness_label">Brillo</string>
     <string name="toggle_USER">Usuario</string>
     <string name="toggle_BRIGHTNESS">Brillo</string>
     <string name="toggle_SETTINGS">Ajustes</string>
@@ -249,7 +336,7 @@
     <string name="toggle_2G">2G</string>
     <string name="toggle_LTE">LTE</string>
     <string name="toggle_FAVCONTACT">Contacto favorito</string>
-    <string name="toggle_SOUNDSTATE">Estado de sónido</string>
+    <string name="toggle_SOUNDSTATE">Estado de sonido</string>
     <string name="toggle_VOLUME">Volumen</string>
     <string name="toggle_NAVBARHIDE">Ocultar navbar</string>
     <string name="toggle_POWERMENU">Menu apagado</string>
@@ -261,5 +348,9 @@
     <string name="toggle_SLEEP">Apagar pantalla</string>
     <string name="toggle_PIE">Controles circulares</string>
     <string name="toggle_DARK">Dark RB</string>
+    <string name="toggle_SCREENSHOT">Captura de pantalla</string>
+    <string name="toggle_REBOOT">Reiniciar</string>
     <string name="toggle_CUSTOM">Personalizado</string>
+    <string name="toggle_STAYAWAKE">Permanecer despierto</string>
+    <string name="toggle_WIRELESSADB">Wireless ADB</string>
 </resources>
