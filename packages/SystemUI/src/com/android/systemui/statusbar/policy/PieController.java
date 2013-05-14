@@ -162,7 +162,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
     private IWindowManager mWm;
     private int mBatteryLevel;
     private int mBatteryStatus;
-    private boolean mHasTelephony;
     private TelephonyManager mTelephonyManager;
     private ServiceState mServiceState;
     private ActivityManager mActivityManager;
@@ -1082,7 +1081,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
     }
 
     public String getOperatorState() {
-        if (!mHasTelephony) {
+        if (mTelephonyManager == null) {
             return null;
         }
         if (mServiceState == null || mServiceState.getState() == ServiceState.STATE_OUT_OF_SERVICE) {
