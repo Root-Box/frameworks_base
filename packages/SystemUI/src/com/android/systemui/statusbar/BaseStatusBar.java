@@ -2097,10 +2097,16 @@ public abstract class BaseStatusBar extends SystemUI implements
         }
     }
 
-    public void disableTriggers( boolean disableTriggers) {
-        if (mPieContainer != null) {
+    public void disableTriggers(boolean disableTriggers) {
+        if (isPieEnabled()) {
             mDisableTriggers = disableTriggers;
             setupTriggers(false);
+        }
+    }
+
+    public void recreatePie() {
+        if (isPieEnabled()) {
+            mPieController.constructSlices();
         }
     }
 
