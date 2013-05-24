@@ -764,7 +764,7 @@ public class PieMenu extends FrameLayout {
             int state;
 
             // Draw background
-            if (mStatusMode != -1 && !mNavbarZero) {
+            if (mStatusMode != -1) {
                 canvas.drawARGB((int)(mAnimators[ANIMATOR_DEC_SPEED15].fraction * 0xcc), 0, 0, 0);
             }
 
@@ -800,7 +800,7 @@ public class PieMenu extends FrameLayout {
             }
 
             // Paint status report only if settings allow
-            if (mStatusMode != -1 && !mNavbarZero) {
+            if (mStatusMode != -1) {
 
                 // Draw chevron rings
                 mChevronBackgroundLeft.setAlpha((int)(mAnimators[ANIMATOR_DEC_SPEED15].fraction * mGlowOffsetLeft / 2 * (mPanelOrientation == Gravity.TOP ? 0.2 : 1)));
@@ -1022,7 +1022,8 @@ public class PieMenu extends FrameLayout {
                         break;
                 }
 
-                if (!mNavbarZero) {
+                if (Settings.System.getInt(mContext.getContentResolver(),
+                        Settings.System.PIE_NOTIFICATIONS, 0) == 1) {
                     if (state == PieStatusPanel.QUICK_SETTINGS_PANEL && 
                             mStatusPanel.getFlipViewState() != PieStatusPanel.QUICK_SETTINGS_PANEL
                             && mStatusPanel.getCurrentViewState() != PieStatusPanel.QUICK_SETTINGS_PANEL) {
