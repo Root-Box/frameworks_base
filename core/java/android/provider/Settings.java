@@ -3063,6 +3063,12 @@ public final class Settings {
          */
         public static final String SCREENSHOT_TOGGLE_DELAY = "screenshot_toggle_delay";
 
+        /**
+         * Whether to wake the screen with the home key, the value is boolean.
+         * @hide
+         */
+        public static final String HOME_WAKE_SCREEN = "home_wake_screen";
+
     	  /**
          * Show the NavBar dialog in Power menu
          * @hide
