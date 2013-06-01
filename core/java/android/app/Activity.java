@@ -2421,7 +2421,7 @@ public class Activity extends ContextThemeWrapper
             {
                 case MotionEvent.ACTION_DOWN:
                     tStatus = ev.getY();
-                    if (tStatus < getStatusBarHeight())
+                    if (tStatus < getStatusBarHeight() && mHiddenStatusbarPulldown)
                     {
                         mightBeMyGesture = true;
                         return true;
