@@ -328,11 +328,8 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
     }
 
     private void torchOff() {
-        Intent intent = new Intent("com.aokp.torch.INTENT_TORCH_OFF");
-        intent.setComponent(ComponentName.unflattenFromString
-                ("com.aokp.Torch/.TorchReceiver"));
-        intent.setAction("com.aokp.torch.INTENT_TORCH_OFF");
-        intent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        Intent intent = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
+        intent.putExtra("bright", false);
         mContext.sendBroadcast(intent);
     }
 
@@ -363,10 +360,8 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
             if (!torchActive && !mGlowTorchOn) {
                 mGlowTorchOn = true;
                 vibrate();
-                Intent intent = new Intent("com.aokp.torch.INTENT_TORCH_ON");
-                intent.setComponent(ComponentName.unflattenFromString
-                        ("com.aokp.Torch/.TorchReceiver"));
-                intent.setAction("com.aokp.torch.INTENT_TORCH_ON");
+                Intent intent = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
+                intent.putExtra("bright", false);
                 mContext.sendBroadcast(intent);
             }
         }
