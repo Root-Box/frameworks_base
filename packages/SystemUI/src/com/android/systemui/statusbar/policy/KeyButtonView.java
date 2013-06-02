@@ -181,7 +181,7 @@ public class KeyButtonView extends ImageView {
                 Settings.System.NAV_BUTTON_COLOR);
         if (!colorInfo.lastColorString.equals(mLastButtonColor.lastColorString)) {
             if (colorInfo.isLastColorNull) {
-                mSettingsObserver = new SettingsObserver(new Handler());
+                mSettingsObserver = GlobalSettingsObserver.getInstance(mContext);
                 mSettingsObserver.observe();
             } else {
                 setColorFilter(ColorUtils.extractRGB(colorInfo.lastColor) | 0xFF000000, PorterDuff.Mode.SRC_ATOP);
@@ -198,7 +198,7 @@ public class KeyButtonView extends ImageView {
                 Settings.System.NAV_GLOW_COLOR);
         if (!colorInfo.lastColorString.equals(mLastGlowColor.lastColorString)) {
             if (colorInfo.isLastColorNull) {
-                mSettingsObserver = new SettingsObserver(new Handler());
+                mSettingsObserver = GlobalSettingsObserver.getInstance(mContext);
                 mSettingsObserver.observe();
             } else {
                 mGlowBG.setColorFilter(colorInfo.lastColor, PorterDuff.Mode.SRC_ATOP);
