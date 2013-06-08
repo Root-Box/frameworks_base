@@ -3071,6 +3071,11 @@ public final class Settings {
          */
         public static final String POWER_DIALOG_SHOW_VOLUME_STATE_TOGGLE = "power_dialog_show_volume_state_toggle";
 
+         /**
+         * @hide
+         */
+        public static final String POWER_DIALOG_SHOW_PROFILES_TOGGLE = "power_dialog_show_profiles_toggle";
+
         /**
         *Show the Reboot on lockscreen dialog in Power menu
         * @hide
