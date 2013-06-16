@@ -50,10 +50,8 @@ public class GlowPadTorchHelper {
     public static boolean startTorch(Context mContext) {
         if (!torchActive(mContext)) {
             vibrate(mContext);
-            Intent intent = new Intent("com.aokp.torch.INTENT_TORCH_ON");
-            intent.setComponent(ComponentName.unflattenFromString
-                    ("com.aokp.Torch/.TorchReceiver"));
-            intent.setAction("com.aokp.torch.INTENT_TORCH_ON");
+            Intent intent = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
+            intent.putExtra("bright", false);
             mContext.sendBroadcast(intent);
             return true;
         } else {
@@ -65,11 +63,8 @@ public class GlowPadTorchHelper {
         if (logIt) {
             Log.w(TAG, "Second Torch Temination Required");
         }
-        Intent intent = new Intent("com.aokp.torch.INTENT_TORCH_OFF");
-        intent.setComponent(ComponentName.unflattenFromString
-                ("com.aokp.Torch/.TorchReceiver"));
-        intent.setAction("com.aokp.torch.INTENT_TORCH_OFF");
-        intent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        Intent intent = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
+        intent.putExtra("bright", false);
         mContext.sendBroadcast(intent);
     }
 
