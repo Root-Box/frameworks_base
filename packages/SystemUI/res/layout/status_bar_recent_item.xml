@@ -34,16 +34,18 @@
         android:clipChildren="false">
 
         <TextView android:id="@+id/app_label"
-            android:layout_width="@dimen/status_bar_recents_app_label_width"
-            android:layout_height="wrap_content"
+            android:layout_width="180dip"
+            android:layout_height="30dip"
             android:textSize="@dimen/status_bar_recents_app_label_text_size"
-            android:fadingEdge="horizontal"
-            android:fadingEdgeLength="@dimen/status_bar_recents_text_fading_edge_length"
+            android:background="@drawable/rb_recents"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dip"
             android:scrollHorizontally="true"
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/app_icon"
-            android:paddingTop="2dp"
-            android:layout_marginLeft="@dimen/status_bar_recents_app_label_left_margin"
+            android:paddingLeft="10dip"
+            android:paddingTop="2dip"
+            android:layout_marginLeft="0dip"
             android:singleLine="true"
             android:ellipsize="marquee"
             android:textColor="@color/status_bar_recents_app_label_color"
@@ -52,9 +54,8 @@
         <FrameLayout android:id="@+id/app_thumbnail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/app_label"
-            android:layout_marginLeft="@dimen/status_bar_recents_thumbnail_left_margin"
+            android:layout_marginLeft="0dip"
+            android:layout_below="@id/app_label"
             android:background="@drawable/recents_thumbnail_bg"
             android:foreground="@drawable/recents_thumbnail_fg"
             android:visibility="invisible">
@@ -73,9 +74,10 @@
             android:layout_marginRight="3dip"
             android:layout_marginTop="3dip"
             android:background="@drawable/recents_callout_line"
+            android:visibility="gone"
         />
 
-        <ImageView android:id="@id/app_icon"
+        <ImageView android:id="@+id/app_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/app_label"
@@ -85,7 +87,6 @@
             android:maxHeight="@dimen/status_bar_recents_app_icon_max_height"
             android:scaleType="centerInside"
             android:adjustViewBounds="true"
-            android:visibility="invisible"
         />
 
         <TextView android:id="@+id/app_description"

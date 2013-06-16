@@ -2678,6 +2678,13 @@ public final class Settings {
          */
         public static final String RECENT_KILL_ALL_BUTTON = "recent_kill_all_button";
 
+        /**
+         * Switch between different recents style
+         *
+         * @hide
+         */
+        public static final String RECENTS_STYLE = "recents_style";
+
        /**
         * Lefty mode
         * @hide
