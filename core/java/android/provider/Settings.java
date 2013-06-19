@@ -3281,6 +3281,13 @@ public final class Settings {
         public static final String STATUSBAR_SIGNAL_TEXT_COLOR = "statusbar_signal_text_color";
 
         /*
+         * Enable or Disable PAC for certain options
+         *
+         * @hide
+         */
+        public static final String PAC_STATUS = "pac_status";
+
+        /*
          * On or off the Pie.
          *
          * @hide
