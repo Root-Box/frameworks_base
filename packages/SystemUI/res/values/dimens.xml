@@ -28,8 +28,8 @@
 
     <!-- Size of application thumbnail -->
     <dimen name="status_bar_recents_thumbnail_width">170dp</dimen>
-    <dimen name="status_bar_recents_thumbnail_height">150dp</dimen>
-    <dimen name="status_bar_recents_thumbnail_bg_padding">4dp</dimen>
+    <dimen name="status_bar_recents_thumbnail_height">145dp</dimen>
+    <dimen name="status_bar_recents_thumbnail_bg_padding">2dp</dimen>
 
     <!-- Size of application label text -->
     <dimen name="status_bar_recents_app_label_text_size">14dip</dimen>
