@@ -44,6 +44,7 @@
     <string name="toggle_NAVBARHIDE">Navbar hide</string>
     <string name="toggle_POWERMENU">Power Menu</string>
     <string name="toggle_PROFILE">Profiles</string>
+    <string name="toggle_HYBRID">Hybrid</string>
     <string name="toggle_QUICKRECORD">Quick Record</string>
     <string name="toggle_STATUSBAR">Statusbar</string>
     <string name="toggle_QUIETHOURS">Quiet Hours</string>
