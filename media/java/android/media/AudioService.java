@@ -3622,7 +3622,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 } else {
                     mStreamVolumeAlias[AudioSystem.STREAM_NOTIFICATION] = AudioSystem.STREAM_NOTIFICATION;
                 }
-                    mVolumeKeysControlRingStream = Settings.System.getIntForUser(mContentResolver,
+                    mVolumeKeysControlRingStream = Settings.System.getInt(mContentResolver,
                             Settings.System.VOLUME_KEYS_CONTROL_RING_STREAM, 1) == 1;
             }
         }
