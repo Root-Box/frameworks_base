@@ -3614,16 +3614,8 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 }
                 readDockAudioSettings(mContentResolver);
                 updateManualSafeMediaVolume();
-
-                mLinkNotificationWithVolume = Settings.System.getIntForUser(mContentResolver,
-                        Settings.System.VOLUME_LINK_NOTIFICATION, 1, UserHandle.USER_CURRENT) == 1;
-                if (mLinkNotificationWithVolume) {
-                    mStreamVolumeAlias[AudioSystem.STREAM_NOTIFICATION] = AudioSystem.STREAM_RING;
-                } else {
-                    mStreamVolumeAlias[AudioSystem.STREAM_NOTIFICATION] = AudioSystem.STREAM_NOTIFICATION;
-                }
-                    mVolumeKeysControlRingStream = Settings.System.getInt(mContentResolver,
-                            Settings.System.VOLUME_KEYS_CONTROL_RING_STREAM, 1) == 1;
+                mVolumeKeysControlRingStream = Settings.System.getInt(mContentResolver,
+                        Settings.System.VOLUME_KEYS_CONTROL_RING_STREAM, 1) == 1;
             }
         }
     }
