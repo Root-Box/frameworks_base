@@ -3966,6 +3966,13 @@ public final class Settings {
 
         /**
          *
+         * HALO colors
+         * @hide
+         */
+        public static final String HALO_COLORS = "halo_colors";
+
+        /**
+         *
          * HALO circle bg color.
          * @hide
          */
