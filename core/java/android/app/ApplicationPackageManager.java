@@ -1328,7 +1328,6 @@ final class ApplicationPackageManager extends PackageManager {
             // Should never happen!
         }
         return false;
->>>>>>> e48fce6... framework: Privacy Guard
     }
 
     /**
