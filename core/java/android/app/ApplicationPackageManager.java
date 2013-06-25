@@ -1295,7 +1295,6 @@ final class ApplicationPackageManager extends PackageManager {
     }
 
     @Override
-<<<<<<< HEAD
     public String[] getRevokedPermissions(String packageName) {
         try {
             return mPM.getRevokedPermissions(packageName);
@@ -1312,7 +1311,7 @@ final class ApplicationPackageManager extends PackageManager {
         } catch (RemoteException e) {
             // Should never happen!
         }
-=======
+
     public void setPrivacyGuardSetting(String packageName, boolean enabled) {
         try {
             mPM.setPrivacyGuardSetting(packageName, enabled, mContext.getUserId());
