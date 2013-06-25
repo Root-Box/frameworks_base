@@ -2060,8 +2060,6 @@
   <java-symbol type="string" name="symbol_picker_Y" />
   <java-symbol type="string" name="symbol_picker_z" />
   <java-symbol type="string" name="symbol_picker_Z" />
-<<<<<<< HEAD
-=======
 
   <!-- Pie Controls -->
   <java-symbol type="bool" name="config_allowPieService" />
@@ -2076,5 +2074,4 @@
   <java-symbol type="string" name="privacy_guard_notification" />
   <java-symbol type="string" name="privacy_guard_notification_detail" />
   <java-symbol type="drawable" name="stat_notify_privacy_guard" />
->>>>>>> e48fce6... framework: Privacy Guard
 </resources>
