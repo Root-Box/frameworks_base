@@ -3433,6 +3433,13 @@ public final class Settings {
         public static final String PIE_APP_WINDOW = "pie_app_window";
 
         /**
+         * Pie power, should default to 0 (no, show only when needed)
+         * @hide
+         */
+        public static final String PIE_POWER = "pie_power";
+
+
+        /**
          * Pie gap angle, should default to 2
          * @hide
          */
