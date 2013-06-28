@@ -95,6 +95,7 @@ public class ToggleManager {
     public static final String POWERMENU_TOGGLE = "POWERMENU";
     public static final String PROFILE_TOGGLE = "PROFILE";
     public static final String HYBRID_TOGGLE = "HYBRID";
+    public static final String HALO_TOGGLE = "HALO";
     public static final String STATUSBAR_TOGGLE = "STATUSBAR";
     public static final String QUIETHOURS_TOGGLE = "QUIETHOURS";
     public static final String ROOTBOX_TOGGLE = "ROOTBOX";
@@ -172,6 +173,7 @@ public class ToggleManager {
             toggleMap.put(POWERMENU_TOGGLE, PowerMenuToggle.class);
             toggleMap.put(PROFILE_TOGGLE, ProfileToggle.class);
             toggleMap.put(HYBRID_TOGGLE, HybridToggle.class);
+            toggleMap.put(HALO_TOGGLE, HaloToggle.class);
             toggleMap.put(STATUSBAR_TOGGLE, StatusbarToggle.class);
             toggleMap.put(QUIETHOURS_TOGGLE, QuietHoursToggle.class);
             toggleMap.put(ROOTBOX_TOGGLE, RootBoxToggle.class);
