@@ -79,7 +79,6 @@ import com.android.internal.telephony.ITelephony;
 import com.android.internal.widget.PointerLocationView;
 
 import android.util.DisplayMetrics;
-import android.util.ExtendedPropertiesUtils;
 import android.util.EventLog;
 import android.util.ExtendedPropertiesUtils;
 import android.util.Log;
