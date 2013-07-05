@@ -314,6 +314,14 @@ public class Contacts {
          */
         @Deprecated
         public static final String CUSTOM_VIBRATION = "custom_vibration";
+ 
+	/**
+         * A custom notification associated with a person. Not always present.
+         * <P>Type: TEXT (URI to the vibration)</P>
+         * @deprecated see {@link android.provider.ContactsContract}
+         */
+        @Deprecated
+        public static final String CUSTOM_NOTIFICATION = "custom_notification";
 
         /**
          * Whether the person should always be sent to voicemail. Not always
