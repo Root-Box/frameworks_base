@@ -129,6 +129,8 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
 
     MemInfoReader mMemInfoReader = new MemInfoReader();
 
+    private RecentsActivity mRecentsActivity;
+
     public static interface OnRecentsPanelVisibilityChangedListener {
         public void onRecentsPanelVisibilityChanged(boolean visible);
     }
@@ -335,6 +337,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         mRecentTasksLoader = RecentTasksLoader.getInstance(context);
         a.recycle();
         mSettingsObserver = new SettingsObserver(mHandler);
+        mRecentsActivity = (RecentsActivity) context;
     }
 
     @Override
@@ -445,11 +448,11 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
     }
 
     public void dismiss() {
-        ((RecentsActivity) mContext).dismissAndGoHome();
+        mRecentsActivity.dismissAndGoHome();
     }
 
     public void dismissAndGoBack() {
-        ((RecentsActivity) mContext).dismissAndGoBack();
+        mRecentsActivity.dismissAndGoBack();
     }
 
     public void onAnimationCancel(Animator animation) {
@@ -737,7 +740,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         } else {
             mRecentTaskDescriptions.addAll(tasks);
         }
-        if (((RecentsActivity) mContext).isActivityShowing()) {
+        if (mRecentsActivity.isActivityShowing()) {
             refreshViews();
         }
     }
