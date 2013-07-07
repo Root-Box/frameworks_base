@@ -25,6 +25,7 @@ import android.graphics.PorterDuff;
 import android.os.BatteryManager;
 import android.provider.Settings;
 import android.util.ColorUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,7 +45,24 @@ public class BatteryController extends BroadcastReceiver {
 
     private int mLevel;
     private boolean mPlugged;
+    private boolean mStatusPac;
     private ColorUtils.ColorSettingInfo mColorInfo;
+
+    private static int mBatteryStyle;
+    public static final int STYLE_ICON_ONLY = 0;
+    public static final int STYLE_TEXT_ONLY = 1;
+    public static final int STYLE_ICON_TEXT = 2;
+    public static final int STYLE_ICON_CENTERED_TEXT = 3;
+    public static final int STYLE_ICON_CIRCLE_RB = 4;
+    public static final int STYLE_ICON_SQUARE_RB = 5;
+    public static final int STYLE_ICON_SPEED_RB = 6;
+    public static final int STYLE_ICON_RACING_RB = 7;
+    public static final int STYLE_ICON_GAUGE_RB = 8;
+    public static final int STYLE_ICON_PLANET_RB = 9;
+    public static final int STYLE_ICON_SLIDER_RB = 10;
+    public static final int STYLE_ICON_BRICK_RB = 11;
+    public static final int STYLE_ICON_RUSH_RB = 12;
+    public static final int STYLE_HIDE = 13;
 
     public interface BatteryStateChangeCallback {
         public void onBatteryLevelChanged(int level, boolean pluggedIn);
@@ -89,17 +107,64 @@ public class BatteryController extends BroadcastReceiver {
     }
 
     public void updateBatteryLevel() {
-        final int icon = mPlugged ? R.drawable.stat_sys_battery_charge 
-                : R.drawable.stat_sys_battery;
+        mBatteryStyle = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.STATUSBAR_BATTERY_ICON, 0);
+        mStatusPac = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.PAC_STATUS, 0) == 1;
+        final int icon;
+        switch (mBatteryStyle) {
+            case STYLE_ICON_CIRCLE_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_circle
+                 : R.drawable.stat_sys_battery_circle;
+                 break;
+            case STYLE_ICON_SQUARE_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_square
+                 : R.drawable.stat_sys_battery_square;
+                 break;
+            case STYLE_ICON_SPEED_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_altcircle
+                 : R.drawable.stat_sys_battery_altcircle;
+                 break;
+            case STYLE_ICON_RACING_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_racing
+                 : R.drawable.stat_sys_battery_racing;
+                 break;
+            case STYLE_ICON_GAUGE_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_gauge
+                 : R.drawable.stat_sys_battery_gauge;
+                 break;
+            case STYLE_ICON_PLANET_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_planet
+                 : R.drawable.stat_sys_battery_planet;
+                 break;
+            case STYLE_ICON_SLIDER_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_slider
+                 : R.drawable.stat_sys_battery_slider;
+                 break;
+            case STYLE_ICON_BRICK_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_brick
+                 : R.drawable.stat_sys_battery_brick;
+                 break;
+            case STYLE_ICON_RUSH_RB:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge_rush
+                 : R.drawable.stat_sys_battery_rush;
+                 break;
+            default:
+                 icon = mPlugged ? R.drawable.stat_sys_battery_charge
+                 : R.drawable.stat_sys_battery;
+                 break;
+        }
         int N = mIconViews.size();
-        for (int i=0; i<N; i++) {
+        for (int i = 0; i < N; i++) {
             ImageView v = mIconViews.get(i);
             Drawable batteryBitmap = mContext.getResources().getDrawable(icon);
+         if (mStatusPac) {
             if (mColorInfo.isLastColorNull) {
                 batteryBitmap.clearColorFilter();                
             } else {
                 batteryBitmap.setColorFilter(mColorInfo.lastColor, PorterDuff.Mode.SRC_IN);
             }
+         }
             v.setImageDrawable(batteryBitmap);
             v.setImageLevel(mLevel);
             v.setContentDescription(mContext.getString(R.string.accessibility_battery_level,

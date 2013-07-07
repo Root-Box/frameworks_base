@@ -136,7 +136,6 @@ public class SbBatteryController extends LinearLayout {
 
     public void setColor(ColorUtils.ColorSettingInfo colorInfo) {
         mColorInfo = colorInfo;
-        updateBatteryLevel();
     }
 
     private BroadcastReceiver mBatteryBroadcastReceiver = new BroadcastReceiver() {
@@ -153,27 +152,6 @@ public class SbBatteryController extends LinearLayout {
             }
         }
     };
-
-    private void updateBatteryLevel() {
-        int N = mIconViews.size();
-        for (int i=0; i<N; i++) {
-            ImageView v = mIconViews.get(i);
-            v.setImageLevel(mLevel);
-            v.setContentDescription(mContext.getString(R.string.accessibility_battery_level,
-                    mLevel));
-        }
-        N = mLabelViews.size();
-        for (int i=0; i<N; i++) {
-            TextView v = mLabelViews.get(i);
-            v.setText(mContext.getString(R.string.status_bar_settings_battery_meter_format,
-                    mLevel));
-        }
-
-        for (BatteryStateChangeCallback cb : mChangeCallbacks) {
-            cb.onBatteryLevelChanged(mLevel, mPlugged);
-        }
-        setBatteryIcon(mLevel, mPlugged);
-    }
 
     private void setBatteryIcon(int level, boolean plugged) {
         mLevel = level;
@@ -300,6 +278,9 @@ public class SbBatteryController extends LinearLayout {
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.PAC_STATUS), false,
                     this);
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.STATUS_ICON_COLOR), false,
+                    this);
         }
 
         @Override
@@ -312,8 +293,6 @@ public class SbBatteryController extends LinearLayout {
         // Slog.i(TAG, "updated settings values");
         mBatteryStyle = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.STATUSBAR_BATTERY_ICON, 0);
-        mStatusPac = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PAC_STATUS, 0) == 1;
 
         switch (mBatteryStyle) {
             case STYLE_ICON_ONLY:
