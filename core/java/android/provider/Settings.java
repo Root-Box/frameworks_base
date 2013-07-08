@@ -1971,37 +1971,37 @@ public final class Settings {
          * always: 2
          * @hide
          */
-        public static final String PIE_CONTROLS = "pie_controls";
+        public static final String SPIE_CONTROLS = "spie_controls";
 
         /**
          * Whether right edge PIE is mirrored or not
          * @hide
          */
-        public static final String PIE_MIRROR_RIGHT = "pie_mirror_right";
+        public static final String SPIE_MIRROR_RIGHT = "spie_mirror_right";
 
         /**
          * Pie show text (0 or 1)
          * @hide
          */
-        public static final String PIE_SHOW_TEXT = "pie_show_text";
+        public static final String SPIE_SHOW_TEXT = "spie_show_text";
 
         /**
          * Pie disable redundant statusbar infos (0 or 1)
          * @hide
          */
-        public static final String PIE_DISABLE_STATUSBAR_INFO = "pie_disable_statusbar_info";
+        public static final String SPIE_DISABLE_STATUSBAR_INFO = "spie_disable_statusbar_info";
 
         /**
          * Pie show snap (0 or 1)
          * @hide
          */
-        public static final String PIE_SHOW_SNAP = "pie_show_snap";
+        public static final String SPIE_SHOW_SNAP = "spie_show_snap";
 
         /**
          * Pie show background (0 or 1)
          * @hide
          */
-        public static final String PIE_SHOW_BACKGROUND = "pie_show_background";
+        public static final String SPIE_SHOW_BACKGROUND = "spie_show_background";
 
         /**
          * Locations of the pie in the screen.
@@ -2012,7 +2012,7 @@ public final class Settings {
          * Default: LEFT
          * @hide
          */
-        public static final String PIE_GRAVITY = "pie_gravity";
+        public static final String SPIE_GRAVITY = "spie_gravity";
 
         /**
          * Mask for the locations of the pie for certain UI situations
@@ -2023,227 +2023,227 @@ public final class Settings {
          * Default: LEFT
          * @hide
          */
-        public static final String PIE_TRIGGER_MASK = "pie_trigger_mask";
+        public static final String SPIE_TRIGGER_MASK = "spie_trigger_mask";
 
         /**
          * Relative pie size (fraction)
          * Default: 1.0f
          * @hide
          */
-        public static final String PIE_SIZE = "pie_size";
+        public static final String SPIE_SIZE = "spie_size";
 
         /**
          * Relative pie trigger size
          * @hide
          */
-        public static final String PIE_TRIGGER_SIZE = "pie_trigger_size";
+        public static final String SPIE_TRIGGER_SIZE = "spie_trigger_size";
 
         /**
          * Show pie trigger
          * @hide
          */
-        public static final String PIE_TRIGGER_SHOW = "pie_trigger_show";
+        public static final String SPIE_TRIGGER_SHOW = "spie_trigger_show";
 
         /**
          * Pie IME softkeyboard state toggle (0 or 1)
          * @hide
          */
-        public static final String PIE_SOFTKEYBOARD_IS_SHOWING = "pie_softkeyboard_is_showing";
+        public static final String SPIE_SOFTKEYBOARD_IS_SHOWING = "spie_softkeyboard_is_showing";
 
         /**
          * Pie allow to adjust triggers if IME is showing (0 or 1)
          * @hide
          */
-        public static final String PIE_ADJUST_TRIGGER_FOR_IME = "pie_adjust_trigger_for_ime";
+        public static final String SPIE_ADJUST_TRIGGER_FOR_IME = "spie_adjust_trigger_for_ime";
 
         /**
          * Pie button color
          * @hide
          */
-        public static final String PIE_BUTTON_COLOR = "pie_button_color";
+        public static final String SPIE_BUTTON_COLOR = "spie_button_color";
 
         /**
          * Pie button press color
          * @hide
          */
-        public static final String PIE_BUTTON_PRESSED_COLOR = "pie_button_pressed_color";
+        public static final String SPIE_BUTTON_PRESSED_COLOR = "spie_button_pressed_color";
 
         /**
          * Pie button long press color
          * @hide
          */
-        public static final String PIE_BUTTON_LONG_PRESSED_COLOR = "pie_button_long_pressed_color";
+        public static final String SPIE_BUTTON_LONG_PRESSED_COLOR = "spie_button_long_pressed_color";
 
         /**
          * Pie button outline color
          * @hide
          */
-        public static final String PIE_BUTTON_OUTLINE_COLOR = "pie_button_outline_color";
+        public static final String SPIE_BUTTON_OUTLINE_COLOR = "spie_button_outline_color";
 
         /**
          * Pie background color
          * @hide
          */
-        public static final String PIE_BACKGROUND_COLOR = "pie_background_color";
+        public static final String SPIE_BACKGROUND_COLOR = "spie_background_color";
 
         /**
          * Pie snap color
          * @hide
          */
-        public static final String PIE_SNAP_COLOR = "pie_snap_color";
+        public static final String SPIE_SNAP_COLOR = "spie_snap_color";
 
         /**
          * Pie text color
          * @hide
          */
-        public static final String PIE_TEXT_COLOR = "pie_text_color";
+        public static final String SPIE_TEXT_COLOR = "spie_text_color";
 
         /**
          * Pie icon color
          * @hide
          */
-        public static final String PIE_ICON_COLOR = "pie_icon_color";
+        public static final String SPIE_ICON_COLOR = "spie_icon_color";
 
         /**
          * Pie icon color mode
          * @hide
          */
-        public static final String PIE_ICON_COLOR_MODE = "pie_icon_color_mode";
+        public static final String SPIE_ICON_COLOR_MODE = "spie_icon_color_mode";
 
         /**
          * Pie button alpha
          * @hide
          */
-        public static final String PIE_BUTTON_ALPHA = "pie_button_alpha";
+        public static final String SPIE_BUTTON_ALPHA = "spie_button_alpha";
 
         /**
          * Pie button pressed and long pressed alpha
          * @hide
          */
-        public static final String PIE_BUTTON_PRESSED_ALPHA = "pie_button_pressed_alpha";
+        public static final String SPIE_BUTTON_PRESSED_ALPHA = "spie_button_pressed_alpha";
 
         /**
          * Pie background alpha
          * @hide
          */
-        public static final String PIE_BACKGROUND_ALPHA = "pie_background_alpha";
+        public static final String SPIE_BACKGROUND_ALPHA = "spie_background_alpha";
 
         /**
          * @hide
          */
-        public static final String PIE_BUTTONS_QTY = "pie_buttons_qty";
+        public static final String SPIE_BUTTONS_QTY = "spie_buttons_qty";
 
         /**
          * Relative pie trigger thickness
          * @hide
          */
-        public static final String PIE_TRIGGER_THICKNESS = "pie_trigger_thickness";
+        public static final String SPIE_TRIGGER_THICKNESS = "spie_trigger_thickness";
 
         /**
          * Relative pie trigger height for left and right trigger
          * @hide
          */
-        public static final String PIE_TRIGGER_HEIGHT = "pie_trigger_height";
+        public static final String SPIE_TRIGGER_HEIGHT = "spie_trigger_height";
 
         /**
          * Pie trigger vertical gravity
          * @hide
          */
-        public static final String PIE_TRIGGER_GRAVITY_LEFT_RIGHT = "pie_trigger_gravity_left_right";
+        public static final String SPIE_TRIGGER_GRAVITY_LEFT_RIGHT = "spie_trigger_gravity_left_right";
 
         /**
          * @hide
          */
-        public static final String[] PIE_CUSTOM_ACTIVITIES = new String[] {
-            "pie_custom_intent_0",
-            "pie_custom_intent_1",
-            "pie_custom_intent_2",
-            "pie_custom_intent_3",
-            "pie_custom_intent_4",
+        public static final String[] SPIE_CUSTOM_ACTIVITIES = new String[] {
+            "spie_custom_intent_0",
+            "spie_custom_intent_1",
+            "spie_custom_intent_2",
+            "spie_custom_intent_3",
+            "spie_custom_intent_4",
         };
 
         /**
          * @hide
          */
-        public static final String[] PIE_LONGPRESS_ACTIVITIES = new String[] {
-            "pie_longpress_intent_0",
-            "pie_longpress_intent_1",
-            "pie_longpress_intent_2",
-            "pie_longpress_intent_3",
-            "pie_longpress_intent_4",
+        public static final String[] SPIE_LONGPRESS_ACTIVITIES = new String[] {
+            "spie_longpress_intent_0",
+            "spie_longpress_intent_1",
+            "spie_longpress_intent_2",
+            "spie_longpress_intent_3",
+            "spie_longpress_intent_4",
         };
 
         /**
          * @hide
          */
-        public static final String[] PIE_CUSTOM_ICONS = new String[] {
-            "pie_custom_icon_0",
-            "pie_custom_icon_1",
-            "pie_custom_icon_2",
-            "pie_custom_icon_3",
-            "pie_custom_icon_4",
-        };
-
-       /**
-        *
-        * @hide
-        */
-        public static final String PIE_LONG_PRESS_ENABLE = "pie_long_press_enable";
-
-        /**
-         * @hide
-         */
-        public static final String PIE_SECOND_LAYER_ACTIVE = "pie_second_layer_active";
-
-        /**
-         * @hide
-         */
-        public static final String PIE_BUTTONS_QTY_SECOND_LAYER = "pie_buttons_qty_second_layer";
-
-        /**
-         * @hide
-         */
-        public static final String[] PIE_CUSTOM_ACTIVITIES_SECOND_LAYER = new String[] {
-            "pie_custom_intent_sec_0",
-            "pie_custom_intent_sec_1",
-            "pie_custom_intent_sec_2",
-            "pie_custom_intent_sec_3",
-            "pie_custom_intent_sec_4",
-            "pie_custom_intent_sec_5",
-            "pie_custom_intent_sec_6",
-        };
-
-        /**
-         * @hide
-         */
-        public static final String[] PIE_LONGPRESS_ACTIVITIES_SECOND_LAYER = new String[] {
-            "pie_longpress_intent_sec_0",
-            "pie_longpress_intent_sec_1",
-            "pie_longpress_intent_sec_2",
-            "pie_longpress_intent_sec_3",
-            "pie_longpress_intent_sec_4",
-            "pie_longpress_intent_sec_5",
-            "pie_longpress_intent_sec_6",
-        };
-
-        /**
-         * @hide
-         */
-        public static final String[] PIE_CUSTOM_ICONS_SECOND_LAYER = new String[] {
-            "pie_custom_icon_sec_0",
-            "pie_custom_icon_sec_1",
-            "pie_custom_icon_sec_2",
-            "pie_custom_icon_sec_3",
-            "pie_custom_icon_sec_4",
-            "pie_custom_icon_sec_5",
-            "pie_custom_icon_sec_6",
+        public static final String[] SPIE_CUSTOM_ICONS = new String[] {
+            "spie_custom_icon_0",
+            "spie_custom_icon_1",
+            "spie_custom_icon_2",
+            "spie_custom_icon_3",
+            "spie_custom_icon_4",
         };
 
        /**
         *
         * @hide
         */
-        public static final String PIE_LONG_PRESS_ENABLE_SECOND_LAYER = "pie_long_press_enable_second_layer";
+        public static final String SPIE_LONG_PRESS_ENABLE = "spie_long_press_enable";
+
+        /**
+         * @hide
+         */
+        public static final String SPIE_SECOND_LAYER_ACTIVE = "spie_second_layer_active";
+
+        /**
+         * @hide
+         */
+        public static final String SPIE_BUTTONS_QTY_SECOND_LAYER = "spie_buttons_qty_second_layer";
+
+        /**
+         * @hide
+         */
+        public static final String[] SPIE_CUSTOM_ACTIVITIES_SECOND_LAYER = new String[] {
+            "spie_custom_intent_sec_0",
+            "spie_custom_intent_sec_1",
+            "spie_custom_intent_sec_2",
+            "spie_custom_intent_sec_3",
+            "spie_custom_intent_sec_4",
+            "spie_custom_intent_sec_5",
+            "spie_custom_intent_sec_6",
+        };
+
+        /**
+         * @hide
+         */
+        public static final String[] SPIE_LONGPRESS_ACTIVITIES_SECOND_LAYER = new String[] {
+            "spie_longpress_intent_sec_0",
+            "spie_longpress_intent_sec_1",
+            "spie_longpress_intent_sec_2",
+            "spie_longpress_intent_sec_3",
+            "spie_longpress_intent_sec_4",
+            "spie_longpress_intent_sec_5",
+            "spie_longpress_intent_sec_6",
+        };
+
+        /**
+         * @hide
+         */
+        public static final String[] SPIE_CUSTOM_ICONS_SECOND_LAYER = new String[] {
+            "spie_custom_icon_sec_0",
+            "spie_custom_icon_sec_1",
+            "spie_custom_icon_sec_2",
+            "spie_custom_icon_sec_3",
+            "spie_custom_icon_sec_4",
+            "spie_custom_icon_sec_5",
+            "spie_custom_icon_sec_6",
+        };
+
+       /**
+        *
+        * @hide
+        */
+        public static final String SPIE_LONG_PRESS_ENABLE_SECOND_LAYER = "spie_long_press_enable_second_layer";
 
         /**
          * Bluetooth Headset volume. This is used internally, changing this value will
@@ -3649,6 +3649,12 @@ public final class Settings {
          * @hide
          */
         public static final String PAC_STATUS = "pac_status";
+
+         /**
+         * Pie toggle behavior
+         * @hide
+         */
+        public static final String PIE_TOGGLE_BEHAVIOR = "pie_toggle_behavior";
 
         /*
          * On or off the Pie.

@@ -275,7 +275,7 @@ public class PieLayout extends FrameLayout implements View.OnTouchListener {
         getColors();
 
         mShowBackground = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_SHOW_BACKGROUND, 1) == 1;
+                Settings.System.SPIE_SHOW_BACKGROUND, 1) == 1;
     }
 
     public void setOnSnapListener(OnSnapListener onSnapListener) {
@@ -292,40 +292,40 @@ public class PieLayout extends FrameLayout implements View.OnTouchListener {
 
     private void getDimensions() {
         mPieScale = Settings.System.getFloat(mContext.getContentResolver(),
-                Settings.System.PIE_SIZE, PIE_CONTROL_SIZE_DEFAULT);
+                Settings.System.SPIE_SIZE, PIE_CONTROL_SIZE_DEFAULT);
         mMirrorRightPie = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_MIRROR_RIGHT, 1) == 1;
+                Settings.System.SPIE_MIRROR_RIGHT, 1) == 1;
 
         final Resources res = mContext.getResources();
 
-        mSnapRadius = res.getDimensionPixelSize(R.dimen.pie_snap_radius) * mPieScale;
+        mSnapRadius = res.getDimensionPixelSize(R.dimen.pies_snap_radius) * mPieScale;
         mSnapRadiusSqr = mSnapRadius * mSnapRadius;
         mSnapThreshold = Math.min(res.getDisplayMetrics().heightPixels,
                 res.getDisplayMetrics().widthPixels) * 0.3f;
         mSnapThresholdSqr = mSnapThreshold * mSnapThreshold;
 
-        mPadding = res.getDimensionPixelSize(R.dimen.pie_padding);
+        mPadding = res.getDimensionPixelSize(R.dimen.pies_padding);
     }
 
     private void getColors() {
         final Resources res = mContext.getResources();
 
         int snapPaintColor = (Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_SNAP_COLOR, -2));
+                Settings.System.SPIE_SNAP_COLOR, -2));
         if (snapPaintColor == -2) {
             snapPaintColor = res.getColor(R.color.pie_snap_color);
         }
         mSnapPaint.setColor(snapPaintColor);
         mSnapPaint.setStyle(Style.STROKE);
-        mSnapPaint.setStrokeWidth(res.getDimensionPixelSize(R.dimen.pie_snap_outline));
+        mSnapPaint.setStrokeWidth(res.getDimensionPixelSize(R.dimen.pies_snap_outline));
         mSnapPaint.setAntiAlias(true);
         mSnapActivePaint.setColor(snapPaintColor);
 
         float backgroundAlpha = (Settings.System.getFloat(mContext.getContentResolver(),
-                Settings.System.PIE_BACKGROUND_ALPHA, 0.3f));
+                Settings.System.SPIE_BACKGROUND_ALPHA, 0.3f));
 
         int backgroundPaintColor = (Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_BACKGROUND_COLOR, -2));
+                Settings.System.SPIE_BACKGROUND_COLOR, -2));
         if (backgroundPaintColor == -2) {
             backgroundPaintColor = res.getColor(R.color.pie_overlay_color);
         }
@@ -335,7 +335,7 @@ public class PieLayout extends FrameLayout implements View.OnTouchListener {
 
     private void setupSnapPoints(int width, int height) {
         if (Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_SHOW_SNAP, 1) == 0) {
+                Settings.System.SPIE_SHOW_SNAP, 1) == 0) {
             mActiveSnap = null;
             for (Position g : Position.values()) {
                     mSnapPoints[g.INDEX] = null;
@@ -604,7 +604,7 @@ public class PieLayout extends FrameLayout implements View.OnTouchListener {
         mActivateStartDebug = SystemClock.uptimeMillis();
 
         mShowBackground = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_SHOW_BACKGROUND, 1) == 1;
+                Settings.System.SPIE_SHOW_BACKGROUND, 1) == 1;
         getDimensions();
         getColors();
 

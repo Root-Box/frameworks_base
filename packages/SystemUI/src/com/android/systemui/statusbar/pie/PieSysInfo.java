@@ -83,7 +83,7 @@ public class PieSysInfo extends PieSliceContainer implements ValueAnimator.Anima
 
     private void setColor() {
         int textColor = (Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_TEXT_COLOR, -2));
+                Settings.System.SPIE_TEXT_COLOR, -2));
         if (textColor == -2) {
             textColor = mContext.getResources().getColor(R.color.pie_text_color);
         }
@@ -107,7 +107,7 @@ public class PieSysInfo extends PieSliceContainer implements ValueAnimator.Anima
         final Resources res = mContext.getResources();
         final RectF innerBB = new RectF(-mInner * scale, -mInner * scale,
                 mInner * scale, mInner * scale);
-        int textsize = res.getDimensionPixelSize(R.dimen.pie_textsize);
+        int textsize = res.getDimensionPixelSize(R.dimen.pies_textsize);
 
         mInfoPaint.setTextSize(textsize * scale);
         mClockPaint.setTextSize((mOuter - mInner) * scale);
@@ -131,7 +131,7 @@ public class PieSysInfo extends PieSliceContainer implements ValueAnimator.Anima
     public void draw(Canvas canvas, Position position) {
         // as long as there is no new data, we don't need to draw anything.
         if (mStaleData || Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_SHOW_TEXT, 1) == 0) {
+                Settings.System.SPIE_SHOW_TEXT, 1) == 0) {
             return;
         }
 

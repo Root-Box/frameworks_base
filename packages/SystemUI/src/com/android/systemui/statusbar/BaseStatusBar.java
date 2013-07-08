@@ -213,8 +213,6 @@ public abstract class BaseStatusBar extends SystemUI implements
     public ColorUtils.ColorSettingInfo mLastBackgroundColor;
     protected int mClockColor = com.android.internal.R.color.holo_blue_light;
 
-    protected FrameLayout mStatusBarContainer;
-
     /**
      * An interface for navigation key bars to allow status bars to signal which keys are
      * currently of interest to the user.<br>
@@ -353,6 +351,8 @@ public abstract class BaseStatusBar extends SystemUI implements
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         if (mPieControlPanel != null) mPieControlPanel.bumpConfiguration();
+        if (DEBUG) Slog.d(TAG, "Configuration changed! Update pie triggers");
+        attachPie();
     }
 
     public QuickSettingsContainerView getQuickSettingsPanel() {
@@ -622,11 +622,11 @@ public abstract class BaseStatusBar extends SystemUI implements
             mNewCanvas.drawColor(0xFF000000);
             BitmapDrawable newBitmapDrawable = new BitmapDrawable(newBitmap);
 
-            TextSettingsObserver textObserver = new TextSettingsObserver(new Handler());
-            textObserver.observe();
-
             mTransition = new TransitionDrawable(new Drawable[]{currentBitmapDrawable, newBitmapDrawable});
             mBarView.setBackground(mTransition);
+
+            TextSettingsObserver textObserver = new TextSettingsObserver(new Handler());
+            textObserver.observe();
 
             mLastIconColor = ColorUtils.getColorSettingInfo(mContext, Settings.System.STATUS_ICON_COLOR);
             mLastBackgroundColor = ColorUtils.getColorSettingInfo(mContext, ExtendedPropertiesUtils.isTablet()
@@ -1155,6 +1155,10 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected H createHandler() {
          return new H();
+    }
+
+    protected boolean isScreenPortrait() {
+        return mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 
     static void sendCloseSystemWindows(Context context, String reason) {
@@ -1939,6 +1943,36 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     private final class TextSettingsObserver extends ContentObserver {
         TextSettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.STATUSBAR_CLOCK_COLOR), false,
+                    this);
+            updateTextColor();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateTextColor();
+        }
+    }
+
+    protected void updateTextColor() {
+        ContentResolver resolver = mContext.getContentResolver();
+        mClockColor = Settings.System.getInt(resolver,
+                Settings.System.STATUSBAR_CLOCK_COLOR,
+                0xFF33B5E5);
+
+        if (mClockColor == Integer.MIN_VALUE) {
+            // flag to reset the color
+            mClockColor = 0xFF33B5E5;
+        }
+        if(mClock != null) mClock.setTextColor(mClockColor);
+        if(mCClock != null) mCClock.setTextColor(mClockColor);
+    }
 
     public void addNavigationBarCallback(NavigationBarCallback callback) {
         mNavigationCallbacks.add(callback);
@@ -1963,15 +1997,6 @@ public abstract class BaseStatusBar extends SystemUI implements
     }
 
     // Pie Controls
-
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (DEBUG) Slog.d(TAG, "Configuration changed! Update pie triggers");
-        attachPie();
-    }
-
     private final class PieSettingsObserver extends ContentObserver {
         PieSettingsObserver(Handler handler) {
             super(handler);
@@ -1980,70 +2005,58 @@ public abstract class BaseStatusBar extends SystemUI implements
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_CONTROLS), false, this);
+                    Settings.System.SPIE_CONTROLS), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_GRAVITY), false, this);
+                    Settings.System.SPIE_GRAVITY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_TRIGGER_GRAVITY_LEFT_RIGHT), false, this);
+                    Settings.System.SPIE_TRIGGER_GRAVITY_LEFT_RIGHT), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_TRIGGER_THICKNESS), false, this);
+                    Settings.System.SPIE_TRIGGER_THICKNESS), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_TRIGGER_HEIGHT), false, this);
+                    Settings.System.SPIE_TRIGGER_HEIGHT), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_TRIGGER_SHOW), false, this);
+                    Settings.System.SPIE_TRIGGER_SHOW), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_SOFTKEYBOARD_IS_SHOWING), false, this);
+                    Settings.System.SPIE_SOFTKEYBOARD_IS_SHOWING), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.CURRENT_UI_MODE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.EXPANDED_DESKTOP_STATE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.EXPANDED_DESKTOP_MODE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_SHOW), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_CAN_MOVE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_HEIGHT), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_HEIGHT_LANDSCAPE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_WIDTH), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.HIDE_STATUSBAR), false, this);
+                    Settings.System.NAV_HIDE_ENABLE), false, this);
         }
 
         @Override
         public void onChange(boolean selfChange) {
             mPieTriggerSlots = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_GRAVITY, Position.LEFT.FLAG);
+                    Settings.System.SPIE_GRAVITY, Position.LEFT.FLAG);
             mPieShowTrigger = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_TRIGGER_SHOW, 0) == 1;
+                    Settings.System.SPIE_TRIGGER_SHOW, 0) == 1;
             mPieTriggerThickness = Settings.System.getFloat(mContext.getContentResolver(),
-                    Settings.System.PIE_TRIGGER_THICKNESS,
-                    mContext.getResources().getDimension(R.dimen.pie_trigger_thickness));
+                    Settings.System.SPIE_TRIGGER_THICKNESS,
+                    mContext.getResources().getDimension(R.dimen.pies_trigger_thickness));
             mPieTriggerHeight = Settings.System.getFloat(mContext.getContentResolver(),
-                    Settings.System.PIE_TRIGGER_HEIGHT,
+                    Settings.System.SPIE_TRIGGER_HEIGHT,
                     0.8f);
             mPieTriggerGravityLeftRight = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_TRIGGER_GRAVITY_LEFT_RIGHT,
+                    Settings.System.SPIE_TRIGGER_GRAVITY_LEFT_RIGHT,
                     Gravity.CENTER_VERTICAL);
             mPieImeIsShowing = Settings.System.getFloat(mContext.getContentResolver(),
-                    Settings.System.PIE_SOFTKEYBOARD_IS_SHOWING, 0) == 1
+                    Settings.System.SPIE_SOFTKEYBOARD_IS_SHOWING, 0) == 1
                     && Settings.System.getFloat(mContext.getContentResolver(),
-                    Settings.System.PIE_ADJUST_TRIGGER_FOR_IME, 1) == 1;
+                    Settings.System.SPIE_ADJUST_TRIGGER_FOR_IME, 1) == 1;
             attachPie();
         }
     }
 
     private boolean isPieEnabled() {
-        boolean expanded = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.EXPANDED_DESKTOP_STATE, 0) == 1;
-        int pie = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_CONTROLS, 0);
+        int slimpie = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.SPIE_CONTROLS,  0);
 
-        return (pie == 1 && expanded) || pie == 2;
+        return slimpie == 1;
     }
 
-    private void attachPie() {
+    private void attachSPie() {
         if (isPieEnabled()) {
             // Create our container, if it does not exist already
             if (mPieContainer == null) {
@@ -2117,33 +2130,38 @@ public abstract class BaseStatusBar extends SystemUI implements
             }
             mForceDisableBottomAndTopTrigger = forceDisableBottomAndTopTrigger;
 
+            ContentResolver cr = mContext.getContentResolver();
+
             // get expanded desktop values
-            int expandedMode = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.EXPANDED_DESKTOP_MODE, 0);
-            boolean expanded = Settings.System.getInt(mContext.getContentResolver(),
+            boolean expanded = Settings.System.getInt(cr,
                     Settings.System.EXPANDED_DESKTOP_STATE, 0) == 1;
 
+            // get current ui mode value
+            int currentUiMode = Settings.System.getInt(cr,
+                    Settings.System.CURRENT_UI_MODE, 0);
+
             // get statusbar auto hide value
-            boolean autoHideStatusBar = Settings.System.getInt(mContext.getContentResolver(),
+            boolean autoHideStatusBar = Settings.System.getInt(cr,
                     Settings.System.HIDE_STATUSBAR, 0) == 1;
+
+            // get tacos of hiding
+            boolean navbarHide = Settings.System.getBoolean(cr,
+                     Settings.System.NAV_HIDE_ENABLE, false);
 
             // get navigation bar values
             final int showByDefault = mContext.getResources().getBoolean(
                     com.android.internal.R.bool.config_showNavigationBar) ? 1 : 0;
-            boolean hasNavigationBar = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.NAVIGATION_BAR_SHOW, showByDefault) == 1;
-            boolean navBarCanMove = Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.NAVIGATION_BAR_CAN_MOVE, 1) == 1
-                        && screenLayout() != Configuration.SCREENLAYOUT_SIZE_LARGE;
-            boolean navigationBarHeight = Settings.System.getInt(mContext.getContentResolver(),
+            boolean navbarEnable = Integer.parseInt(ExtendedPropertiesUtils.getProperty(
+                    "com.android.systemui.navbar.dpi", "100")) >= 0;
+            boolean navigationBarHeight = Settings.System.getInt(cr,
                                 Settings.System.NAVIGATION_BAR_HEIGHT,
                                 mContext.getResources().getDimensionPixelSize(
                                                 com.android.internal.R.dimen.navigation_bar_height)) != 0;
-            boolean navigationBarHeightLandscape = Settings.System.getInt(mContext.getContentResolver(),
+            boolean navigationBarHeightLandscape = Settings.System.getInt(cr,
                                 Settings.System.NAVIGATION_BAR_HEIGHT_LANDSCAPE,
                                 mContext.getResources().getDimensionPixelSize(
                                                 com.android.internal.R.dimen.navigation_bar_height_landscape)) != 0;
-            boolean navigationBarWidth = Settings.System.getInt(mContext.getContentResolver(),
+            boolean navigationBarWidth = Settings.System.getInt(cr,
                                 Settings.System.NAVIGATION_BAR_WIDTH,
                                 mContext.getResources().getDimensionPixelSize(
                                                 com.android.internal.R.dimen.navigation_bar_width)) != 0;
@@ -2151,67 +2169,37 @@ public abstract class BaseStatusBar extends SystemUI implements
             // disable on phones in landscape right trigger for navbar
             boolean disableRightTriggerForNavbar =
                     !isScreenPortrait()
-                    && hasNavigationBar
-                    && ((expandedMode == 2 && expanded) || !expanded)
-                    && navBarCanMove
                     && navigationBarWidth;
 
             // take in account the navbar dimensions
-            hasNavigationBar = (hasNavigationBar && isScreenPortrait() && navigationBarHeight)
-                                || (hasNavigationBar && !isScreenPortrait() && !navBarCanMove
-                                    && navigationBarHeightLandscape);
+            navbarEnable = (navbarEnable && isScreenPortrait() && navigationBarHeight)
+                                || (navbarEnable && !isScreenPortrait() && navigationBarHeightLandscape);
 
-            // let's set the triggers
-            if ((!expanded && hasNavigationBar && !autoHideStatusBar)
-                || mForceDisableBottomAndTopTrigger) {
-                if (disableRightTriggerForNavbar) {
-                    updatePieTriggerMask(Position.LEFT.FLAG);
-                } else {
-                    updatePieTriggerMask(Position.LEFT.FLAG
-                                    | Position.RIGHT.FLAG);
-                }
-            } else if ((!expanded && !hasNavigationBar && !autoHideStatusBar)
-                || (expandedMode == 1 && expanded && !autoHideStatusBar)) {
-                if (!mPieImeIsShowing) {
+            if (!mPieImeIsShowing) {
+                if (currentUiMode == 0) {
                     if (disableRightTriggerForNavbar) {
                         updatePieTriggerMask(Position.LEFT.FLAG
-                                        | Position.BOTTOM.FLAG);
+                                         | Position.BOTTOM.FLAG
+                                        | Position.TOP.FLAG);
                     } else {
-                        updatePieTriggerMask(Position.LEFT.FLAG
+                         updatePieTriggerMask(Position.LEFT.FLAG
                                         | Position.BOTTOM.FLAG
-                                        | Position.RIGHT.FLAG);
+                                        | Position.RIGHT.FLAG
+                                        | Position.TOP.FLAG);
                     }
-                } else {
-                    if (disableRightTriggerForNavbar) {
-                        updatePieTriggerMask(Position.LEFT.FLAG);
-                    } else {
-                        updatePieTriggerMask(Position.LEFT.FLAG
-                                        | Position.RIGHT.FLAG);
-                    }
-                }
-            } else if (expandedMode == 2 && expanded && hasNavigationBar
-                        || !expanded && hasNavigationBar && autoHideStatusBar) {
-                if (disableRightTriggerForNavbar) {
+                } else if (currentUiMode == 2) {
                     updatePieTriggerMask(Position.LEFT.FLAG
+                                    | Position.BOTTOM.FLAG
+                                    | Position.RIGHT.FLAG
                                     | Position.TOP.FLAG);
-                } else {
+                } else if (currentUiMode == 1) {
                     updatePieTriggerMask(Position.LEFT.FLAG
+                                    | Position.BOTTOM.FLAG
                                     | Position.RIGHT.FLAG
                                     | Position.TOP.FLAG);
                 }
             } else {
-                if (!mPieImeIsShowing) {
-                    if (disableRightTriggerForNavbar) {
-                        updatePieTriggerMask(Position.LEFT.FLAG
-                                        | Position.BOTTOM.FLAG
-                                        | Position.TOP.FLAG);
-                    } else {
-                        updatePieTriggerMask(Position.LEFT.FLAG
-                                        | Position.BOTTOM.FLAG
-                                        | Position.RIGHT.FLAG
-                                        | Position.TOP.FLAG);
-                    }
-                } else {
+                if (currentUiMode == 0) {
                     if (disableRightTriggerForNavbar) {
                         updatePieTriggerMask(Position.LEFT.FLAG
                                         | Position.TOP.FLAG);
@@ -2220,6 +2208,14 @@ public abstract class BaseStatusBar extends SystemUI implements
                                         | Position.RIGHT.FLAG
                                         | Position.TOP.FLAG);
                     }
+                } else if (currentUiMode == 2) {
+                    updatePieTriggerMask(Position.LEFT.FLAG
+                                    | Position.RIGHT.FLAG
+                                    | Position.TOP.FLAG);
+                } else if (currentUiMode == 1) {
+                    updatePieTriggerMask(Position.LEFT.FLAG
+                                    | Position.RIGHT.FLAG
+                                    | Position.TOP.FLAG);
                 }
             }
     }
