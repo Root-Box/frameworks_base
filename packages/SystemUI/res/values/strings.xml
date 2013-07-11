@@ -668,4 +668,6 @@
     <string name="powerwidget_screen_timeout_toast">Screen timeout set to: %1$d %2$s</string>
     <string name="brightness_label">Brightness</string>
 
+    <string name="halo_dismiss">Dismiss notification</string>
+    <string name="halo_hide">Hide HALO</string>
 </resources>
