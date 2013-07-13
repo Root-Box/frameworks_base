@@ -568,7 +568,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
                     playSoundEffect(SoundEffectConstants.CLICK);
 
                     try {
-                        mBar.getService().onClearAllNotifications();
+                        mBar.getStatusBarService().onClearAllNotifications();
                     } catch (RemoteException ex) {
                         // system process is dead if we're here.
                     }
