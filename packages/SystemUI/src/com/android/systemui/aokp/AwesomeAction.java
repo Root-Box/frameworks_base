@@ -57,6 +57,7 @@ import android.widget.Toast;
 import static com.android.internal.util.aokp.AwesomeConstants.*;
 import com.android.systemui.statusbar.WidgetView;
 import com.android.internal.statusbar.IStatusBarService;
+import com.android.internal.util.cm.TorchConstants;
 import com.android.internal.R;
 
 import java.net.URISyntaxException;
@@ -180,9 +181,8 @@ public class AwesomeAction {
                 mContext.sendBroadcast(new Intent("android.settings.SHOW_INPUT_METHOD_PICKER"));
                 break;
             case ACTION_TORCH:
-                Intent i = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
-                i.putExtra("bright", false);
-                mContext.sendBroadcast(i);
+                Intent intentTorch = new Intent(TorchConstants.ACTION_TOGGLE_STATE);
+                mContext.sendBroadcast(intentTorch);
                 break;
             case ACTION_TODAY:
                 long startMillis = System.currentTimeMillis();
