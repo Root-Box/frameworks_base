@@ -4446,7 +4446,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         // Handle special keys.
         switch (keyCode) {
             case KeyEvent.KEYCODE_HOME:
-                if (down && !isScreenOn && mHomeWakeScreen) {
+                if (down && !isScreenOn && isWakeKey && mHomeWakeScreen) {
                     if (keyguardActive) {
                         // If the keyguard is showing, let it wake the device when ready.
                         mKeyguardMediator.onWakeKeyWhenKeyguardShowingTq(keyCode);
