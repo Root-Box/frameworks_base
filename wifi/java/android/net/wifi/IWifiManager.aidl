@@ -74,6 +74,8 @@ interface IWifiManager
 
     List<WifiChannel> getSupportedChannels();
 
+    boolean isIbssSupported();
+
     boolean saveConfiguration();
 
     DhcpInfo getDhcpInfo();
