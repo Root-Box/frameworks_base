@@ -840,6 +840,23 @@ public class WifiManager {
         } catch (RemoteException e) { }
     }
 
+    /**
+     * Get the operational frequency band.
+     * @return One of
+     *     {@link #WIFI_FREQUENCY_BAND_AUTO},
+     *     {@link #WIFI_FREQUENCY_BAND_5GHZ},
+     *     {@link #WIFI_FREQUENCY_BAND_2GHZ} or
+     *     {@code -1} on failure.
+     * @hide
+     */
+    public int getFrequencyBand() {
+        try {
+            return mService.getFrequencyBand();
+        } catch (RemoteException e) {
+            return -1;
+        }
+    }
+
 
     /**
      * Check if the chipset supports dual frequency band (2.4 GHz and 5 GHz)
@@ -880,6 +897,30 @@ public class WifiManager {
         }
     }
 
+    /**
+     * Check if the chipset supports IBSS (Adhoc) mode
+     * @return {@code true} if supported, {@code false} otherwise.
+     */
+    public boolean isIbssSupported() {
+        try {
+            return mService.isIbssSupported();
+        } catch (RemoteException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get a list of supported channels / frequencies
+     * @return a List of WifiChannels
+     * @hide
+     */
+    public List<WifiChannel> getSupportedChannels() {
+        try {
+            return mService.getSupportedChannels();
+        } catch (RemoteException e) {
+            return null;
+        }
+    }
 
     /**
      * Return the DHCP-assigned addresses from the last successful DHCP request,
