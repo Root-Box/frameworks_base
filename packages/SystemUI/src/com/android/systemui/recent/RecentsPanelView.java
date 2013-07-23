@@ -71,7 +71,6 @@ import com.android.systemui.statusbar.tablet.TabletStatusBar;
 
 import com.android.internal.util.MemInfoReader;
 
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class RecentsPanelView extends FrameLayout implements OnItemClickListener, RecentsCallback,
@@ -924,6 +923,22 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             }
         });
         popup.show();
+    }
+
+    private void killAllRecentApps(){
+        if(!mRecentTaskDescriptions.isEmpty()){
+            for(TaskDescription ad : mRecentTaskDescriptions){
+                mAm.removeTask(ad.persistentTaskId, ActivityManager.REMOVE_TASK_KILL_PROCESS);
+                // Accessibility feedback
+                setContentDescription(
+                        mContext.getString(R.string.accessibility_recents_item_dismissed, ad.getLabel()));
+                sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
+                setContentDescription(null);
+            }
+            mRecentTaskDescriptions.clear();
+        }
+        dismissAndGoBack();
+        mHandler.post(updateRamBarTask);
     }
 
     private final Runnable updateRamBarTask = new Runnable() {
