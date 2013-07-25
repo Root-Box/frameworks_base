@@ -1502,6 +1502,16 @@ public abstract class BaseStatusBar extends SystemUI implements
         updateExpansionStates();
         updateNotificationIcons();
 
+        if (entry.userCleared() && !mNotificationData.hasClearableItems()) {
+            // wait a bit to make the user aware of what's happening
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE);
+                }
+            }, 225);
+        }
+
         return entry.notification;
     }
 
@@ -1528,7 +1538,7 @@ public abstract class BaseStatusBar extends SystemUI implements
             canvas.drawCircle(iconSize / 2, iconSize / 2, iconSize / 2.3f, smoothingPaint);
             smoothingPaint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
             final int newWidth = iconSize;
-            final int newHeight = largeIconWidth / largeIconHeight * iconSize;
+            final int newHeight = iconSize * largeIconWidth / largeIconHeight;
             Bitmap scaledBitmap = Bitmap.createScaledBitmap(notification.notification.largeIcon, newWidth, newHeight, true);
             canvas.drawBitmap(scaledBitmap, null, new Rect(0, 0,
                     iconSize, iconSize), smoothingPaint);

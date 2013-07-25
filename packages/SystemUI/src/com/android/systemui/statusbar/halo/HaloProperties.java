@@ -50,12 +50,14 @@ public class HaloProperties extends FrameLayout {
         DISMISS,
         SILENCE_LEFT,
         SILENCE_RIGHT,
-        CLEAR_ALL
+        CLEAR_ALL,
+        MESSAGE
     }
 
     private LayoutInflater mInflater;
 
     protected int mHaloX = 0, mHaloY = 0;
+    protected int mHaloContentY = 0;
     protected float mHaloContentAlpha = 0;
 
     private Drawable mHaloDismiss;
@@ -65,6 +67,7 @@ public class HaloProperties extends FrameLayout {
     private Drawable mHaloClearAll;
     private Drawable mHaloSilenceL;
     private Drawable mHaloSilenceR;
+    private Drawable mHaloMessage;
     private Drawable mHaloCurrentOverlay;
 
     protected View mHaloBubble;
@@ -76,6 +79,8 @@ public class HaloProperties extends FrameLayout {
 
     protected View mHaloNumberView;
     protected TextView mHaloNumber;
+    protected ImageView mHaloNumberIcon;
+    protected RelativeLayout mHaloNumberContainer;
 
     private boolean mEnableColor;
 
@@ -100,6 +105,7 @@ public class HaloProperties extends FrameLayout {
         mHaloClearAll = mContext.getResources().getDrawable(R.drawable.halo_clear_all);
         mHaloSilenceL = mContext.getResources().getDrawable(R.drawable.halo_silence_left);
         mHaloSilenceR = mContext.getResources().getDrawable(R.drawable.halo_silence_right);
+        mHaloMessage = mContext.getResources().getDrawable(R.drawable.halo_message);
 
         mHaloBubble = mInflater.inflate(R.layout.halo_bubble, null);
         mHaloBg = (ImageView) mHaloBubble.findViewById(R.id.halo_bg);
@@ -118,8 +124,10 @@ public class HaloProperties extends FrameLayout {
         updateColorView();
 
         mHaloNumberView = mInflater.inflate(R.layout.halo_number, null);
+        mHaloNumberContainer = (RelativeLayout)mHaloNumberView.findViewById(R.id.container);
         mHaloNumber = (TextView) mHaloNumberView.findViewById(R.id.number);
-        mHaloNumber.setAlpha(0f);
+        mHaloNumberIcon = (ImageView) mHaloNumberView.findViewById(R.id.icon);
+        mHaloNumberIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.halo_batch_message));
 
         mFraction = Settings.System.getFloat(mContext.getContentResolver(),
                 Settings.System.HALO_SIZE, 1.0f);
@@ -162,13 +170,19 @@ public class HaloProperties extends FrameLayout {
 
         final int newNumberSize = (int)(mContext.getResources().getDimensionPixelSize(R.dimen.halo_number_size) * fraction);
         final int newNumberTextSize = (int)(mContext.getResources().getDimensionPixelSize(R.dimen.halo_number_text_size) * fraction);
-        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(newNumberSize, newNumberSize);
+        RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(newNumberSize, newNumberSize);
         mHaloNumber.setLayoutParams(layoutParams2);
         mHaloNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, newNumberTextSize);
 
         final int newSpeechTextSize = (int)(mContext.getResources().getDimensionPixelSize(R.dimen.halo_speech_text_size) * fraction);
         mHaloTextViewR.setTextSize(TypedValue.COMPLEX_UNIT_PX, newSpeechTextSize);
         mHaloTextViewL.setTextSize(TypedValue.COMPLEX_UNIT_PX, newSpeechTextSize);
+
+        final int newBatchIconSize = (int)(mContext.getResources().getDimensionPixelSize(R.dimen.halo_number_icon_size) * fraction);
+        RelativeLayout.LayoutParams layoutParams3 = new RelativeLayout.LayoutParams(newBatchIconSize, newBatchIconSize);
+        layoutParams3.addRule(RelativeLayout.CENTER_VERTICAL);
+        layoutParams3.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        mHaloNumberIcon.setLayoutParams(layoutParams3);
 
         updateResources();
         updateColorView();
@@ -190,6 +204,14 @@ public class HaloProperties extends FrameLayout {
         return mHaloY;
     }
 
+    public void setHaloContentY(int value) {
+        mHaloContentY = value;
+    }
+
+    public int getHaloContentY() {
+        return mHaloContentY; 
+    }
+
     protected CustomObjectAnimator msgNumberFlipAnimator = new CustomObjectAnimator(this);
     protected CustomObjectAnimator msgNumberAlphaAnimator = new CustomObjectAnimator(this);
     public void setHaloMessageNumber(int value, boolean alwaysFlip) {
@@ -197,17 +219,27 @@ public class HaloProperties extends FrameLayout {
         // Allow transitions only if no overlay is set
         if (mHaloCurrentOverlay == null) {
             msgNumberAlphaAnimator.cancel(true);
-            float oldAlpha = mHaloNumber.getAlpha();
-            mHaloNumber.setAlpha(1f);                
-            mHaloNumber.setText((value < 100) ? String.valueOf(value == 0 ? 1 : value) : "+");
+            float oldAlpha = mHaloNumberContainer.getAlpha();
+
+            mHaloNumberContainer.setAlpha(1f);
+            mHaloNumber.setAlpha(1f);
+            mHaloNumberIcon.setAlpha(0f);
+            if (value < 1) {
+                mHaloNumber.setText("");
+                mHaloNumberIcon.setAlpha(1f);                
+            } else if (value < 100) {
+                mHaloNumber.setText(String.valueOf(value));
+            } else {
+                mHaloNumber.setText("+");
+            }
             
-            if (value == 0) {
-                msgNumberAlphaAnimator.animate(ObjectAnimator.ofFloat(mHaloNumber, "alpha", 0f).setDuration(1000),
+            if (value < 1) {
+                msgNumberAlphaAnimator.animate(ObjectAnimator.ofFloat(mHaloNumberContainer, "alpha", 0f).setDuration(1000),
                         new DecelerateInterpolator(), null, 1500, null);
             }
 
             if (!alwaysFlip && oldAlpha == 1f && (value == mHaloMessageNumber || (value > 99 && mHaloMessageNumber > 99))) return;
-            msgNumberFlipAnimator.animate(ObjectAnimator.ofFloat(mHaloNumber, "rotationY", -180, 0).setDuration(500),
+            msgNumberFlipAnimator.animate(ObjectAnimator.ofFloat(mHaloNumberContainer, "rotationY", -180, 0).setDuration(500),
                         new DecelerateInterpolator(), null);
         }
         mHaloMessageNumber = value;
@@ -253,6 +285,9 @@ public class HaloProperties extends FrameLayout {
             case CLEAR_ALL:
                 d = mHaloClearAll;
                 break;
+            case MESSAGE:
+                d = mHaloMessage;
+                break;
         }
 
         if (d != mHaloCurrentOverlay) {
@@ -261,7 +296,9 @@ public class HaloProperties extends FrameLayout {
 
             // Fade out number batch
             if (overlay != Overlay.NONE) {
-                msgNumberAlphaAnimator.animate(ObjectAnimator.ofFloat(mHaloNumber, "alpha", 0f).setDuration(250),
+                msgNumberFlipAnimator.animate(ObjectAnimator.ofFloat(mHaloNumberContainer, "rotationY", 270).setDuration(500),
+                        new DecelerateInterpolator(), null);
+                msgNumberAlphaAnimator.animate(ObjectAnimator.ofFloat(mHaloNumberContainer, "alpha", 0f).setDuration(500),
                         new DecelerateInterpolator(), null);
             }
         }
