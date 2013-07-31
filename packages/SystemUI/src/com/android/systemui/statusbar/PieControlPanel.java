@@ -312,6 +312,8 @@ public class PieControlPanel extends FrameLayout implements StatusBarPanel, OnNa
             Intent appWindow = new Intent();
             appWindow.setAction("com.android.systemui.ACTION_SHOW_APP_WINDOW");
             mContext.sendBroadcast(appWindow);
+	    } else if (buttonName.equals(PieControl.POWER_BUTTON)) {
+            injectKeyDelayed(KeyEvent.KEYCODE_POWER);
         }
     }
 
