@@ -1483,7 +1483,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback, TabletTi
                                 if (mHideTicker) mEffect.sleep(HaloEffect.SLEEP_DELAY + HaloEffect.WAKE_TIME * 2, HaloEffect.SLEEP_TIME, false);
                             }
 
-                            tick(entry, HaloEffect.WAKE_TIME * 2, 1000, true, true, true);
+                            tick(entry, HaloEffect.WAKE_TIME * 2, 1000, true, true, false);
 
                             // Pop while not tasking, only if notification is certified fresh
                             if (mGesture != Gesture.TASK && mState != State.SILENT) mEffect.ping(mPaintHoloBlue, HaloEffect.WAKE_TIME * 2);
