@@ -70,9 +70,9 @@ interface IWifiManager
 
     boolean isDualBandSupported();
 
-    List<WifiChannel> getSupportedChannels();
-
     boolean isIbssSupported();
+
+    List<WifiChannel> getSupportedChannels();
 
     boolean saveConfiguration();
 

@@ -857,7 +857,6 @@ public class WifiManager {
         }
     }
 
-
     /**
      * Check if the chipset supports dual frequency band (2.4 GHz and 5 GHz)
      * @return {@code true} if supported, {@code false} otherwise.
